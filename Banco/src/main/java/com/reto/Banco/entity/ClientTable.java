@@ -18,7 +18,8 @@ public class ClientTable {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Spring id;
+    private  long id;
+
     private String Tipo;    
     /* Card ID*/
     private  int CC;
@@ -28,10 +29,10 @@ public class ClientTable {
    private  Date dateCreation;
    private  Date dateudpate;
    private  String UserUpdate;
-public Spring getId() {
+public long getId() {
     return id;
 }
-public void setId(Spring id) {
+public void setId(Long id) {
     this.id = id;
 }
 public String getTipo() {
