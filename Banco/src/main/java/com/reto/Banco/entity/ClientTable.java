@@ -1,6 +1,7 @@
 package com.reto.Banco.entity;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.swing.Spring;
 
@@ -25,8 +26,23 @@ public class ClientTable {
     private  int CC;
    private  String nombres;
    private  String apellido;
-   private  Date date ;
-   private  Date dateCreation;
+   private  Date birDate;
+   private  long age;
+
+   public long getAge() {
+    return age;
+}
+public void setAge(long age) {
+    this.age = age;
+}
+public Date getBirDate() {
+    return birDate;
+}
+public void setBirDate(Date birDate) {
+    this.birDate = birDate;
+}
+private  Date date ;
+   private  LocalDate dateCreation;
    private  Date dateudpate;
    private  String UserUpdate;
 public long getId() {
@@ -65,10 +81,10 @@ public Date getDate() {
 public void setDate(Date date) {
     this.date = date;
 }
-public Date getDateCreation() {
+public LocalDate getDateCreation() {
     return dateCreation;
 }
-public void setDateCreation(Date dateCreation) {
+public void setDateCreation(LocalDate dateCreation) {
     this.dateCreation = dateCreation;
 }
 public Date getDateudpate() {
