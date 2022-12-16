@@ -9,7 +9,7 @@ public interface ClientService {
     public ClientTable CreateCliente(ClientTable client)  throws Exception;
     public List<ClientTable> GetAllCliente()  throws Exception;
     public ClientTable UpdateClient(ClientTable client) throws Exception;
-    public void delete(Integer id)  throws Exception;
+    public void delete(Long id)  throws Exception;
 
    
     

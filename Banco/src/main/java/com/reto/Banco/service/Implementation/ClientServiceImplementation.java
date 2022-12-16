@@ -37,9 +37,15 @@ public class ClientServiceImplementation implements ClientService {
         return clientRepository.save(client);
     }
 
+    // @Override
+    // public void delete(Long id) throws Exception {
+           
+    // }
+
     @Override
-    public void delete(Integer id) throws Exception {
-            clientRepository.deleteById(id);		
+    public void delete(Long id) throws Exception {
+        // TODO Auto-generated method stub
+        clientRepository.deleteById(id);		
     }
     
 }

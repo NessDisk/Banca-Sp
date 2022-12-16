@@ -138,7 +138,7 @@ public class clienteController {
 
         try{
             // client.setId(id);
-            clientService.delete((int)id);
+            clientService.delete(id);
            
             mensaje = "0 - Customer successfully delete";
 
@@ -159,9 +159,5 @@ public class clienteController {
 
     }
 
-    @GetMapping("/upda")
-    public String update2( ) {
 
-        return "Hola mundo";
-    }
 }
