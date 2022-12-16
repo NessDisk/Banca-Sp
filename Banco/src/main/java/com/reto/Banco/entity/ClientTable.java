@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 import javax.swing.Spring;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,13 +22,39 @@ public class ClientTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  long id;
 
+
+
+    @Column(name="tipo")
     private String Tipo;    
-    /* Card ID*/
+
+    @Column(name="CC")
     private  int CC;
+
+    @Column(name="nombre")
    private  String nombres;
+
+   @Column(name="apellido")
    private  String apellido;
+
+   @Column(name="birDate")
    private  Date birDate;
+
+   @Column(name="Age")
    private  long age;
+
+   @Column(name="date")
+   private  Date date ;
+
+   @Column(name="dateCreation")
+   private  LocalDate dateCreation;
+
+   @Column(name="dateudpate")
+   private  Date dateudpate;
+
+   @Column(name="UserUpdate")
+   private  String UserUpdate;
+
+
 
    public long getAge() {
     return age;
@@ -41,10 +68,7 @@ public Date getBirDate() {
 public void setBirDate(Date birDate) {
     this.birDate = birDate;
 }
-private  Date date ;
-   private  LocalDate dateCreation;
-   private  Date dateudpate;
-   private  String UserUpdate;
+
 public long getId() {
     return id;
 }
