@@ -33,7 +33,7 @@ public class productController   {
        
 
         try {		
-            datos = productSevice.CreateProduct(productEnitty);
+             productSevice.CreateProduct(productEnitty);
 
 
             respuesta.setDatos(datos);
