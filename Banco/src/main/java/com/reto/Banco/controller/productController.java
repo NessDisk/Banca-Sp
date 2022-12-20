@@ -2,6 +2,7 @@ package com.reto.Banco.controller;
 
 import java.time.LocalDate;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,30 +37,27 @@ public class productController   {
 		Integer datos = null;
 		String mensaje = null;	
 		HttpStatus estadoHttp = null;
-        // Tipocuenta Cuenta;
-
-        // String test = Tipocuenta.CORRIENTE.toString();
-        // String test2 = productEnitty.getTipoCuenta().toString();
-        
-       
-        // System.out.println(Tipocuenta.CORRIENTE.toString() );
-        // System.out.println(productEnitty.getTipoCuenta().toString() );
-        // System.out.println(productEnitty.getTipoCuenta().toString() == test);
-        // System.out.println(test2 == test);
-        // System.out.println(Tipocuenta.CORRIENTE.toString().equals(productEnitty.getTipoCuenta().toString()));
 
         try {		
-
-
                  
                   if(productEnitty.getSaldo() > 0  &&  Tipocuenta.AHORRO.toString().equals(productEnitty.getTipoCuenta().toString())
                   || Tipocuenta.CORRIENTE.toString().equals(productEnitty.getTipoCuenta().toString())
                   )
                   {
-                      // productEnitty.setNumeroCuenta(createProductNumber());
+                    //generate number count and define estate
+                    if(Tipocuenta.CORRIENTE.toString().equals(productEnitty.getTipoCuenta().toString())){
+                        productEnitty.setEstado(Estado.Unenabled.toString());
+                        productEnitty.setNumeroCuenta(createProductNumber(Tipocuenta.CORRIENTE));                    
+                    }
+                    else {
+                         productEnitty.setEstado(Estado.enabled.toString());
+                        productEnitty.setNumeroCuenta(createProductNumber(Tipocuenta.AHORRO));   
+                    }
+
+
                       productEnitty.setSaldo((double) productEnitty.getSaldo());
                     //  productEnitty.setClienteId(clienteId);
-                      productEnitty.setEstado("enabled");
+                      
                       productEnitty.setFechaApertura(LocalDate.now());
                       mensaje = "0 - Customer successfully created";
                       productSevice.CreateProduct(productEnitty);
@@ -68,8 +66,6 @@ public class productController   {
                       mensaje ="1 - Customer could not be create ";
                       estadoHttp = HttpStatus.OK;
                   }
-
-
 
             respuesta.setDatos(datos);
 			respuesta.setMensaje(mensaje);
@@ -101,8 +97,8 @@ public class productController   {
 			datos = productSevice.findById(idProducto);
 
 			switch (tipoEstado) {
-			case "activate":
-				if (!datos.get().getEstado().toLowerCase().equals("cancelled")) {
+			case "enabled":
+				if (!datos.get().getEstado().toLowerCase().equals(Estado.cancelate.toString())) {
 					datos.get().setEstado(tipoEstado);
 					mensaje = "0 - Account enabled";
 					break;
@@ -110,12 +106,13 @@ public class productController   {
 					mensaje = "1 - The product cannot be activated, the product was canceled";
 				}
 				break;
-			case "inactivate":
+			case "unenabled":
 				datos.get().setEstado(tipoEstado);
 				mensaje = "0 - Account disabled";
 				break;
-			case "cancel":            
-				if (datos.get().getSaldo() == 0) {
+			case "cancelate":       
+            //in case      
+				if (datos.get().getSaldo() < 1 && datos.get().getSaldo() >= 0) {
 					datos.get().setEstado(tipoEstado);
 					mensaje = "0 - Account cancelled";
 				} else {
@@ -135,10 +132,28 @@ public class productController   {
 			respuesta.setMensaje(mensaje);
 			respuesta.setPeticionExitosa(false);
 		}
+
+        System.out.println();
 		return new ResponseEntity<>(respuesta, estadoHttp);
 
-        // System.out.println(tipoEstado);
-        // System.out.println(idProducto);
+	}
+
+
+    String createProductNumber(Tipocuenta tipocuenta ) throws Exception {		
+
+        int min = 10000000;
+        int max = 99999999;
+        int int_random = (int)Math.floor(Math.random()*(max-min+1)+min);
+        String value  = ""; 
+
+        if(Tipocuenta.AHORRO == tipocuenta)
+        value = ""+46+""+int_random;
+
+        else if(Tipocuenta.CORRIENTE == tipocuenta)
+        value = ""+23+""+int_random;
+
+
+		return value;
 	}
 
 
@@ -152,9 +167,9 @@ public class productController   {
 
     public enum Estado
     {
-        activate,
-        inactivate,
-        cancel
+        enabled,
+        Unenabled,
+        cancelate
     }
     
 }
