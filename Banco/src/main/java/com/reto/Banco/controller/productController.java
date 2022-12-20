@@ -1,11 +1,16 @@
 package com.reto.Banco.controller;
 
+import java.time.LocalDate;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.reto.Banco.dto.GeneralResponse;
 import com.reto.Banco.entity.ProductEntity;
 import com.reto.Banco.service.ProductSevice;
+
+import jakarta.websocket.server.PathParam;
 
 
 @CrossOrigin(origins = { "*" })
@@ -24,16 +31,44 @@ public class productController   {
      ProductSevice productSevice;
 
     @PostMapping("/create")
-    public ResponseEntity<GeneralResponse<ProductEntity>> PostCreateProduct(@RequestBody ProductEntity productEnitty) {
-        GeneralResponse<ProductEntity> respuesta = new GeneralResponse<>();
-		ProductEntity datos = null;
+    public ResponseEntity<GeneralResponse<Integer>> PostCreateProduct( /*@PathParam("clienteId") long clienteId,*/ @RequestBody ProductEntity productEnitty) {
+        GeneralResponse<Integer> respuesta = new GeneralResponse<>();
+		Integer datos = null;
 		String mensaje = null;	
 		HttpStatus estadoHttp = null;
+        // Tipocuenta Cuenta;
 
+        // String test = Tipocuenta.CORRIENTE.toString();
+        // String test2 = productEnitty.getTipoCuenta().toString();
+        
        
+        // System.out.println(Tipocuenta.CORRIENTE.toString() );
+        // System.out.println(productEnitty.getTipoCuenta().toString() );
+        // System.out.println(productEnitty.getTipoCuenta().toString() == test);
+        // System.out.println(test2 == test);
+        // System.out.println(Tipocuenta.CORRIENTE.toString().equals(productEnitty.getTipoCuenta().toString()));
 
         try {		
-             productSevice.CreateProduct(productEnitty);
+
+
+                 
+                  if(productEnitty.getSaldo() > 0  &&  Tipocuenta.AHORRO.toString().equals(productEnitty.getTipoCuenta().toString())
+                  || Tipocuenta.CORRIENTE.toString().equals(productEnitty.getTipoCuenta().toString())
+                  )
+                  {
+                      // productEnitty.setNumeroCuenta(createProductNumber());
+                      productEnitty.setSaldo((double) productEnitty.getSaldo());
+                    //  productEnitty.setClienteId(clienteId);
+                      productEnitty.setEstado("enabled");
+                      productEnitty.setFechaApertura(LocalDate.now());
+                      mensaje = "0 - Customer successfully created";
+                      productSevice.CreateProduct(productEnitty);
+                      datos = 0;
+                  }else {
+                      mensaje ="1 - Customer could not be create ";
+                      estadoHttp = HttpStatus.OK;
+                  }
+
 
 
             respuesta.setDatos(datos);
@@ -51,6 +86,75 @@ public class productController   {
         }
         
         return new ResponseEntity<>( respuesta,estadoHttp );
+    }
+
+
+    @PutMapping("/Status/{idProduc}/{tipoEstado}")
+    public ResponseEntity<GeneralResponse<Optional<ProductEntity>>> cambiarEstado(@PathVariable("tipoEstado") String tipoEstado,
+    @PathVariable("idProduc")	Long idProducto) {
+		GeneralResponse<Optional<ProductEntity>> respuesta = new GeneralResponse<>();
+		Optional<ProductEntity> datos = null;
+
+		String mensaje = null;
+		HttpStatus estadoHttp = null;
+		try {
+			datos = productSevice.findById(idProducto);
+
+			switch (tipoEstado) {
+			case "activate":
+				if (!datos.get().getEstado().toLowerCase().equals("cancelled")) {
+					datos.get().setEstado(tipoEstado);
+					mensaje = "0 - Account enabled";
+					break;
+				} else {
+					mensaje = "1 - The product cannot be activated, the product was canceled";
+				}
+				break;
+			case "inactivate":
+				datos.get().setEstado(tipoEstado);
+				mensaje = "0 - Account disabled";
+				break;
+			case "cancel":            
+				if (datos.get().getSaldo() == 0) {
+					datos.get().setEstado(tipoEstado);
+					mensaje = "0 - Account cancelled";
+				} else {
+					mensaje = "1 - Account cannot be cancelled, balance must be US$0";
+				}
+				break;
+			}
+			productSevice.update(datos.get());
+			respuesta.setDatos(datos);
+			respuesta.setMensaje(mensaje);
+			respuesta.setPeticionExitosa(true);
+			estadoHttp = HttpStatus.OK;
+
+		} catch (Exception e) {
+			estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
+			mensaje = "There was an error. Contact the administrator";
+			respuesta.setMensaje(mensaje);
+			respuesta.setPeticionExitosa(false);
+		}
+		return new ResponseEntity<>(respuesta, estadoHttp);
+
+        // System.out.println(tipoEstado);
+        // System.out.println(idProducto);
+	}
+
+
+
+
+    public enum Tipocuenta
+    {
+        AHORRO,
+        CORRIENTE
+    }
+
+    public enum Estado
+    {
+        activate,
+        inactivate,
+        cancel
     }
     
 }

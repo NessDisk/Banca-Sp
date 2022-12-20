@@ -1,5 +1,7 @@
 package com.reto.Banco.service.Implementation;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,21 @@ public class ProductServicesImplementaion implements ProductSevice {
 
         productRepository.save(productEntity);
     
+    }
+
+
+
+    @Override
+    public void update(ProductEntity productEntity) throws Exception {       
+        productRepository.save(productEntity);
+        
+    }
+
+
+
+    @Override
+    public Optional<ProductEntity> findById(long id) throws Exception {        
+        return productRepository.findById(id);
     }
 
 

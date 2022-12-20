@@ -55,6 +55,17 @@ public class ProductEntity {
     @Column(name="dateUdpate")
     private  Date dateUdpate;
 
+    @Column(name = "cliente_id")
+	private Long clienteId;
+
+    public Long getClienteId() {
+        return clienteId;
+    }
+
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
+    }
+
     public Long getId() {
         return id;
     }
