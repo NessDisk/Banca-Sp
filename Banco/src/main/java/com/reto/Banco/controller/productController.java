@@ -1,6 +1,7 @@
 package com.reto.Banco.controller;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -138,6 +139,41 @@ public class productController   {
 
 	}
 
+
+    @GetMapping("/get/{clienteId}")
+	public ResponseEntity<GeneralResponse<List<ProductEntity>>>  getProductByCliente(@PathVariable("clienteId") Long clienteId) {
+		GeneralResponse<List<ProductEntity>> respuesta = new GeneralResponse<>();
+		List<ProductEntity> datos = null;
+		String mensaje = null;
+		HttpStatus estadoHttp = null;
+
+        System.out.println(clienteId);
+        try{
+                    datos = productSevice.findByclienteId(clienteId);
+                	mensaje = "0 - found " + datos.size() + " accounts";
+
+                   	if (datos.isEmpty()) {
+            				mensaje = "1 - No registered accounts found";
+			                            }
+
+                    respuesta.setDatos(datos);
+                    respuesta.setMensaje(mensaje);
+                    respuesta.setPeticionExitosa(true);
+
+                    estadoHttp = HttpStatus.OK;
+        }catch(Exception e)
+        {
+                    mensaje = "There was an error. Contact the administrator";
+                    respuesta.setMensaje(mensaje);
+                    respuesta.setPeticionExitosa(false);
+                    estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+	
+		
+
+		return new ResponseEntity<>(respuesta, estadoHttp);
+	}
 
     String createProductNumber(Tipocuenta tipocuenta ) throws Exception {		
 

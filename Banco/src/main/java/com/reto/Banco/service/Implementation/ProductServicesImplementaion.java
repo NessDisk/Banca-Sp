@@ -1,5 +1,6 @@
 package com.reto.Banco.service.Implementation;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,13 @@ public class ProductServicesImplementaion implements ProductSevice {
     @Override
     public Optional<ProductEntity> findById(long id) throws Exception {        
         return productRepository.findById(id);
+    }
+
+
+
+    @Override
+    public List<ProductEntity> findByclienteId(long clienteId) throws Exception {
+        return productRepository.findByclienteId(clienteId);
     }
 
 
