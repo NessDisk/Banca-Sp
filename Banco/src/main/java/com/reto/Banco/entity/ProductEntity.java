@@ -3,10 +3,6 @@ package com.reto.Banco.entity;
 import java.sql.Date;
 import java.time.LocalDate;
 
-import java.sql.Date;
-
-import javax.swing.Spring;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,7 +35,9 @@ public class ProductEntity {
 	private LocalDate fechaApertura;    
 	
 	
-	@Column(name="saldo")
+
+
+    @Column(name="saldo")
 	private Double saldo;
 
     @Column(name="saldo_disponible")
