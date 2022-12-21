@@ -3,7 +3,7 @@ package com.reto.Banco.controller;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ import com.reto.Banco.dto.GeneralResponse;
 import com.reto.Banco.entity.ProductEntity;
 import com.reto.Banco.service.ProductSevice;
 
-import jakarta.websocket.server.PathParam;
+
 
 
 @CrossOrigin(origins = { "*" })
@@ -33,7 +33,7 @@ public class productController   {
      ProductSevice productSevice;
 
     @PostMapping("/create")
-    public ResponseEntity<GeneralResponse<Integer>> PostCreateProduct( /*@PathParam("clienteId") long clienteId,*/ @RequestBody ProductEntity productEnitty) {
+    public ResponseEntity<GeneralResponse<Integer>> PostCreateProduct(  @RequestBody ProductEntity productEnitty) {
         GeneralResponse<Integer> respuesta = new GeneralResponse<>();
 		Integer datos = null;
 		String mensaje = null;	
@@ -99,7 +99,7 @@ public class productController   {
 
 			switch (tipoEstado) {
 			case "enabled":
-				if (!datos.get().getEstado().toLowerCase().equals(Estado.cancelate.toString())) {
+				if (!datos.get().getEstado().toLowerCase().equals(Estado.cancelled.toString())) {
 					datos.get().setEstado(tipoEstado);
 					mensaje = "0 - Account enabled";
 					break;
@@ -205,7 +205,7 @@ public class productController   {
     {
         enabled,
         Unenabled,
-        cancelate
+        cancelled
     }
     
 }

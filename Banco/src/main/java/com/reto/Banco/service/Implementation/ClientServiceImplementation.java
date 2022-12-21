@@ -1,7 +1,6 @@
 package com.reto.Banco.service.Implementation;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +17,11 @@ public class ClientServiceImplementation implements ClientService {
 
     @Override
     public ClientTable CreateCliente(ClientTable client)  throws Exception {
-        // TODO Auto-generated method stub
         return clientRepository.save(client);
     }
 
     @Override
     public List<ClientTable> GetAllCliente()  throws Exception {
-        // TODO Auto-generated method stub
         return clientRepository.findAll();
     }
 
