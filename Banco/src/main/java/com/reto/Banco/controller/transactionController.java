@@ -100,8 +100,8 @@ public class transactionController {
         return new ResponseEntity<>(respuesta, estadoHttp);
     }
 
-//=======================================================================================================================================================
-    // whitdraw
+//=====================================================================  whitdraw    ==================================================================================
+    
 
     @PostMapping("/{idProducto}/retirar")
 	public ResponseEntity<GeneralResponse<Integer>> retirarSaldo(@RequestBody TransactionEntity movimientoOrigen,
@@ -250,9 +250,144 @@ private TransactionEntity realizarMovimientoGMF(Optional<ProductEntity> producto
     return movimientoGMF;
 }
 
+
+//----------------------------------------------------------------  transferencias entre cuentas    ------------------------------------------------------------
+
+//metodos 
+
+//objetivo primero hacer una trasnferencia entre cuentas 
+/* Requier id actual product
+ * Requier id of the count or count number product   for destiny count
+ * 
+ */
+
+
+
+@PostMapping("/trasnfer/{idProducto}")
+public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody TransactionEntity movimientoOrigen,
+		@PathVariable("idProducto") long idCuenta) {
+
+			GeneralResponse<Integer> mensajeRespuestaOrigen = new GeneralResponse<>();
+			Integer datos = null;
+			Optional<ProductEntity> productoOrigen = null;
+			Optional<ProductEntity> productoDestiny = null;
+			String mensaje = null;
+			// TransactionEntity movimientoGMF = null;
+			HttpStatus estadoHttp = null;
+			TransactionEntity movimientoDestiny  = null;
+
+			try{
+				productoOrigen =  productService.findById(idCuenta);
+				productoDestiny = productService.findById(movimientoOrigen.getCuentaDestino());
+
+				if (movimientoOrigen.getValor()<=0) {
+					mensaje = "1 - Value should be greater than $US 0.00 ";		
+					mensajeRespuestaOrigen.setDatos(datos);
+					mensajeRespuestaOrigen.setMensaje(mensaje);
+					mensajeRespuestaOrigen.setPeticionExitosa(false);
+					estadoHttp = HttpStatus.NOT_FOUND;				
+					return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
+				}
+
+				//verificador numero cuenta.  <<- mas adelante  validaddores
+				
+				
+				double saldoInicialOrigen = productoOrigen.get().getSaldo() ;
+				double saldoInicialDestino = productoDestiny.get().getSaldo() ;
+				//verificador de que el saldo disponible cumpla con el monton para hacer la transferencia
+				// saldo disponible -  valor
+				// saldo disponible +  valor  
+
+				productoOrigen.get().setSaldoDisponible(productoOrigen.get().getSaldoDisponible() - movimientoOrigen.getValor());
+				productoDestiny.get().setSaldoDisponible(productoOrigen.get().getSaldoDisponible() + movimientoOrigen.getValor());
+				// si el saldo disponible acepta la validadcion 
+				// se hacer el seteo en el saldo total 
+
+
+
+				//setter los datos de transferencia 
+				movimientoOrigen.setTypeTransaction(TransactionTypeEnum.transfer.toString());
+				movimientoOrigen.setSaldoInicial(saldoInicialOrigen);
+
+
+				// movimientoOrigen.setCuentaDestino(0);
+				movimientoOrigen = new TransactionEntity(TransactionTypeEnum.transfer.toString(),
+														LocalDate.now(),
+														productoOrigen.get().getId() ,
+														"GMF",
+													    "Debit_Or_Credic_Indefinevalue",
+														productoOrigen.get().getSaldo() ,
+														productoOrigen.get().getSaldoDisponible(),
+														saldoInicialOrigen,
+													    movimientoOrigen.getValor(),
+														productoOrigen.get().getSaldo(),
+														movimientoOrigen.getCuentaDestino()														  
+				 );
+
+				// movimientoOrigen.setCuentaDestino(0);
+				movimientoDestiny = new TransactionEntity(TransactionTypeEnum.transfer.toString(),
+														LocalDate.now(),
+														productoDestiny.get().getId() ,
+														"GMF",
+													    "Debit_Or_Credic_Indefinevalue",
+														productoDestiny.get().getSaldo() ,
+														productoDestiny.get().getSaldoDisponible(),
+														saldoInicialDestino,
+													    movimientoOrigen.getValor(),
+														productoDestiny.get().getSaldo(),0														  
+				 );
+
+
+				 productService.CreateProduct(productoOrigen.get());	
+				 productService.CreateProduct(productoDestiny.get());
+
+				transactionService.CreateTransaction(movimientoOrigen);
+				transactionService.CreateTransaction(movimientoDestiny);
+
+
+				mensaje ="test";
+				estadoHttp = HttpStatus.OK;		
+				datos = 0;
+				mensajeRespuestaOrigen.setDatos(datos);
+				mensajeRespuestaOrigen.setMensaje(mensaje);
+				mensajeRespuestaOrigen.setPeticionExitosa(true);
+
+			
+				// hcaer un movimiento para cada cuenta
+
+
+				//create all the changes in data base 
+
+
+				//send the response to server		
+
+
+
+			}catch(Exception e){
+
+				estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
+				mensaje = "Hubo un fallo. Contacte al administrador";
+				mensajeRespuestaOrigen.setMensaje(mensaje);
+				mensajeRespuestaOrigen.setPeticionExitosa(false);
+			}
+
+   				// System.out.println("hola mundo");
+			return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
+		}
+
+
+
+		
+
+
+
+
+
+
   public enum TransactionTypeEnum {
         dispous, 
-        withdraw
+        withdraw,
+		transfer
     }
     
 }

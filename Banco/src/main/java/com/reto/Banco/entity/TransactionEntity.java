@@ -18,7 +18,9 @@ public class TransactionEntity {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 
-    @Column(name="typeTransaction")
+   
+
+	@Column(name="typeTransaction")
 	private String typeTransaction;
 	
 
@@ -32,14 +34,14 @@ public class TransactionEntity {
 	private String Descripcion;
 
 	//débito or  crédito
-	@Column(name="TypeDébito")
+	@Column(name="Type_Débito")
 	private String TypeDébito;
 
 	@Column(name="Saldo")
 	private double Saldo;
 
 	@Column(name="SaldoDisponible")
-	private String SaldoDisponible;
+	private double SaldoDisponible;
 
 	@Column(name = "saldo_inicial")	
 	private double saldoInicial;
@@ -52,6 +54,24 @@ public class TransactionEntity {
 
 	@Column(name="cuenta_destino")
 	private long cuentaDestino;
+
+	public TransactionEntity(String typeTransaction, LocalDate dateCreate, long cuentaId, String descripcion,
+	String typeDébito, double saldo, double saldoDisponible, double saldoInicial, double valor,
+	double saldoFinal, long cuentaDestino) {
+			this.typeTransaction = typeTransaction;
+			DateCreate = dateCreate;
+			this.cuentaId = cuentaId;
+			Descripcion = descripcion;
+			TypeDébito = typeDébito;
+			Saldo = saldo;
+			SaldoDisponible = saldoDisponible;
+			this.saldoInicial = saldoInicial;
+			this.valor = valor;
+			this.saldoFinal = saldoFinal;
+			this.cuentaDestino = cuentaDestino;
+												}
+
+	public TransactionEntity() {}
 
 	
 	public String getTypeDébito() {
@@ -142,11 +162,11 @@ public class TransactionEntity {
 		Saldo = saldo;
 	}
 
-	public String getSaldoDisponible() {
+	public double getSaldoDisponible() {
 		return SaldoDisponible;
 	}
 
-	public void setSaldoDisponible(String saldoDisponible) {
+	public void setSaldoDisponible(double saldoDisponible) {
 		SaldoDisponible = saldoDisponible;
 	}
 }

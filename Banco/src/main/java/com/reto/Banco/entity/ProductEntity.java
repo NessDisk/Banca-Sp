@@ -35,7 +35,9 @@ public class ProductEntity {
 	private LocalDate fechaApertura;    
 	
 	
-	@Column(name="saldo")
+
+
+    @Column(name="saldo")
 	private Double saldo;
 
     @Column(name="saldo_disponible")
