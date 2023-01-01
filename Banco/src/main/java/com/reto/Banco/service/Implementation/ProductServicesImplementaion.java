@@ -51,6 +51,13 @@ public class ProductServicesImplementaion implements ProductSevice {
 
 
 
+    @Override
+    public void deleteById(long id) throws Exception {
+        productRepository.deleteById(id);
+    }
+
+
+
 
     
 }

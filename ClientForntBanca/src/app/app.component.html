@@ -1,0 +1,53 @@
+<!-- <h1>
+  Proyecto Front Banca
+</h1>
+<h2>
+  Autor: Nestor J Solera
+</h2>
+<demo></demo>
+
+<hr>
+<demo></demo>
+<hr>
+<demo></demo>
+<hr>
+<demo></demo>
+<button class="btn btn-primary" > Botton</button> -->
+
+<nav class="navbar navbar-expand-lg navbar bg-dark" data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/CreateClient" routerLinkActive="active" ariaCurrentWhenActive="page">add Cliente</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page">Clients</a>
+        </li>
+       
+       
+      </ul>
+      <form class="d-flex" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<nav>
+<ul>
+  <li><a routerLink="/" routerLinkActive="active" ariaCurrentWhenActive="page">/..</a></li>
+  <li><a routerLink="/init" routerLinkActive="active" ariaCurrentWhenActive="page">/init</a></li>
+  <li><a routerLink="/CreateClient" routerLinkActive="active" ariaCurrentWhenActive="page">/CreateClient</a></li>
+</ul>
+</nav>
+
+
+
+
+<router-outlet></router-outlet>

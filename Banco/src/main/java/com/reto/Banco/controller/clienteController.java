@@ -2,6 +2,7 @@ package com.reto.Banco.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,6 +42,35 @@ public class clienteController {
 
         try {		
             datos = clientService.GetAllCliente();
+            
+
+            respuesta.setDatos(datos);
+			respuesta.setMensaje(mensaje);
+			respuesta.setPeticionExitosa(true);	
+			estadoHttp = HttpStatus.OK;
+            
+        }
+        catch(Exception e)
+        {
+            mensaje = "500 Internal Server Error.Contact the administrator";			
+			respuesta.setMensaje(mensaje);
+			respuesta.setPeticionExitosa(false);
+			estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        
+        return new ResponseEntity<>( respuesta,estadoHttp );
+    }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GeneralResponse<Optional<ClientTable>>> GetClientById(@PathVariable("id") long id) {
+        GeneralResponse<Optional<ClientTable>> respuesta = new GeneralResponse<>();
+		Optional<ClientTable> datos = null;
+		String mensaje = null;	
+		HttpStatus estadoHttp = null;
+
+        try {		
+            datos = clientService.GetClienteById(id);
 
 
             respuesta.setDatos(datos);

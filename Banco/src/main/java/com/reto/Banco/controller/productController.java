@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -190,6 +191,41 @@ public class productController   {
 
 
 		return value;
+	}
+
+    // ----------------------------------------- Delete  ------------------------------------------
+
+    @DeleteMapping("/delete/{productId}")
+	public   ResponseEntity<GeneralResponse<Long>>   DeleteProductById(@PathVariable("productId") Long productId ) {
+		GeneralResponse<Long> respuesta = new GeneralResponse<>();
+		long datos = 0;
+		String mensaje = null;
+		HttpStatus estadoHttp = null;
+
+        // System.out.println(ProductId);
+        try{
+                    productSevice.deleteById(productId);
+                	mensaje = "0 - Delete product id: "+ productId;
+
+                   
+                     datos = 0;
+                    respuesta.setDatos(datos);
+                    respuesta.setMensaje(mensaje);
+                    respuesta.setPeticionExitosa(true);
+
+                    estadoHttp = HttpStatus.OK;
+        }catch(Exception e)
+        {
+            System.out.println("Hola mundo");
+                    mensaje = "There was an error. Contact the administrator";
+                    respuesta.setMensaje(mensaje);
+                    respuesta.setPeticionExitosa(false);
+                    estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+	
+        // return ;
+		return new ResponseEntity<>(respuesta, estadoHttp);
 	}
 
 

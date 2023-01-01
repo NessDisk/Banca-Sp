@@ -16,7 +16,8 @@ public interface ProductSevice {
     public void update(ProductEntity productEntity)  throws Exception;
     // update 
 
-    //find by count 
+    //Delete
+    public void deleteById(long id)  throws Exception;
     
      
     

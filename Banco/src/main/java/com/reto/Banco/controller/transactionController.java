@@ -315,7 +315,7 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 														LocalDate.now(),
 														productoOrigen.get().getId() ,
 														"GMF",
-													    "Debit_Or_Credic_Indefinevalue",
+													    "Debit",
 														productoOrigen.get().getSaldo() ,
 														productoOrigen.get().getSaldoDisponible(),
 														saldoInicialOrigen,
@@ -329,7 +329,7 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 														LocalDate.now(),
 														productoDestiny.get().getId() ,
 														"GMF",
-													    "Debit_Or_Credic_Indefinevalue",
+													    "Credit",
 														productoDestiny.get().getSaldo() ,
 														productoDestiny.get().getSaldoDisponible(),
 														saldoInicialDestino,
@@ -350,16 +350,7 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 				datos = 0;
 				mensajeRespuestaOrigen.setDatos(datos);
 				mensajeRespuestaOrigen.setMensaje(mensaje);
-				mensajeRespuestaOrigen.setPeticionExitosa(true);
-
-			
-				// hcaer un movimiento para cada cuenta
-
-
-				//create all the changes in data base 
-
-
-				//send the response to server		
+				mensajeRespuestaOrigen.setPeticionExitosa(true);	
 
 
 
@@ -374,14 +365,6 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
    				// System.out.println("hola mundo");
 			return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
 		}
-
-
-
-		
-
-
-
-
 
 
   public enum TransactionTypeEnum {
