@@ -1,4 +1,4 @@
-class product{
+export class Product{
     id:number;
     tipoCuenta:string;
     numeroCuenta:number;

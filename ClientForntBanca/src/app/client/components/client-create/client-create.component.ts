@@ -36,13 +36,13 @@ export class ClientCreateComponent implements OnInit {
      const client = new Client(this.Tipo,this.CC,this.nombres,this.apellido ,this.birDate,this.age, this.date,"Undefine");
     // this.date = new Date();
     //  const client = new Client("DEBITO",123456,"TEST NAME","Test last name" ,this.date,19, this.date,"user name");
-    console.log(client);
-    
-      this.clientservices.saveClient(client).subscribe(
-        (response) =>{
-          if(response.peticionExitosa){
-            this.client = response.datos;
-            console.log("The user has been successfully done.");
+    // console.log(client);
+    this.clientservices.saveClient(client).subscribe(
+      (response) =>{
+        if(response.peticionExitosa){
+          this.client = response.datos;
+          console.log(this.client);
+          console.log("The user has been successfully done.");
           }
         },err =>{
           console.log(err)

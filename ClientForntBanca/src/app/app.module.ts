@@ -21,6 +21,7 @@ import{FormsModule} from '@angular/forms';
 import { LoginComponentComponent } from './login/login-component/login-component.component';
 import { InitComponentComponent } from './Navegation/component/init-component/init-component.component';
 import { RouterModule } from '@angular/router';
+import { MovStatusComponent } from './product/movement/components/mov-status/mov-status.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { RouterModule } from '@angular/router';
     MovWithdrawComponent,
     MovTransferComponent,
     LoginComponentComponent,
-    InitComponentComponent
+    InitComponentComponent,
+    MovStatusComponent
     // routingcomponents
   
   ],
