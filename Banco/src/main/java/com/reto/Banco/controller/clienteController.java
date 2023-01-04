@@ -102,7 +102,7 @@ public class clienteController {
             //restar edades
             if(client.getAge() > 18 )
             {
-                client.setDateCreation(LocalDate.now());
+                client.setDatecreation(LocalDate.now());
                 datos = clientService.CreateCliente(client);
                 mensaje = "0 - Customer successfully created";
             }else {

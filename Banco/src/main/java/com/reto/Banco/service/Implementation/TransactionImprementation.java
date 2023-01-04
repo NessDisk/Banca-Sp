@@ -1,5 +1,7 @@
 package com.reto.Banco.service.Implementation;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +14,18 @@ public class TransactionImprementation  implements TransactionService {
 
 
     @Autowired
-    public TransactionRepository productRepository;
+    public TransactionRepository Transactionrepository;
 
     @Override
     public void CreateTransaction(TransactionEntity transactionEntity) throws Exception {
         // TODO Auto-generated method stub
-        productRepository.save(transactionEntity);
+        Transactionrepository.save(transactionEntity);
+    }
+
+    @Override
+    public List<TransactionEntity> findByclienteId(long ProductId) throws Exception {
+        // TODO Auto-generated method stub
+        return  Transactionrepository.findBycuentaId(ProductId);
     }
     
 }

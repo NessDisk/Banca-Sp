@@ -2,29 +2,26 @@
 <table class="table">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">Date</th>
+        <th scope="col">Description</th>
+        <th scope="col">Financial Mov</th>
+        <th scope="col">Type Mov</th>
+        <th scope="col">value</th>
+        <th scope="col">Balance</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
+      <!-- <tr *ngFor="let cli of client"> -->
+               <!-- {{cli.id}} -->
+      <tr  *ngFor="let mov of movement">
+        <th >{{mov.dateCreate}}</th>
+        <td> {{mov.Description}}</td>
+        <td>{{mov.typeDebito}}</td>
+        <td>{{mov.typeTransaction}}</td>
+        <td>{{mov.valor}}</td>
+        <td>{{mov.saldoFinal}}</td>
       </tr>
     </tbody>
   </table>
+
+  <!-- {{movement|json}} -->

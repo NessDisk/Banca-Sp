@@ -126,8 +126,8 @@
                     <td> {{prod.estado}}</td>
                     <td> {{prod.fechaApertura}}</td>
                     <td> {{prod.saldo}}</td> 
-                    <th scope="col"><button type="button" class="btn btn-dark"  routerLink="/movst/1" routerLinkActive="active" >State</button></th>
-                    <td><button type="button" class="btn btn-success"  routerLink="/mov/1" routerLinkActive="active" >Trans</button> </td>  
+                    <th scope="col"><button type="button" class="btn btn-dark"  routerLink="/movst/{{prod.id}}" routerLinkActive="active" >State</button></th>
+                    <td><button type="button" class="btn btn-success"  routerLink="/mov/{{prod.id}}" routerLinkActive="active" >Trans</button> </td>  
                     <td><button type="button" class="btn btn-warning"  routerLink="/" routerLinkActive="active" >Ch-Status</button> </td>
                     <td><button type="button" class="btn btn-danger"  routerLink="/" routerLinkActive="active" >Cancelate</button> </td>                       
                   </tr>                 
@@ -196,7 +196,7 @@
 
 
             </div>
-            <button class="addmore btn btn-primary" type="submit">Add more product</button>
+            <button class="addmore btn btn-primary" type="submit" routerLink="/costumer/1/createproduct" routerLinkActive="active" >Add more product</button>
           </div>
 
         </div>

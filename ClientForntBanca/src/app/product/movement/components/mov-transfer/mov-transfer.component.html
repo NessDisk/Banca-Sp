@@ -1,4 +1,3 @@
-<p>mov-transfer works!</p>
 
 
 <div class="container">
@@ -16,30 +15,13 @@
         <div class="card-body bg-light">
    
         <div class = "container">
-            <form  novalidate #f="ngForm">       
+            <form (ngSubmit)="AddDisposet()" novalidate #f="ngForm">       
 
         <div class="controls">
 
             <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label  for="nombres">First Name *</label>
-                        <input  id="nombres"
-                                type="text"
-                                name="nombres"
-                                class="form-control"
-                               
-                                placeholder="Please enter your firstname *"
-                                required="required"
-                                data-error="Firstname is required.">
-                        
-                    </div>
-                </div>
-             
-            </div>
 
 
-            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="form_type_client">type *</label>
@@ -47,73 +29,149 @@
                                 name="form_type_client"
                                 class="form-control"
                                 required="required"
-                              
+                                [(ngModel)]="typeTransaction"
                                 data-error="Please specify your need.">
-                            <option value="" selected disabled>--Select client Type--</option>
-                            <option >DEBITO </option>                           
-                        </select>
-                        
+                            <option value="" selected disabled>--Select transfer type--</option>
+                            <option >Deposit </option> 
+                            <option >Withdraw </option> 
+                            <option >Transfer  </option>                           
+                        </select>                        
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="CC">Card ID *</label>
-                        <input id="CC"
-                               type="number" 
-                               name="CC" 
-                               class="form-control" 
-                              
-                               placeholder="Please enter the card_ID*" 
-                               required="required" 
-                               data-error="Valid card_ID is required.">
-                        
-                    </div>
-                </div>
+
+             
             </div>
 
-
+            
+            <ng-template [ngIf]="typeTransaction ==  'Deposit'"> 
+             
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="birDate">Bird date *</label>
-                        <input  id="birDate"
-                                type="date"
-                                name="birDate" 
-                                class="form-control"
-                               
-                                placeholder="Please enter your email *"
-                                
-                                data-error="Valid email is required.">
-                        
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label  for="age">Age *</label>
+                        <label  for="age">deposit amount*</label>
                         <input  id="age"
                                 type="number"
                                 name="age" 
                                 class="form-control" 
-                               
-                                placeholder="Please enter your email *" 
+                                [(ngModel)]="valor"
+                                placeholder="Write the deposit amount" 
                                 required="required" 
                                 data-error="Valid email is required.">
                         
                     </div>
-                </div>
+                </div>          
             </div>
-
-            <!-- 
-                <div class="row">
+            <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="form_email">Date *</label>
-                        <input id="form_email" type="email" name="email" class="form-control" placeholder="Please enter your email *" required="required" data-error="Valid email is required.">
+                        <label  for="age">Description*</label>
+                        <input  id="age"
+                                type="text"
+                                name="age" 
+                                class="form-control" 
+                                [(ngModel)]="Descripcion"
+                                placeholder="" 
+                                required="required" 
+                                data-error="Valid email is required.">
                         
                     </div>
+                </div>          
+            </div>
+        </ng-template>
+        <!-- Withdraw -->
+            <ng-template [ngIf]="typeTransaction == 'Withdraw'"> <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label  for="age"> withdraw amount *</label>
+                        <input  id="age"
+                                type="number"
+                                name="age" 
+                                class="form-control" 
+                                [(ngModel)]="valor"
+                                placeholder="Write the withdraw value." 
+                                required="required" 
+                                data-error="Valid email is required.">
+                        
+                    </div>
+                </div>          
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label  for="age">Description*</label>
+                        <input  id="age"
+                                type="text"
+                                name="age" 
+                                class="form-control" 
+                                [(ngModel)]="Descripcion"
+                                placeholder="" 
+                                required="required" 
+                                data-error="Valid email is required.">
+                        
+                    </div>
+                </div>          
+            </div>
+        </ng-template>
+        <!--Transfer  -->
+            <ng-template [ngIf]="typeTransaction == 'Transfer'">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label  for="age"> Transfer amount *</label>
+                            <input  id="age"
+                                    type="number"
+                                    name="age" 
+                                    class="form-control" 
+                                    [(ngModel)]="valor"
+                                    placeholder="Write the Transfer value." 
+                                    required="required" 
+                                    data-error="Valid email is required.">
+                            
+                        </div>
+                    </div>          
                 </div>
-               
-            </div> -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label  for="age">Description</label>
+                            <input  id="age"
+                                    type="text"
+                                    name="age" 
+                                    class="form-control" 
+                                    [(ngModel)]="Descripcion"
+                                    placeholder="" 
+                                    required="required" 
+                                    data-error="Valid email is required.">
+                            
+                        </div>
+                    </div>          
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label  for="age"> Id account number transfer </label>
+                            <input  id="age"
+                                    type="number"
+                                    name="age" 
+                                    class="form-control" 
+                                    [(ngModel)]="cuentaDestino"
+                                    placeholder="Write the ID number to transfer*" 
+                                    required="required" 
+                                    data-error="Valid email is required.">
+                            
+                        </div>
+                    </div>          
+                </div>
+
+            </ng-template>
+
+            <!-- [(Tithdraw)] -->
+           
+
+
+          
+
+   
             
             
             <br/>
@@ -125,12 +183,24 @@
                     
                     <!-- <input type="submit" class="btn btn-success btn-send  pt-2 btn-block
                         " value="Send Message" > -->
-                <button class="btn btn-success w-100" [disabled]="!f.valid">Creste client</button>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button class="btn btn-success w-100" [disabled]="!f.valid">Create </button>                                  
+                            </div>
+                                        
+                        </div>
+                        
+                
+                        
             </div>
         </div>
     </div>
     </form>
-    
+    <br>
+    <div class="col-md-3">
+        <button class="btn btn-danger w-100" >cancel</button>                                  
+    </div>      
 </div>
 </div>
 </div>

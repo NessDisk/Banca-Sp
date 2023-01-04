@@ -1,5 +1,6 @@
 package com.reto.Banco.entity;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 
@@ -24,18 +25,18 @@ public class TransactionEntity {
 	private String typeTransaction;
 	
 
-	@Column(name="DateCreate")
-	private LocalDate DateCreate;
+	@Column(name="date_create")
+	private LocalDate dateCreate;
 
 	@Column(name = "cuenta_id")
 	private long cuentaId;
 
-	@Column(name="Descripcion")
-	private String Descripcion;
+	@Column(name="description")
+	private String Description;
 
 	//débito or  crédito
-	@Column(name="Type_Débito")
-	private String TypeDébito;
+	@Column(name="Type_Debito")
+	private String typeDebito;
 
 	@Column(name="Saldo")
 	private double Saldo;
@@ -59,10 +60,10 @@ public class TransactionEntity {
 	String typeDébito, double saldo, double saldoDisponible, double saldoInicial, double valor,
 	double saldoFinal, long cuentaDestino) {
 			this.typeTransaction = typeTransaction;
-			DateCreate = dateCreate;
+			this.dateCreate = dateCreate;
 			this.cuentaId = cuentaId;
-			Descripcion = descripcion;
-			TypeDébito = typeDébito;
+			Description = descripcion;
+			typeDebito = typeDébito;
 			Saldo = saldo;
 			SaldoDisponible = saldoDisponible;
 			this.saldoInicial = saldoInicial;
@@ -74,12 +75,12 @@ public class TransactionEntity {
 	public TransactionEntity() {}
 
 	
-	public String getTypeDébito() {
-		return TypeDébito;
+	public String getTypeDebito() {
+		return typeDebito;
 	}
 
-	public void setTypeDébito(String typeDébito) {
-		TypeDébito = typeDébito;
+	public void setTypeDebito(String typeDébito) {
+		typeDebito = typeDébito;
 	}
 
 	public long getCuentaId() {
@@ -139,19 +140,19 @@ public class TransactionEntity {
 	}
 
 	public LocalDate getDateCreate() {
-		return DateCreate;
+		return dateCreate;
 	}
 
 	public void setDateCreate(LocalDate dateCreate) {
-		DateCreate = dateCreate;
+		this.dateCreate = dateCreate;
 	}
 
-	public String getDescripcion() {
-		return Descripcion;
+	public String getDescription() {
+		return Description;
 	}
 
-	public void setDescripcion(String descripcion) {
-		Descripcion = descripcion;
+	public void setDescription(String descripcion) {
+		Description = descripcion;
 	}
 
 	public double getSaldo() {

@@ -1,7 +1,9 @@
 package com.reto.Banco.controller;
 
 
+import java.io.Console;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,7 @@ public class transactionController {
 
     //create transaction
 
-    @PostMapping("/{cuentaid}/consiginar")
+    @PostMapping("/disposet/{cuentaid}")
     public ResponseEntity<GeneralResponse<Integer>>  consiginar(  @RequestBody TransactionEntity transaction ,
      @PathVariable("cuentaid") Long cuentaId) {
         GeneralResponse<Integer> respuesta = new GeneralResponse<>();
@@ -103,7 +105,7 @@ public class transactionController {
 //=====================================================================  whitdraw    ==================================================================================
     
 
-    @PostMapping("/{idProducto}/retirar")
+    @PostMapping("/withdraw/{idProducto}")
 	public ResponseEntity<GeneralResponse<Integer>> retirarSaldo(@RequestBody TransactionEntity movimientoOrigen,
 			@PathVariable("idProducto") long idCuenta) {
 		
@@ -116,6 +118,9 @@ public class transactionController {
 		
 		try {
 			productoOrigen = productService.findById(idCuenta);
+			
+			movimientoOrigen.setDateCreate(LocalDate.now());
+
             //validate value to 
 			if (movimientoOrigen.getValor()<=0) {
 				mensaje = "1 - Value should be greater than $US 0.00 ";		
@@ -145,17 +150,17 @@ public class transactionController {
 				productService.CreateProduct(productoOrigen.get());	
 				transactionService.CreateTransaction(movimientoGMF);
 				
-				mensaje = mensajeRespuestaOrigen.getMensaje() + " (Withdrawal)";
+				mensaje = mensajeRespuestaOrigen.getMensaje() + " (Withdraw)";
 				estadoHttp = HttpStatus.CREATED;				
 			}else if(!saldoValidado) {
-				mensaje = mensajeRespuestaOrigen.getMensaje() + " (Withdrawal)";
+				mensaje = mensajeRespuestaOrigen.getMensaje() + " (Withdraw)";
 				estadoHttp = HttpStatus.OK;				
 			}
 			else if(!mensajeRespuestaOrigen.isPeticionExitosa()) {
-				mensaje = mensajeRespuestaOrigen.getMensaje() + " (Withdrawal)";
+				mensaje = mensajeRespuestaOrigen.getMensaje() + " (Withdraw)";
 				estadoHttp = HttpStatus.OK;				
 			}else {
-				mensaje = "1 - Unidentified method error, contact support" + " (Withdrawal)";
+				mensaje = "1 - Unidentified method error, contact support" + " (Withdraw)";
 				estadoHttp = HttpStatus.OK;					
 			}
 			datos = 0;
@@ -227,7 +232,7 @@ public class transactionController {
             double saldo = productoOrigen.get().getSaldo() - movimientoOrigen.getValor();	
             movimientoOrigen.setSaldoFinal(saldo);
             movimientoOrigen.setDateCreate(LocalDate.now());
-            movimientoOrigen.setTypeDébito("debit");
+            movimientoOrigen.setTypeDebito("debit");
             movimientoOrigen.setCuentaId(productoOrigen.get().getId());
             return movimientoOrigen;
 }
@@ -243,8 +248,8 @@ private TransactionEntity realizarMovimientoGMF(Optional<ProductEntity> producto
     movimientoGMF.setValor(valorTransaccion * 0.004);
     movimientoGMF.setDateCreate(LocalDate.now());
     // movimientoGMF.setTipoMovimiento("GMF");
-    movimientoGMF.setTypeDébito("debit");
-    movimientoGMF.setDescripcion("GMF");
+    movimientoGMF.setTypeDebito("debit");
+    movimientoGMF.setDescription("GMF");
     movimientoGMF.setCuentaId(productoOrigen.get().getId());
     movimientoGMF.setCuentaDestino(0);
     return movimientoGMF;
@@ -279,6 +284,8 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 			try{
 				productoOrigen =  productService.findById(idCuenta);
 				productoDestiny = productService.findById(movimientoOrigen.getCuentaDestino());
+				
+				movimientoOrigen.setDateCreate(LocalDate.now());
 
 				if (movimientoOrigen.getValor()<=0) {
 					mensaje = "1 - Value should be greater than $US 0.00 ";		
@@ -365,6 +372,48 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
    				// System.out.println("hola mundo");
 			return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
 		}
+
+
+		//================================// get
+
+		@GetMapping("/get/{idProducto}")
+public ResponseEntity<GeneralResponse<List<TransactionEntity>>> getAllMovByIdProducEntity(@PathVariable("idProducto") long idCuenta) {
+			GeneralResponse<List<TransactionEntity>> mensajeRespuestaOrigen = new GeneralResponse<>();
+			List<TransactionEntity> datos = null;
+			String mensaje = null;
+			// TransactionEntity movimientoGMF = null;
+			HttpStatus estadoHttp = null;
+			TransactionEntity movimientoDestiny  = null;
+
+			//  get all mov id_cuenta
+			try{
+				datos =	transactionService.findByclienteId(idCuenta);
+
+				mensajeRespuestaOrigen.setDatos(datos);
+				
+				mensaje = "0 - Deposit created successfully";		
+				estadoHttp = HttpStatus.OK;		
+				mensajeRespuestaOrigen.setDatos(datos);
+				
+				mensajeRespuestaOrigen.setMensaje(mensaje);
+				mensajeRespuestaOrigen.setPeticionExitosa(true);	
+
+			}
+			catch( Exception e)
+			{
+				estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
+				mensaje = "Hubo un fallo. Contacte al administrador";
+				mensajeRespuestaOrigen.setMensaje(mensaje);
+				mensajeRespuestaOrigen.setPeticionExitosa(false);
+			}
+			
+			System.out.println(idCuenta);
+
+			// return ;
+			return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
+
+		}
+
 
 
   public enum TransactionTypeEnum {

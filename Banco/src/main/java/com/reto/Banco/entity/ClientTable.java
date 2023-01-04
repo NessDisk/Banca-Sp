@@ -44,7 +44,7 @@ public class ClientTable {
    private  Date date ;
 
    @Column(name="dateCreation")
-   private  LocalDate dateCreation;
+   private  LocalDate datecreation;
 
    @Column(name="dateudpate")
    private  Date dateudpate;
@@ -103,11 +103,11 @@ public Date getDate() {
 public void setDate(Date date) {
     this.date = date;
 }
-public LocalDate getDateCreation() {
-    return dateCreation;
+public LocalDate getDatecreation() {
+    return datecreation;
 }
-public void setDateCreation(LocalDate dateCreation) {
-    this.dateCreation = dateCreation;
+public void setDatecreation(LocalDate dateCreation) {
+    this.datecreation = dateCreation;
 }
 public Date getDateudpate() {
     return dateudpate;
