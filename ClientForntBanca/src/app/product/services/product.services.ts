@@ -19,7 +19,7 @@ export class ProductServices  {
       }
 
 
-    //   public saveClient(client: Client): Observable<any> {
-    //     return this.httpClient.post<any>(this.clientUrl + '', client);
-    //   }
+      public saveProduct(product: Product): Observable<any> {
+        return this.httpClient.post<any>(this.productUrl + "/create", product);
+      }
 }

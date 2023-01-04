@@ -4,32 +4,22 @@ export class Product{
     numeroCuenta:number;
     estado:string;
     fechaApertura:string;
-    saldo:Date;
+    saldo:number;
     saldoDisponible:number;
     exentaGMF:Date;
     UserCreation:Date;
     dateUdpate:Date;
-    clienteId:string;
+    clienteId:number;
 
     constructor(tipoCuenta:string,
         numeroCuenta:number,
         estado:string,
-        fechaApertura:string,
-        saldo:Date,
-        saldoDisponible:number,
-        exentaGMF:Date,
-        UserCreation:Date,
-        dateUdpate:Date,
-        clienteId:string){
+        saldo:number,    
+        clienteId:number){
             this.tipoCuenta=tipoCuenta;
             this.numeroCuenta=numeroCuenta;
-            this.estado=estado;
-            this.fechaApertura=fechaApertura;
             this.saldo=saldo;
-            this.saldoDisponible=saldoDisponible;
-            this.exentaGMF=exentaGMF;
-            this.UserCreation=UserCreation;
-            this.dateUdpate=dateUdpate;
+            this.estado=estado;
             this.clienteId=clienteId;
 
         }

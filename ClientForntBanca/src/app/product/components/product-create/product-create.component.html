@@ -4,7 +4,7 @@
 <div class="container">
     <div class=" text-center mt-5 ">
 
-        <h1 >Create client</h1>
+        <h1 >Create product</h1>
             
         
     </div>
@@ -16,40 +16,9 @@
         <div class="card-body bg-light">
    
         <div class = "container">
-            <form  novalidate #f="ngForm">       
+            <form  (ngSubmit)="productCreate()"   novalidate #f="ngForm">       
 
         <div class="controls">
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label  for="nombres">First Name *</label>
-                        <input  id="nombres"
-                                type="text"
-                                name="nombres"
-                                class="form-control"
-                                
-                                placeholder="Please enter your firstname *"
-                                required="required"
-                                data-error="Firstname is required.">
-                        
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label  for="apellido">Last name *</label>
-                        <input  id="apellido"
-                                type="text"
-                                name="apellido"
-                                class="form-control"
-                               
-                                placeholder="Please enter your lastname *"
-                                required="required"
-                                data-error="Lastname is required.">
-                                                        </div>
-                </div>
-            </div>
-
 
             <div class="row">
                 <div class="col-md-6">
@@ -59,73 +28,29 @@
                                 name="form_type_client"
                                 class="form-control"
                                 required="required"
-                              
+                                [(ngModel)]="typeAccount"
                                 data-error="Please specify your need.">
-                            <option value="" selected disabled>--Select client Type--</option>
-                            <option >DEBITO </option>                           
+                            <option value="" selected disabled>--Select product Type--</option>
+                            <option > Savings</option> 
+                            <option > checking</option>                                 
                         </select>
                         
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="CC">Card ID *</label>
-                        <input id="CC"
-                               type="number" 
-                               name="CC" 
-                               class="form-control" 
-                               
-                               placeholder="Please enter the card_ID*" 
-                               required="required" 
-                               data-error="Valid card_ID is required.">
-                        
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="birDate">Bird date *</label>
-                        <input  id="birDate"
-                                type="date"
-                                name="birDate" 
-                                class="form-control"
-                                
-                                placeholder="Please enter your email *"
-                                
-                                data-error="Valid email is required.">
-                        
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label  for="age">Age *</label>
-                        <input  id="age"
+                        <label  for="apellido">No. account</label>
+                        <input  id="apellido"
                                 type="number"
-                                name="age" 
-                                class="form-control" 
-                              
-                                placeholder="Please enter your email *" 
-                                required="required" 
-                                data-error="Valid email is required.">
-                        
-                    </div>
+                                name="apellido"
+                                class="form-control"                               
+                                [(ngModel)]="noAccount"
+                                placeholder="Write the num account *"
+                                required="required"
+                                data-error="Lastname is required.">
+                                                        </div>
                 </div>
-            </div>
-
-            <!-- 
-                <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="form_email">Date *</label>
-                        <input id="form_email" type="email" name="email" class="form-control" placeholder="Please enter your email *" required="required" data-error="Valid email is required.">
-                        
-                    </div>
-                </div>
-               
-            </div> -->
+            </div>          
             
             
             <br/>
@@ -133,12 +58,12 @@
              
 
 
-                <div class="col-md-7">
-                    
-                    <!-- <input type="submit" class="btn btn-success btn-send  pt-2 btn-block
-                        " value="Send Message" > -->
-                <button class="btn btn-success w-100" [disabled]="!f.valid">Creste client</button>
-            </div>
+                <div class="col-md-4">                  
+                <button class="btn btn-success w-100" [disabled]="!f.valid">Acepte</button>
+                 </div>
+                 <div class="col-md-4">                  
+                <button class="btn btn-secondary w-100" [disabled]="!f.valid">Cancel</button>
+                </div>
         </div>
     </div>
     </form>

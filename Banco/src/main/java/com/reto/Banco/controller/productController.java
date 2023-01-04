@@ -41,23 +41,23 @@ public class productController   {
 		HttpStatus estadoHttp = null;
 
         try {		
-                 
-                  if(productEnitty.getSaldo() > 0  &&  Tipocuenta.AHORRO.toString().equals(productEnitty.getTipoCuenta().toString())
-                  || Tipocuenta.CORRIENTE.toString().equals(productEnitty.getTipoCuenta().toString())
-                  )
-                  {
-                    //generate number count and define estate
-                    if(Tipocuenta.CORRIENTE.toString().equals(productEnitty.getTipoCuenta().toString())){
-                        productEnitty.setEstado(Estado.Unenabled.toString());
-                        productEnitty.setNumeroCuenta(createProductNumber(Tipocuenta.CORRIENTE));                    
-                    }
-                    else {
-                         productEnitty.setEstado(Estado.enabled.toString());
-                        productEnitty.setNumeroCuenta(createProductNumber(Tipocuenta.AHORRO));   
-                    }
 
-
-                      productEnitty.setSaldo((double) productEnitty.getSaldo());
+            if(productEnitty.getSaldo() > 0  &&  Tipocuenta.Savings.toString().equals(productEnitty.getTipoCuenta().toString())
+            || Tipocuenta.checking.toString().equals(productEnitty.getTipoCuenta().toString())
+            )
+            {
+                //generate number count and define estate
+                if(Tipocuenta.checking.toString().equals(productEnitty.getTipoCuenta().toString())){
+                    productEnitty.setEstado(Estado.Unenabled.toString());
+                    productEnitty.setNumeroCuenta(createProductNumber(Tipocuenta.checking));                    
+                }
+                else {
+                    productEnitty.setEstado(Estado.enabled.toString());
+                    productEnitty.setNumeroCuenta(createProductNumber(Tipocuenta.Savings));   
+                }
+                
+                
+                productEnitty.setSaldo((double)10);
                     //  productEnitty.setClienteId(clienteId);
                       
                       productEnitty.setFechaApertura(LocalDate.now());
@@ -183,10 +183,10 @@ public class productController   {
         int int_random = (int)Math.floor(Math.random()*(max-min+1)+min);
         String value  = ""; 
 
-        if(Tipocuenta.AHORRO == tipocuenta)
+        if(Tipocuenta.Savings == tipocuenta)
         value = ""+46+""+int_random;
 
-        else if(Tipocuenta.CORRIENTE == tipocuenta)
+        else if(Tipocuenta.checking == tipocuenta)
         value = ""+23+""+int_random;
 
 
@@ -233,8 +233,8 @@ public class productController   {
 
     public enum Tipocuenta
     {
-        AHORRO,
-        CORRIENTE
+        Savings,
+        checking
     }
 
     public enum Estado
