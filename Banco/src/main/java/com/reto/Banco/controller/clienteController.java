@@ -40,15 +40,17 @@ public class clienteController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<GeneralResponse<List<ClientTable>>> GetCliente() {
+    public ResponseEntity<GeneralResponse<List<ClientTable>>>  GetCliente() {
         GeneralResponse<List<ClientTable>> respuesta = new GeneralResponse<>();
 		List<ClientTable> datos = null;
 		String mensaje = null;	
 		HttpStatus estadoHttp = null;
 
         try {		
+            // clientService.GetAllCliente();
+            // System.out.println("Pointer");
             datos = clientService.GetAllCliente();
-            
+           
 
             respuesta.setDatos(datos);
 			respuesta.setMensaje(mensaje);
@@ -65,6 +67,7 @@ public class clienteController {
         }
         
         return new ResponseEntity<>( respuesta,estadoHttp );
+        // return ;
     }
 
 
@@ -101,26 +104,32 @@ public class clienteController {
         GeneralResponse<ClientTable> respuesta = new GeneralResponse<>();
         ClientTable datos = null;
 		String mensaje = null;	
-		HttpStatus estadoHttp = null;    
+		HttpStatus estadoHttp = null;   
+        ClientTable finalClient = null; 
 
         try{
-            // // String sDate1="31/12/1998";  
-            Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(client.getAuxBirthdate());  
-            // // System.out.println(sDate1+"\t"+date1);
+            // para testo en PostMan
+            Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(client.getAuxBirthdate());          
             client.setBirthdate(date1);  
             System.out.println("Test: "+client.getAuxBirthdate());
 
 
-            ClientTable finalClient = new ClientTable(client.getId_Type(),
+            finalClient = new ClientTable(            client.getId_Type(),
                                                       client.getIdNum(),
                                                       client.getFisrtName(), 
                                                       client.getLastName(), 
                                                       client.getEmail(), 
-                                                      client.getBirthdate() , 
+                                                      date1,
+                                                      client.getAuxBirthdate(),
                                                       "Admin",
-                                                      LocalDate.now() ,
-                                                      null,
-                                                      null);
+                                                      LocalDate.now(),
+                                                      date1 ,
+                                                      "admin");
+
+
+                                                      
+
+        //  finalClient.setAuxBirthdate(client.getAuxBirthdate());
             
             //restar edades
             if(/*client.getAge() > 18*/ true )
@@ -162,7 +171,7 @@ public class clienteController {
 		HttpStatus estadoHttp = null;    
 
         try{
-            client.setId(id);
+            // client.setId(id);
             datos = clientService.UpdateClient(client);
             mensaje = "0 - Customer successfully created";
 

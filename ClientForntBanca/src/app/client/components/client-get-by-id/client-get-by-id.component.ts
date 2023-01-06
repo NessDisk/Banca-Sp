@@ -23,6 +23,7 @@ loadClient():void{
     (response) =>{
       if(response.peticionExitosa){
         this.client = response.datos;
+        console.log(this.client);
       }
     },err =>{
       console.log(err)

@@ -6,34 +6,34 @@
     <thead>
       <tr>
         <th scope="col">id</th>  
-        <th scope="col">Tipo</th>    
-        <th scope="col">CC</th>    
-        <th scope="col">nombres</th>    
-        <th scope="col">apellido</th>    
-        <th scope="col">birDate</th>    
-        <th scope="col">date</th>    
-        <th scope="col">age</th>   
+        <th scope="col">id_Type </th>    
+        <th scope="col">FisrtName </th>    
+        <th scope="col">lastName </th>    
+        <th scope="col">email </th>    
+        <th scope="col">birthdate </th>    
+        <th scope="col">userCreation </th>    
         <th scope="col">dateCreation</th>    
-        <th scope="col">dateudpate</th>    
+        <th scope="col">datecreation</th>    
+        <th scope="col">dateudpate</th>
         <th scope="col">UserUpdate</th>
-        <th scope="col">User-products</th>
-        <th scope="col">Delete-User</th>   
+        <th scope="col">user-products</th>
+        <th scope="col">delete-User</th>   
 
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let cli of client">
         <th scope="row">{{cli.id}}</th>
-        <td>{{cli.Tipo}}</td> 
-        <td>{{cli.CC}}</td> 
-        <td>{{cli.nombres}}</td> 
-        <td>{{cli.apellido}}</td> 
-        <td>{{cli.birDate}}</td> 
-        <td>{{cli.date}}</td> 
-        <td>{{cli.age}}</td> 
-        <td>{{cli.dateCreation}}</td> 
+        <td>{{cli.idNum}}</td> 
+        <td>{{cli.fisrtName}}</td> 
+        <td>{{cli.lastName}}</td> 
+        <td>{{cli.email}}</td> 
+        <td>{{cli.birthdate}}</td> 
+        <td>{{cli.userCreation}}</td> 
+        <td>{{cli.datecreation}}</td> 
+        <td>{{cli.userUpdate}}</td> 
         <td>{{cli.dateudpate}}</td> 
-        <td>{{cli.UserUpdate}}</td>
+        <td>{{cli.userUpdate}}</td>
         <td><button type="button" class="btn btn-primary" routerLink="/product/{{cli.id}}" routerLinkActive="active" >User-products</button></td>
         <td><button type="button" class="btn btn-danger"  routerLink="/" routerLinkActive="active" >Delete-User</button></td>                                            
       </tr>
