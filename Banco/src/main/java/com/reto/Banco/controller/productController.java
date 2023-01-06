@@ -48,7 +48,7 @@ public class productController   {
             {
                 //generate number count and define estate
                 if(Tipocuenta.checking.toString().equals(productEnitty.getTipoCuenta().toString())){
-                    productEnitty.setEstado(Estado.Unenabled.toString());
+                    productEnitty.setEstado(Estado.disenabled.toString());
                     productEnitty.setNumeroCuenta(createProductNumber(Tipocuenta.checking));                    
                 }
                 else {
@@ -88,7 +88,7 @@ public class productController   {
 
 
     @PutMapping("/Status/{idProduc}/{tipoEstado}")
-    public ResponseEntity<GeneralResponse<Optional<ProductEntity>>> cambiarEstado(@PathVariable("tipoEstado") String tipoEstado,
+    public ResponseEntity<GeneralResponse<Optional<ProductEntity>>> changeStatus(@PathVariable("tipoEstado") String tipoEstado,
     @PathVariable("idProduc")	Long idProducto) {
 		GeneralResponse<Optional<ProductEntity>> respuesta = new GeneralResponse<>();
 		Optional<ProductEntity> datos = null;
@@ -101,16 +101,16 @@ public class productController   {
 			switch (tipoEstado) {
 			case "enabled":
 				if (!datos.get().getEstado().toLowerCase().equals(Estado.cancelled.toString())) {
-					datos.get().setEstado(tipoEstado);
-					mensaje = "0 - Account enabled";
+					datos.get().setEstado(Estado.disenabled.toString());
+					mensaje = "0 - Account disabled";
 					break;
 				} else {
 					mensaje = "1 - The product cannot be activated, the product was canceled";
 				}
 				break;
-			case "unenabled":
-				datos.get().setEstado(tipoEstado);
-				mensaje = "0 - Account disabled";
+			case "disenabled":
+				datos.get().setEstado(Estado.enabled.toString());
+				mensaje = "0 - Account enabled";
 				break;
 			case "cancelate":       
             //in case      
@@ -139,6 +139,7 @@ public class productController   {
 		return new ResponseEntity<>(respuesta, estadoHttp);
 
 	}
+    // I need making a other  endpointOnly for cancelate
 
 
     @GetMapping("/get/{clienteId}")
@@ -240,7 +241,7 @@ public class productController   {
     public enum Estado
     {
         enabled,
-        Unenabled,
+        disenabled,
         cancelled
     }
     

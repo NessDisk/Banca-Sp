@@ -23,6 +23,7 @@ import { InitComponentComponent } from './Navegation/component/init-component/in
 import { RouterModule } from '@angular/router';
 import { MovStatusComponent } from './product/movement/components/mov-status/mov-status.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,7 +50,13 @@ import { MovStatusComponent } from './product/movement/components/mov-status/mov
     HttpClientModule,
     FormsModule,
     RouterModule
+    // RouterModule
   ],
+  exports: [
+    RouterModule,
+  ]
+  ,
+
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../../models/product';
 import { ProductServices } from '../../services/product.services';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-product-create',
@@ -17,10 +18,12 @@ export class ProductCreateComponent implements OnInit {
   clienteId: number;
 
  
-  constructor(private productService: ProductServices, private route: ActivatedRoute){ }
+  constructor(private productService: ProductServices, private route: ActivatedRoute, private _location: Location){ }
 
   
-
+  goBack(){
+    this._location.back();
+  }
  
   ngOnInit(): void {
       this.clienteId = this.route.snapshot.params['id'];
@@ -38,9 +41,7 @@ export class ProductCreateComponent implements OnInit {
                       },err =>{
                         console.log(err)
                       }
-                    );
-
-                    
+                    );                   
                   }
                   
 }

@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Movement } from '../../models/moviment';
 import { MovementServices } from '../../services/movement.service';
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-mov-transfer',
@@ -22,13 +24,17 @@ export class MovTransferComponent implements OnInit {
   movement:Movement[] =[];
 
 
-  constructor(private movService: MovementServices, private route: ActivatedRoute){ }
+  constructor(private movService: MovementServices, private route: ActivatedRoute , private _location: Location){ }
 
 
   ngOnInit(): void {
     this.productId = this.route.snapshot.params['id'];
   }
 
+
+  goBack(){
+    this._location.back();
+  }
 //add 
   AddDisposet():void{
 

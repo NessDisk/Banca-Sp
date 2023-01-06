@@ -1,6 +1,9 @@
 package com.reto.Banco.controller;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +24,9 @@ import com.reto.Banco.entity.ClientTable;
 import com.reto.Banco.service.ClientService;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import java.io.Console;
+import java.text.SimpleDateFormat;  
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -98,21 +104,38 @@ public class clienteController {
 		HttpStatus estadoHttp = null;    
 
         try{
+            // // String sDate1="31/12/1998";  
+            Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(client.getAuxBirthdate());  
+            // // System.out.println(sDate1+"\t"+date1);
+            client.setBirthdate(date1);  
+            System.out.println("Test: "+client.getAuxBirthdate());
+
+
+            ClientTable finalClient = new ClientTable(client.getId_Type(),
+                                                      client.getIdNum(),
+                                                      client.getFisrtName(), 
+                                                      client.getLastName(), 
+                                                      client.getEmail(), 
+                                                      client.getBirthdate() , 
+                                                      "Admin",
+                                                      LocalDate.now() ,
+                                                      null,
+                                                      null);
             
             //restar edades
-            if(client.getAge() > 18 )
+            if(/*client.getAge() > 18*/ true )
             {
-                client.setDatecreation(LocalDate.now());
-                datos = clientService.CreateCliente(client);
+                // client.setDatecreation(LocalDate.now());
+                datos = clientService.CreateCliente(finalClient);
                 mensaje = "0 - Customer successfully created";
             }else {
                 mensaje ="1 - Customer could not be create, the age ";
 				estadoHttp = HttpStatus.OK;
             }
-
             
 
-            respuesta.setDatos(datos);
+
+            respuesta.setDatos(finalClient);
             respuesta.setMensaje(mensaje);
             respuesta.setPeticionExitosa(true);
             estadoHttp = HttpStatus.CREATED;
