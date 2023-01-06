@@ -17,39 +17,39 @@ export class ClientCreateComponent implements OnInit {
   }
 
   id?:number;
-  Tipo:string;
-  CC:number;
-  nombres:string;
-  apellido:string;
-  birDate:Date;
-  age:number;
-  date:Date;
-  dateCreation:Date;
+  id_Type:string; //<-
+  idNum:number;  // <-
+  fisrtName:string; //<-
+  lastName:string; //<-
+  email:string; //<-
+  birthdate:Date; //<-
+  userCreation:string;
+  datecreation:Date;
   dateudpate:Date;
-  UserUpdate:string;
+  userUpdate:string;
 
 
   constructor(private clientservices: ClienteService){}
 
-  // onCreate(): void{
+  onCreate(): void{
     
-  //    const client = new Client(this.Tipo,this.CC,this.nombres,this.apellido ,this.birDate,this.age, this.date);
-  //   // this.date = new Date();
-  //   //  const client = new Client("DEBITO",123456,"TEST NAME","Test last name" ,this.date,19, this.date,"user name");
-  //   // console.log(client);
-  //   this.clientservices.saveClient(client).subscribe(
-  //     (response) =>{
-  //       if(response.peticionExitosa){
-  //         this.client = response.datos;
-  //         console.log(this.client);
-  //         console.log("The user has been successfully done.");
-  //         }
-  //       },err =>{
-  //         console.log(err)
-  //       }
-  //     );
+     const client = new Client(this.id_Type,this.idNum ,this.fisrtName, this.lastName, this.email, this.birthdate, "Admin","Admin" );
+    // this.date = new Date();
+    //  const client = new Client("DEBITO",123456,"TEST NAME","Test last name" ,this.date,19, this.date,"user name");
+    console.log(client);
+    this.clientservices.saveClient(client).subscribe(
+      (response) =>{
+        if(response.peticionExitosa){
+          this.client = response.datos;
+          console.log(this.client);
+          console.log("The user has been successfully done.");
+          }
+        },err =>{
+          console.log(err)
+        }
+      );
     
-  // }
+  }
 
 
 }

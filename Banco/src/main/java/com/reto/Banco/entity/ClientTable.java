@@ -52,13 +52,13 @@ public class ClientTable {
      private  LocalDate datecreation;
      
     @Column(name="dateudpate")
-    private  Date dateudpate;
+    private  LocalDate dateudpate;
 
     @Column(name="UserUpdate")
     private  String userUpdate;
 
     public ClientTable(String id_Type, int idNum, String fisrtName, String lastName, String email, Date birthdate,
-            String auxBirthdate, String userCreation, LocalDate datecreation, Date dateudpate, String userUpdate) {
+            String auxBirthdate, String userCreation, LocalDate datecreation, LocalDate dateudpate, String userUpdate) {
         this.id_Type = id_Type;
         this.idNum = idNum;
         this.fisrtName = fisrtName;
@@ -91,10 +91,10 @@ public class ClientTable {
     public void setDatecreation(LocalDate datecreation) {
         this.datecreation = datecreation;
     }
-    public Date getDateudpate() {
+    public LocalDate getDateudpate() {
         return dateudpate;
     }
-    public void setDateudpate(Date dateudpate) {
+    public void setDateudpate(LocalDate dateudpate) {
         this.dateudpate = dateudpate;
     }
     public String getUserUpdate() {

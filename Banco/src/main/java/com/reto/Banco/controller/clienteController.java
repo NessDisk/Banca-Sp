@@ -109,23 +109,43 @@ public class clienteController {
 
         try{
             // para testo en PostMan
-            Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(client.getAuxBirthdate());          
-            client.setBirthdate(date1);  
-            System.out.println("Test: "+client.getAuxBirthdate());
+            // Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(client.getAuxBirthdate());          
+            // client.setBirthdate(date1);  
+            // System.out.println("Test: "+client.getAuxBirthdate());
 
+
+            // finalClient = new ClientTable(            client.getId_Type(),
+            //                                           client.getIdNum(),
+            //                                           client.getFisrtName(), 
+            //                                           client.getLastName(), 
+            //                                           client.getEmail(), 
+            //                                           date1,
+            //                                           client.getAuxBirthdate(),
+            //                                           "Admin",
+            //                                           LocalDate.now(),
+            //                                           date1 ,
+            //                                           "Admin");
+
+
+            // Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(client.getAuxBirthdate());          
+            // client.setBirthdate(date1);  
+            // System.out.println("Test: "+client.getAuxBirthdate());
+            System.out.println(client.getIdNum());
 
             finalClient = new ClientTable(            client.getId_Type(),
                                                       client.getIdNum(),
                                                       client.getFisrtName(), 
                                                       client.getLastName(), 
                                                       client.getEmail(), 
-                                                      date1,
-                                                      client.getAuxBirthdate(),
-                                                      "Admin",
+                                                      client.getBirthdate(),
+                                                      client.getBirthdate().toString(),
+                                                      client.getUserCreation(),
                                                       LocalDate.now(),
-                                                      date1 ,
-                                                      "admin");
+                                                      LocalDate.now(),
+                                                      client.getUserUpdate());                                
 
+            
+                                                    
 
                                                       
 
@@ -171,7 +191,7 @@ public class clienteController {
 		HttpStatus estadoHttp = null;    
 
         try{
-            // client.setId(id);
+            client.setId(id);
             datos = clientService.UpdateClient(client);
             mensaje = "0 - Customer successfully created";
 

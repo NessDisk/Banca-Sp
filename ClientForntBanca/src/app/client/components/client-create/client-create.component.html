@@ -2,7 +2,7 @@
      https://bbbootstrap.com/snippets/simple-contact-form-74408136 
 
 -->
-<!-- 
+
 <div class="container">
     <div class=" text-center mt-5 ">
 
@@ -25,29 +25,31 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label  for="nombres">First Name *</label>
-                        <input  id="nombres"
-                                type="text"
-                                name="nombres"
+                        <label for="form_type_client">id_Type *</label>
+                        <select id="form_type_client"
+                                name="form_id_Type"
                                 class="form-control"
-                                [(ngModel)]="nombres"
-                                placeholder="Please enter your firstname *"
                                 required="required"
-                                data-error="Firstname is required.">
-                        
+                                [(ngModel)]="id_Type"
+                                data-error="Please specify your need.">
+                            <option value="" selected disabled>--Select IdType--</option>
+                            <option >CC </option>
+                            <option >Nit </option>
+                            <option >VIsa </option>
+                        </select>                        
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label  for="apellido">Last name *</label>
-                        <input  id="apellido"
+                        <label  for="idNum">IdNum *</label>
+                        <input  id="idNum"
                                 type="text"
-                                name="apellido"
+                                name="idNum"
                                 class="form-control"
-                                [(ngModel)]="apellido"
-                                placeholder="Please enter your lastname *"
+                                [(ngModel)]="idNum"
+                                placeholder="Please enter IdNum *"
                                 required="required"
-                                data-error="Lastname is required.">
+                                data-error="idNum is required.">
                                                         </div>
                 </div>
             </div>
@@ -56,30 +58,29 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="form_type_client">type *</label>
-                        <select id="form_type_client"
-                                name="form_type_client"
+                        <label  for="fisrtName">fisrtName *</label>
+                        <input  id="fisrtName"
+                                type="text"
+                                name="fisrtName"
                                 class="form-control"
+                                [(ngModel)]="fisrtName"
+                                placeholder="Please enter the fisrtName *"
                                 required="required"
-                                [(ngModel)]="Tipo"
-                                data-error="Please specify your need.">
-                            <option value="" selected disabled>--Select client Type--</option>
-                            <option >DEBITO </option>                           
-                        </select>
-                        
+                                data-error="fisrtName is required.">
                     </div>
                 </div>
+               
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="CC">Card ID *</label>
-                        <input id="CC"
-                               type="number" 
-                               name="CC" 
+                        <label for="lastName">lastName *</label>
+                        <input id="lastName"
+                               type="text" 
+                               name="lastName" 
                                class="form-control" 
-                               [(ngModel)]="CC"
-                               placeholder="Please enter the card_ID*" 
+                               [(ngModel)]="lastName"
+                               placeholder="Please enter the lastName*" 
                                required="required" 
-                               data-error="Valid card_ID is required.">
+                               data-error="Valid lastName is required.">
                         
                     </div>
                 </div>
@@ -89,29 +90,29 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="birDate">Bird date *</label>
-                        <input  id="birDate"
-                                type="date"
-                                name="birDate" 
+                        <label for="email">email *</label>
+                        <input  id="email"
+                                type="email"
+                                name="email" 
                                 class="form-control"
-                                [(ngModel)]="birDate"
-                                placeholder="Please enter your email *"
-                                
+                                [(ngModel)]="email"
+                                placeholder="Please enter your email *"   
+                                required="required"                              
                                 data-error="Valid email is required.">
                         
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label  for="age">Age *</label>
-                        <input  id="age"
-                                type="number"
-                                name="age" 
+                        <label  for="birthdate">birthdate *</label>
+                        <input  id="birthdate"
+                                type="date"
+                                name="birthdate" 
                                 class="form-control" 
-                                [(ngModel)]="age"
-                                placeholder="Please enter your email *" 
+                                [(ngModel)]="birthdate"
+                                placeholder="Please enter the birthdate *" 
                                 required="required" 
-                                data-error="Valid email is required.">
+                                data-error="birthdate is required.">
                         
                     </div>
                 </div>
@@ -139,4 +140,4 @@
 </div>
 </div>
 </div>
-</div> -->
+</div>
