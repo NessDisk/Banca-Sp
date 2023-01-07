@@ -8,11 +8,11 @@ export class Client {
      birthdate:Date;
      userCreation:string;
      datecreation:Date;
-     dateudpate:Date;
+     dateudpate: Date;
      userUpdate:string;
 
 
-     constructor(
+     public  constructor(
           id_Type :string,
           idNum:number,
           fisrtName:string,
@@ -35,6 +35,14 @@ export class Client {
           // this.datecreation = datecreation;
           // this.dateudpate = dateudpate;
           this.userUpdate = UserUpdate;
+     }
+
+     
+     public get_dateudpate(): Date {
+          return this.dateudpate;
+     }
+     public Set_dateudpate(value: Date) {
+          this.dateudpate = value;
      }
 
 

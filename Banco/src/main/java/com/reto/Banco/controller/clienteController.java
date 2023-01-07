@@ -191,8 +191,25 @@ public class clienteController {
 		HttpStatus estadoHttp = null;    
 
         try{
-            client.setId(id);
-            datos = clientService.UpdateClient(client);
+
+            
+            // client.setId(id);
+
+            ClientTable  finalClient = new ClientTable(client.getId_Type(),
+                                                      client.getIdNum(),
+                                                      client.getFisrtName(), 
+                                                      client.getLastName(), 
+                                                      client.getEmail(), 
+                                                      client.getBirthdate(),
+                                                      client.getBirthdate().toString(),
+                                                      client.getUserCreation(),
+                                                      client.getDatecreation(),
+                                                      LocalDate.now(),
+                                                      client.getUserUpdate()); 
+                                                      
+            finalClient.setId(id);
+
+            datos = clientService.UpdateClient(finalClient);
             mensaje = "0 - Customer successfully created";
 
             respuesta.setDatos(datos);

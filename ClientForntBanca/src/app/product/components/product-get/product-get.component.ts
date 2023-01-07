@@ -2,6 +2,7 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { observable ,Subject, Subscription } from 'rxjs';
+import { Client } from 'src/app/client/models/client';
 import { __values } from 'tslib';
 import { Product } from '../../models/product';
 import { ProductServices } from '../../services/product.services';
@@ -19,6 +20,27 @@ export class ProductGetComponent implements OnInit {
   
   clienteId: number;
   product:Product[] =[];
+  
+  
+  client:Client;
+
+
+  id_Type:string; //<-
+  idNum:number;  // <-
+  fisrtName:string; //<-
+  lastName:string; //<-
+  email:string; //<-
+  birthdate:Date; //<-
+  userCreation:string;
+  datecreation:Date;
+  dateudpate:Date;
+  userUpdate:string;
+
+  
+  //Values Update
+  triggerUpdateClient: boolean ;
+
+
 
   suscription:Subscription;
   constructor(private productService: ProductServices, private route: ActivatedRoute, private router: Router){
@@ -29,14 +51,26 @@ export class ProductGetComponent implements OnInit {
     });
 
    }
+
+   ActiveChangeDataClient():void
+   {
+if(this.triggerUpdateClient == false)
+this.triggerUpdateClient = true;
+else
+this.triggerUpdateClient = false;
+
+   }
   
   ngOnInit(): void {
     this.clienteId = this.route.snapshot.params['id'];    
 
     this.loadProduct();
+    this.loadClient();
+    this.triggerUpdateClient = false;
 
     this.suscription = this.productService.refresh$.subscribe(()=>{
       this.loadProduct();
+      
 
     });
     
@@ -65,12 +99,12 @@ export class ProductGetComponent implements OnInit {
 
   DeleteProduct(productId: number):void{
     
-    // console.log(id);
+   
     this.productService.deleteProduct( productId).subscribe(
       (response) =>{
         if(response.peticionExitosa){
           this.product = response.datos;
-          console.log(this.product);
+         
         
         }
       },err =>{
@@ -85,13 +119,61 @@ export class ProductGetComponent implements OnInit {
       (response) =>{
         if(response.peticionExitosa){
           this.product = response.datos;  
-          // this.reloadCurrentPage();
+      
         }
       },err =>{
         console.log(err)
       }
     );
   }
+//client
+loadClient():void{
+  this.productService.userDataById( this.clienteId).subscribe(
+    (response) =>{
+      if(response.peticionExitosa){
+        this.client = response.datos;  
+      }
+    },err =>{
+      console.log(err)
+    }
+  );
+}
+
+updateCliente():void{
+
+  const newclient = new  Client(this.id_Type,
+                            this.idNum,
+                            this.fisrtName, 
+                            this.lastName, 
+                            this.email, 
+                            this.birthdate,  
+                            this.client.userCreation,
+                            // this.client.datecreation,
+                            "Admin" 
+                            );
+        //only way to set the var
+        newclient.datecreation = this.client.datecreation; 
+        
+
+  this.productService.updateClient( this.clienteId, newclient).subscribe(
+    (response) =>{
+      if(response.peticionExitosa){
+        this.client = response.datos;  
+      }
+    },err =>{
+      console.log(err)
+    }
+  );
+
+
+
+}
+
+uploadDatauser():void{
+this.updateCliente();
+this.ActiveChangeDataClient();
+this.loadClient();
+}
 
 
 }

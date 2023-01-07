@@ -24,19 +24,19 @@ public class ClientTable {
     private  long id;
 
 
-    @Column(name="Id_Type")
+    @Column(name="id_Type")
     private String id_Type;    
 
     @Column(name="IdNum")
     private  int idNum;
 
-    @Column(name="FisrtName")
+    @Column(name="fisrtName")
     private  String fisrtName;
 
     @Column(name="lastName")
     private  String lastName;
 
-    @Column(name="Email")
+    @Column(name="email")
     private  String email ;
 
     @Column(name="birthdate")

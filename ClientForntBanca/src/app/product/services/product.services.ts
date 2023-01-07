@@ -4,6 +4,7 @@ import { Observable , Subject } from 'rxjs';
 import { GeneralResponse } from 'src/app/shared/models/general-response';
 import { Product } from '../models/product';
 import { tap } from 'rxjs/operators';
+import { Client } from 'src/app/client/models/client';
 
 
 @Injectable({
@@ -12,6 +13,7 @@ import { tap } from 'rxjs/operators';
 export class ProductServices  {
 
     productUrl = 'http://localhost:8090/v0/api/Product';
+    clientUrl = "http://localhost:8090/v0/api/Client";
 
 
     private _refresh$ = new Subject<void>();
@@ -44,6 +46,18 @@ export class ProductServices  {
 
       public UpdateStatus(productid:number,StatusProductName:string): Observable<any> {
         return this.httpClient.put<any>(this.productUrl + "/Status/"+productid+"/"+StatusProductName, {} ) .pipe(
+          tap(()=> {
+            this._refresh$.next();
+          })
+        )
+      }
+
+      public userDataById(clienteId:number): Observable<GeneralResponse<Client>> {
+        return this.httpClient.get<GeneralResponse<Client>>(this.clientUrl +"/"+clienteId );
+      }
+
+      public updateClient(clientId:number,client:Client): Observable<any> {
+        return this.httpClient.put<any>(this.clientUrl+"/" +clientId+"/update", client) .pipe(
           tap(()=> {
             this._refresh$.next();
           })
