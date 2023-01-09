@@ -42,7 +42,8 @@ export class ClientCreateComponent implements OnInit {
         if(response.peticionExitosa){
           this.client = response.datos;
           console.log(this.client);
-          console.log("The user has been successfully done.");
+          console.log(response.mensaje);
+          // console.log("The user has been successfully done.");
           }
         },err =>{
           console.log(err)

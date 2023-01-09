@@ -1,5 +1,5 @@
 export class Client {
-     id?:number;
+     id:number;
      id_Type :string;
      idNum: number;
      fisrtName:string;

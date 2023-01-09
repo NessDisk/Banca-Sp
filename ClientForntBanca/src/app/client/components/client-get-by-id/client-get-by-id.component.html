@@ -58,7 +58,7 @@
         <td>{{cli.dateudpate}}</td> 
         <td>{{cli.userUpdate}}</td>
         <td><button type="button" class="btn btn-primary" routerLink="/product/{{cli.id}}" routerLinkActive="active" >User-products</button></td>
-        <td><button type="button" class="btn btn-danger"  routerLink="/" routerLinkActive="active" >Delete-User</button></td>                                            
+        <td><button type="button" class="btn btn-danger" (click)="DeleteCliente(cli.id)" >Delete-User</button></td>                                            
       </tr>
     
     </tbody>

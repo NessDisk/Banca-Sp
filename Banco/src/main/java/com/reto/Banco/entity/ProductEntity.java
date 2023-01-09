@@ -3,6 +3,8 @@ package com.reto.Banco.entity;
 import java.sql.Date;
 import java.time.LocalDate;
 
+import org.springframework.cglib.core.Local;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,44 +23,62 @@ public class ProductEntity {
 	
 
 
-    @Column(name="tipo")
-	private String tipoCuenta;
+    @Column(name="typeAccount")
+	private String typeAccount;
 	
-	@Column(name="numeroCuenta")
-	private String numeroCuenta;
-	
-	
-	@Column(name="estado")
-	private String estado;
-	
-	@Column(name = "fecha_apertura")	
-	private LocalDate fechaApertura;    
+	@Column(name="numAccont")
+	private String numAccont;
 	
 	
+	@Column(name="State")
+	private String State;
+	
+	@Column(name = "DateCreate")	
+	private LocalDate DateCreate;    
 
+    @Column(name="balance")
+	private Double balance;
 
-    @Column(name="saldo")
-	private Double saldo;
+    @Column(name="balanceAvailable")
+	private Double balanceAvailable;
 
-    @Column(name="saldo_disponible")
-	private Double saldoDisponible;
-
-    @Column(name = "exentaGMF")
-	private float exentaGMF;
+    @Column(name = "excludeGMF")
+	private boolean excludeGMF;
 
 	
-	@Column(name = "UserCreation")
-	private Long UserCreation;
+	@Column(name = "userCreation")
+	private String userCreation;
+
+
+
 
     @Column(name="dateUdpate")
-    private  Date dateUdpate;
+    private  LocalDate dateUdpate;
 
-    @Column(name = "cliente_id")
+    @Column(name = "clienteId")
 	private Long clienteId;
 
     public Long getClienteId() {
         return clienteId;
     }
+
+    public ProductEntity(String typeAccount, String numAccont, String state, LocalDate dateCreate, Double balance,
+    Double balanceAvailable, Boolean gMF, String userCreation, LocalDate dateUdpate, Long clienteId) {
+this.typeAccount = typeAccount;
+this.numAccont = numAccont;
+this.State = state;
+this.DateCreate = dateCreate;
+this.balance = balance;
+this.balanceAvailable = balanceAvailable;
+this.excludeGMF = gMF;
+this.userCreation = userCreation;
+this.dateUdpate = dateUdpate;
+this.clienteId = clienteId;
+}
+
+
+
+public ProductEntity() {}
 
     public void setClienteId(Long clienteId) {
         this.clienteId = clienteId;
@@ -72,75 +92,77 @@ public class ProductEntity {
         this.id = id;
     }
 
-    public String getTipoCuenta() {
-        return tipoCuenta;
+    public String getTypeAccount() {
+        return typeAccount;
     }
 
-    public void setTipoCuenta(String tipoCuenta) {
-        this.tipoCuenta = tipoCuenta;
+    public void setTypeAccount(String tipoCuenta) {
+        this.typeAccount = tipoCuenta;
     }
 
-    public String getNumeroCuenta() {
-        return numeroCuenta;
+    public String getNumAccont() {
+        return numAccont;
     }
 
-    public void setNumeroCuenta(String numeroCuenta) {
-        this.numeroCuenta = numeroCuenta;
+    public void setNumAccont(String numeroCuenta) {
+        this.numAccont = numeroCuenta;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getState() {
+        return State;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setState(String estado) {
+        this.State = estado;
     }
 
-    public LocalDate getFechaApertura() {
-        return fechaApertura;
+    public LocalDate getDateCreate() {
+        return DateCreate;
     }
 
-    public void setFechaApertura(LocalDate fechaApertura) {
-        this.fechaApertura = fechaApertura;
+    public void setDateCreate(LocalDate fechaApertura) {
+        this.DateCreate = fechaApertura;
     }
 
-    public Double getSaldo() {
-        return saldo;
+    public Double getBalance() {
+        return balance;
     }
 
-    public void setSaldo(Double saldo) {
-        this.saldo = saldo;
+    public void setBalance(Double saldo) {
+        this.balance = saldo;
     }
 
-    public Double getSaldoDisponible() {
-        return saldoDisponible;
+    public Double getBalanceAvailable() {
+        return balanceAvailable;
     }
 
-    public void setSaldoDisponible(Double saldoDisponible) {
-        this.saldoDisponible = saldoDisponible;
+    public void setBalanceAvailable(Double saldoDisponible) {
+        this.balanceAvailable = saldoDisponible;
     }
 
-    public float getExentaGMF() {
-        return exentaGMF;
+    public boolean getExcludeGMF() {
+        return excludeGMF;
     }
 
-    public void setExentaGMF(float exentaGMF) {
-        this.exentaGMF = exentaGMF;
+    public void setGMF(boolean exentaGMF) {
+        this.excludeGMF = exentaGMF;
+    }
+    
+
+    
+    public String getUserCreation() {
+        return userCreation;
     }
 
-    public Long getUserCreation() {
-        return UserCreation;
+    public void setUserCreation(String userCreation) {
+        this.userCreation = userCreation;
     }
 
-    public void setUserCreation(Long userCreation) {
-        UserCreation = userCreation;
-    }
-
-    public Date getDateUdpate() {
+    public LocalDate getDateUdpate() {
         return dateUdpate;
     }
 
-    public void setDateUdpate(Date dateUdpate) {
+    public void setDateUdpate(LocalDate dateUdpate) {
         this.dateUdpate = dateUdpate;
     }
    

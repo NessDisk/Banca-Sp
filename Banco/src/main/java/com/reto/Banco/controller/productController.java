@@ -42,25 +42,31 @@ public class productController   {
 
         try {		
 
-            if(productEnitty.getSaldo() > 0  &&  Tipocuenta.Savings.toString().equals(productEnitty.getTipoCuenta().toString())
-            || Tipocuenta.checking.toString().equals(productEnitty.getTipoCuenta().toString())
+            if(Tipocuenta.Savings.toString().equals(productEnitty.getTypeAccount().toString())
+            || Tipocuenta.checking.toString().equals(productEnitty.getTypeAccount().toString())
             )
             {
-                //generate number count and define estate
-                if(Tipocuenta.checking.toString().equals(productEnitty.getTipoCuenta().toString())){
-                    productEnitty.setEstado(Estado.disenabled.toString());
-                    productEnitty.setNumeroCuenta(createProductNumber(Tipocuenta.checking));                    
+            //     //generate number count and define estate
+                if(Tipocuenta.checking.toString().equals(productEnitty.getTypeAccount().toString())){
+                    productEnitty.setState(State.disenabled.toString());
+                    productEnitty.setNumAccont(createProductNumber(Tipocuenta.checking));                    
                 }
                 else {
-                    productEnitty.setEstado(Estado.enabled.toString());
-                    productEnitty.setNumeroCuenta(createProductNumber(Tipocuenta.Savings));   
+                    productEnitty.setState(State.enabled.toString());
+                    productEnitty.setNumAccont(createProductNumber(Tipocuenta.Savings));   
                 }
                 
-                
-                productEnitty.setSaldo((double)10);
+
+                      productEnitty.setBalance((double)0);
+                      productEnitty.setBalanceAvailable( (double)0);
+                      productEnitty.setDateUdpate(LocalDate.now());
+                      productEnitty.setUserCreation("ADMIN");
+                      productEnitty.setGMF( productEnitty.getExcludeGMF());
+                      productEnitty.setDateCreate(LocalDate.now());
+                      
+
                     //  productEnitty.setClienteId(clienteId);
                       
-                      productEnitty.setFechaApertura(LocalDate.now());
                       mensaje = "0 - Customer successfully created";
                       productSevice.CreateProduct(productEnitty);
                       datos = 0;
@@ -68,6 +74,9 @@ public class productController   {
                       mensaje ="1 - Customer could not be create ";
                       estadoHttp = HttpStatus.OK;
                   }
+
+
+
 
             respuesta.setDatos(datos);
 			respuesta.setMensaje(mensaje);
@@ -100,8 +109,8 @@ public class productController   {
 
 			switch (tipoEstado) {
 			case "enabled":
-				if (!datos.get().getEstado().toLowerCase().equals(Estado.cancelled.toString())) {
-					datos.get().setEstado(Estado.disenabled.toString());
+				if (!datos.get().getState().toLowerCase().equals(State.cancelled.toString())) {
+					datos.get().setState(State.disenabled.toString());
 					mensaje = "0 - Account disabled";
 					break;
 				} else {
@@ -109,14 +118,14 @@ public class productController   {
 				}
 				break;
 			case "disenabled":
-				datos.get().setEstado(Estado.enabled.toString());
+				datos.get().setState(State.enabled.toString());
 				mensaje = "0 - Account enabled";
 				break;
-			case "cancelate":       
+			case "cancelled":       
             //in case      
-				if (datos.get().getSaldo() < 1 && datos.get().getSaldo() >= 0) {
-					datos.get().setEstado(tipoEstado);
-					mensaje = "0 - Account cancelled";
+				if (datos.get().getBalance() < 1 && datos.get().getBalance() >= 0) {
+					datos.get().setState("disenabled");
+					mensaje = "0 - Account disenabled";
 				} else {
 					mensaje = "1 - Account cannot be cancelled, balance must be US$0";
 				}
@@ -194,7 +203,7 @@ public class productController   {
 		return value;
 	}
 
-    // ----------------------------------------- Delete  ------------------------------------------
+    // ----------------------------------------- Delete - cancelate ------------------------------------------
 
     @DeleteMapping("/delete/{productId}")
 	public   ResponseEntity<GeneralResponse<Long>>   DeleteProductById(@PathVariable("productId") Long productId ) {
@@ -202,29 +211,40 @@ public class productController   {
 		long datos = 0;
 		String mensaje = null;
 		HttpStatus estadoHttp = null;
+        Optional<ProductEntity> productEntityCheck = null;
 
         // System.out.println(ProductId);
         try{
-                    productSevice.deleteById(productId);
-                	mensaje = "0 - Delete product id: "+ productId;
+            productEntityCheck = productSevice.findById(productId);
+
+            if(productEntityCheck.get().getBalance() < 1){
+
+                // productSevice.deleteById(productId);
+                productEntityCheck.get().setState("cancelled");
+                productSevice.CreateProduct(productEntityCheck.get());
+                mensaje = "0 - Delete product id: "+ productId;
+                estadoHttp = HttpStatus.OK;
+                respuesta.setPeticionExitosa(true);
+
+            } else {
+                mensaje = "1 - product id: "+ productId +" Need less of 1$ for delete";
+                estadoHttp = HttpStatus.BAD_REQUEST;
+                respuesta.setPeticionExitosa(false);
+            }
+            
 
                    
                      datos = 0;
                     respuesta.setDatos(datos);
                     respuesta.setMensaje(mensaje);
-                    respuesta.setPeticionExitosa(true);
 
-                    estadoHttp = HttpStatus.OK;
         }catch(Exception e)
-        {
-            System.out.println("Hola mundo");
-                    mensaje = "There was an error. Contact the administrator";
+        {                    mensaje = "There was an error. Contact the administrator";
                     respuesta.setMensaje(mensaje);
                     respuesta.setPeticionExitosa(false);
                     estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-	
         // return ;
 		return new ResponseEntity<>(respuesta, estadoHttp);
 	}
@@ -238,7 +258,7 @@ public class productController   {
         checking
     }
 
-    public enum Estado
+    public enum State
     {
         enabled,
         disenabled,

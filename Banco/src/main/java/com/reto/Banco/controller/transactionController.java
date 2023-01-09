@@ -63,10 +63,10 @@ public class transactionController {
 				return new ResponseEntity<>(respuesta, estadoHttp);
 			}
 
-			if (!producto.get().getEstado().equals("cancelled")) {
-				transaction.setSaldoInicial(producto.get().getSaldo());
-				producto.get().setSaldo(producto.get().getSaldo() + transaction.getValor());//consignación
-				transaction.setSaldoFinal(producto.get().getSaldo());
+			if (!producto.get().getState().equals("cancelled")) {
+				transaction.setSaldoInicial(producto.get().getBalance());
+				producto.get().setBalance(producto.get().getBalance() + transaction.getValor());//consignación
+				transaction.setSaldoFinal(producto.get().getBalance());
 				transaction.setTypeTransaction("deposit");
 				// transaction.setTipoDebito("credit");
 				transaction.setDateCreate(LocalDate.now());
@@ -83,7 +83,7 @@ public class transactionController {
 				respuesta.setPeticionExitosa(true);
 				estadoHttp = HttpStatus.CREATED;
 			}else {				
-				mensaje = "1 - Deposit not made, account N°= " +producto.get().getNumeroCuenta() +" is canceled";		
+				mensaje = "1 - Deposit not made, account N°= " +producto.get().getNumAccont() +" is canceled";		
 				respuesta.setDatos(datos);
 				respuesta.setMensaje(mensaje);
 				respuesta.setPeticionExitosa(true);		
@@ -141,12 +141,12 @@ public class transactionController {
 				movimientoOrigen.setCuentaDestino(0);
 				
 				movimientoOrigen = realizarMovimientoDebito(productoOrigen, movimientoOrigen);
-				productoOrigen.get().setSaldo(movimientoOrigen.getSaldoFinal());				
+				productoOrigen.get().setBalance(movimientoOrigen.getSaldoFinal());				
 				productService.CreateProduct(productoOrigen.get());
 				transactionService.CreateTransaction(movimientoOrigen);
 				
 				movimientoGMF = realizarMovimientoGMF(productoOrigen, valorTransaccion);
-				productoOrigen.get().setSaldo(movimientoGMF.getSaldoFinal());				
+				productoOrigen.get().setBalance(movimientoGMF.getSaldoFinal());				
 				productService.CreateProduct(productoOrigen.get());	
 				transactionService.CreateTransaction(movimientoGMF);
 				
@@ -182,16 +182,16 @@ public class transactionController {
     private boolean validarSaldo(Optional<ProductEntity> productoOrigen, double valorTransaccion) {
 		boolean saldoValidado = false;
 		
-		double saldoGMF = productoOrigen.get().getSaldo() - valorTransaccion
+		double saldoGMF = productoOrigen.get().getBalance() - valorTransaccion
 				- valorTransaccion * 0.004;
 
-		if (productoOrigen.get().getTipoCuenta().toLowerCase().equals("ahorro") && productoOrigen.get().getEstado()
+		if (productoOrigen.get().getTypeAccount().toLowerCase().equals("ahorro") && productoOrigen.get().getState()
 				.toLowerCase().equals("enabled")
 				&& saldoGMF >= 0) {
 			saldoValidado = true;
 		}
-		if (productoOrigen.get().getTipoCuenta().toLowerCase().equals("corriente")
-				&& productoOrigen.get().getEstado().toLowerCase().equals("enabled") && saldoGMF >= -5000) {
+		if (productoOrigen.get().getTypeAccount().toLowerCase().equals("corriente")
+				&& productoOrigen.get().getState().toLowerCase().equals("enabled") && saldoGMF >= -5000) {
 			saldoValidado = true;
 		}	
 		return saldoValidado;
@@ -202,19 +202,19 @@ public class transactionController {
 		
 		GeneralResponse<Integer> mensajeRespuesta = new GeneralResponse<>();
 		
-		if (productoOrigen.get().getEstado().toLowerCase().equals("desabled")) {
+		if (productoOrigen.get().getState().toLowerCase().equals("desabled")) {
 			mensajeRespuesta.setMensaje("1 - The account is desabled");
 			mensajeRespuesta.setPeticionExitosa(false);
 			return mensajeRespuesta;			
-		} else if (productoOrigen.get().getEstado().toLowerCase().equals("canceled")) {
+		} else if (productoOrigen.get().getState().toLowerCase().equals("canceled")) {
 			mensajeRespuesta.setMensaje("1- the account is canceled");
 			mensajeRespuesta.setPeticionExitosa(false);
 			return mensajeRespuesta;
-		} else if (productoOrigen.get().getTipoCuenta().toLowerCase().equals("AHORRO") && !saldoValidado) {
+		} else if (productoOrigen.get().getTypeAccount().toLowerCase().equals("AHORRO") && !saldoValidado) {
 			mensajeRespuesta.setMensaje("2 - Not enought funds, the balance with the GMF must be greater than or equal to US$0.0");
 			mensajeRespuesta.setPeticionExitosa(false);
 			return mensajeRespuesta;
-		} else if (productoOrigen.get().getTipoCuenta().toLowerCase().equals("CORRIENTE") && !saldoValidado) {
+		} else if (productoOrigen.get().getTypeAccount().toLowerCase().equals("CORRIENTE") && !saldoValidado) {
 			mensajeRespuesta.setMensaje("2 - Not enought funds - Current account cannot be overdrawn by more than US$5,000");
 			mensajeRespuesta.setPeticionExitosa(false);
 			return mensajeRespuesta;
@@ -228,8 +228,8 @@ public class transactionController {
 
     private TransactionEntity realizarMovimientoDebito(Optional<ProductEntity> productoOrigen,
     TransactionEntity movimientoOrigen) {		
-            movimientoOrigen.setSaldoInicial(productoOrigen.get().getSaldo());
-            double saldo = productoOrigen.get().getSaldo() - movimientoOrigen.getValor();	
+            movimientoOrigen.setSaldoInicial(productoOrigen.get().getBalance());
+            double saldo = productoOrigen.get().getBalance() - movimientoOrigen.getValor();	
             movimientoOrigen.setSaldoFinal(saldo);
             movimientoOrigen.setDateCreate(LocalDate.now());
             movimientoOrigen.setTypeDebito("debit");
@@ -241,9 +241,9 @@ public class transactionController {
 
 private TransactionEntity realizarMovimientoGMF(Optional<ProductEntity> productoOrigen, double valorTransaccion) {
     TransactionEntity movimientoGMF = new TransactionEntity();
-    movimientoGMF.setSaldoInicial(productoOrigen.get().getSaldo());
+    movimientoGMF.setSaldoInicial(productoOrigen.get().getBalance());
     
-    double saldoGMF = productoOrigen.get().getSaldo() - valorTransaccion * 0.004;		
+    double saldoGMF = productoOrigen.get().getBalance() - valorTransaccion * 0.004;		
     movimientoGMF.setSaldoFinal(saldoGMF);
     movimientoGMF.setValor(valorTransaccion * 0.004);
     movimientoGMF.setDateCreate(LocalDate.now());
@@ -299,14 +299,14 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 				//verificador numero cuenta.  <<- mas adelante  validaddores
 				
 				
-				double saldoInicialOrigen = productoOrigen.get().getSaldo() ;
-				double saldoInicialDestino = productoDestiny.get().getSaldo() ;
+				double saldoInicialOrigen = productoOrigen.get().getBalance() ;
+				double saldoInicialDestino = productoDestiny.get().getBalance() ;
 				//verificador de que el saldo disponible cumpla con el monton para hacer la transferencia
 				// saldo disponible -  valor
 				// saldo disponible +  valor  
 
-				productoOrigen.get().setSaldoDisponible(productoOrigen.get().getSaldoDisponible() - movimientoOrigen.getValor());
-				productoDestiny.get().setSaldoDisponible(productoOrigen.get().getSaldoDisponible() + movimientoOrigen.getValor());
+				productoOrigen.get().setBalanceAvailable(productoOrigen.get().getBalanceAvailable() - movimientoOrigen.getValor());
+				productoDestiny.get().setBalanceAvailable(productoOrigen.get().getBalanceAvailable() + movimientoOrigen.getValor());
 				// si el saldo disponible acepta la validadcion 
 				// se hacer el seteo en el saldo total 
 
@@ -323,11 +323,11 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 														productoOrigen.get().getId() ,
 														"GMF",
 													    "Debit",
-														productoOrigen.get().getSaldo() ,
-														productoOrigen.get().getSaldoDisponible(),
+														productoOrigen.get().getBalance() ,
+														productoOrigen.get().getBalanceAvailable(),
 														saldoInicialOrigen,
 													    movimientoOrigen.getValor(),
-														productoOrigen.get().getSaldo(),
+														productoOrigen.get().getBalance(),
 														movimientoOrigen.getCuentaDestino()														  
 				 );
 
@@ -337,11 +337,11 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 														productoDestiny.get().getId() ,
 														"GMF",
 													    "Credit",
-														productoDestiny.get().getSaldo() ,
-														productoDestiny.get().getSaldoDisponible(),
+														productoDestiny.get().getBalance() ,
+														productoDestiny.get().getBalanceAvailable(),
 														saldoInicialDestino,
 													    movimientoOrigen.getValor(),
-														productoDestiny.get().getSaldo(),0														  
+														productoDestiny.get().getBalance(),0														  
 				 );
 
 

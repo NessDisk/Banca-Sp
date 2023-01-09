@@ -31,12 +31,13 @@ export class ProductCreateComponent implements OnInit {
                   }
 
                   productCreate():void{
-                    const product = new  Product(this.typeAccount,this.noAccount,"activo",10,this.clienteId);
+                    const product = new  Product(this.typeAccount,"enabled",this.clienteId,false);
+                   console.log(product);
+                   
                     this.productService.saveProduct(product ).subscribe(
                       (response) =>{
                         if(response.peticionExitosa){
-                          console.log(response.datos) ;
-                
+                          console.log(response.datos) ;                
                         }
                       },err =>{
                         console.log(err)

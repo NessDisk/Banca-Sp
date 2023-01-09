@@ -22,13 +22,13 @@ export class ProductGetComponent implements OnInit {
   product:Product[] =[];
   
   
-  client:Client;
+  client:Client ;
 
 
   id_Type:string; //<-
   idNum:number;  // <-
-  fisrtName:string; //<-
-  lastName:string; //<-
+  fisrtName:string ; //<-
+  lastName:string ; //<-
   email:string; //<-
   birthdate:Date; //<-
   userCreation:string;
@@ -40,6 +40,7 @@ export class ProductGetComponent implements OnInit {
   //Values Update
   triggerUpdateClient: boolean ;
 
+  load:boolean= false;
 
 
   suscription:Subscription;
@@ -64,13 +65,13 @@ this.triggerUpdateClient = false;
   ngOnInit(): void {
     this.clienteId = this.route.snapshot.params['id'];    
 
-    this.loadProduct();
     this.loadClient();
+    this.loadProduct();
     this.triggerUpdateClient = false;
-
+    
     this.suscription = this.productService.refresh$.subscribe(()=>{
       this.loadProduct();
-      
+      // this.loadClient();
 
     });
     
@@ -103,9 +104,8 @@ this.triggerUpdateClient = false;
     this.productService.deleteProduct( productId).subscribe(
       (response) =>{
         if(response.peticionExitosa){
-          this.product = response.datos;
-         
-        
+          // this.product = response.datos;    
+          console.log("Porduct was canceled")  
         }
       },err =>{
         console.log(err)
@@ -118,8 +118,8 @@ this.triggerUpdateClient = false;
     this.productService.UpdateStatus(productId, StatusName ).subscribe(
       (response) =>{
         if(response.peticionExitosa){
-          this.product = response.datos;  
-      
+          // this.product = response.datos;  
+          console.log("Porduct status was changed")  
         }
       },err =>{
         console.log(err)
@@ -132,6 +132,7 @@ loadClient():void{
     (response) =>{
       if(response.peticionExitosa){
         this.client = response.datos;  
+        this.load = true;
       }
     },err =>{
       console.log(err)
