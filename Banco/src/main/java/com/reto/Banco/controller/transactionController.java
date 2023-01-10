@@ -63,6 +63,9 @@ public class transactionController {
 				return new ResponseEntity<>(respuesta, estadoHttp);
 			}
 
+	
+
+
 			if (!producto.get().getState().equals("cancelled")) {
 				transaction.setInitialBalance(producto.get().getBalance());
 
@@ -223,6 +226,7 @@ public class transactionController {
 				respuesta.setPeticionExitosa(false);
 				estadoHttp = HttpStatus.CONFLICT;				
 				return new ResponseEntity<>(respuesta, estadoHttp);
+			
 			} else if(producto.get().getBalanceAvailable() - transaction.getValue() < -3000000 ){
 				mensaje = "1 - Checking  mov shouldn´t be less than $US 3.000.000.00 in the balance.";		
 				respuesta.setDatos(datos);
@@ -231,6 +235,15 @@ public class transactionController {
 				estadoHttp = HttpStatus.CONFLICT;				
 				return new ResponseEntity<>(respuesta, estadoHttp);
 
+			}
+
+			if (State.disenabled.toString().equalsIgnoreCase( producto.get().getState().toString())   ) {
+				mensaje = "1 - Disenabled accounts mustn´t allow a debit mov type.";		
+				respuesta.setDatos(datos);
+				respuesta.setMensaje(mensaje);
+				respuesta.setPeticionExitosa(false);
+				estadoHttp = HttpStatus.CONFLICT;				
+				return new ResponseEntity<>(respuesta, estadoHttp);
 			}
 
 
@@ -405,6 +418,37 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 					return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
 				}
 
+			if(Tipocuenta.Savings.toString().equalsIgnoreCase(productoOrigen.get().getTypeAccount()) &&
+						productoOrigen.get().getBalanceAvailable() - movimientoOrigen.getValue() < 0 
+			){
+				mensaje = "1 - Saving Mov shouldn´t be less than $US 0.00 in the balance.";		
+				mensajeRespuestaOrigen.setDatos(datos);
+				mensajeRespuestaOrigen.setMensaje(mensaje);
+				mensajeRespuestaOrigen.setPeticionExitosa(false);
+				estadoHttp = HttpStatus.CONFLICT;				
+				return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
+			} 
+			else if(productoOrigen.get().getBalanceAvailable() - movimientoOrigen.getValue() < -3000000 ){
+				mensaje = "1 - Checking  mov shouldn´t be less than $US 3.000.000.00 in the balance.";		
+				mensajeRespuestaOrigen.setDatos(datos);
+				mensajeRespuestaOrigen.setMensaje(mensaje);
+				mensajeRespuestaOrigen.setPeticionExitosa(false);
+				estadoHttp = HttpStatus.CONFLICT;				
+				return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
+
+			}
+
+
+			if (State.disenabled.toString().equalsIgnoreCase( productoOrigen.get().getState().toString())   ) {
+				mensaje = "1 - Disenabled accounts mustn´t allow a debit mov type.";		
+				mensajeRespuestaOrigen.setDatos(datos);
+				mensajeRespuestaOrigen.setMensaje(mensaje);
+				mensajeRespuestaOrigen.setPeticionExitosa(false);
+				estadoHttp = HttpStatus.CONFLICT;				
+				return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
+			}
+
+
 				//verificador numero cuenta.  <<- mas adelante  validaddores
 				
 				
@@ -548,7 +592,7 @@ public ResponseEntity<GeneralResponse<List<TransactionEntity>>> getAllMovByIdPro
 			return value;
 		}
 
-		public enum Tipocuenta
+	public enum Tipocuenta
 		{
 			Savings,
 			checking
@@ -559,6 +603,13 @@ public ResponseEntity<GeneralResponse<List<TransactionEntity>>> getAllMovByIdPro
         dispous, 
         withdraw,
 		transfer
+    }
+
+	public enum State
+    {
+        enabled,
+        disenabled,
+        cancelled
     }
     
 }
