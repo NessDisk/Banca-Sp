@@ -13,6 +13,6 @@ import com.reto.Banco.entity.TransactionEntity;
 public interface TransactionRepository extends  JpaRepository< TransactionEntity, Long  > {
 
 
-    List<TransactionEntity> findBycuentaId(long cuentaId);
+    List<TransactionEntity> findByaccountId(long cuentaId);
     
 }

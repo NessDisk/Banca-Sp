@@ -4,10 +4,11 @@
       <tr>
         <th scope="col">Date</th>
         <th scope="col">Description</th>
-        <th scope="col">Financial Mov</th>
         <th scope="col">Type Mov</th>
+        <th scope="col">Financial Mov</th>
         <th scope="col">value</th>
         <th scope="col">Balance</th>
+        <th scope="col">Available Balance  </th>
       </tr>
     </thead>
     <tbody>
@@ -15,11 +16,12 @@
                <!-- {{cli.id}} -->
       <tr  *ngFor="let mov of movement">
         <th >{{mov.dateCreate}}</th>
-        <td> {{mov.Description}}</td>
+        <td> {{mov.description}}</td>
         <td>{{mov.typeDebito}}</td>
         <td>{{mov.typeTransaction}}</td>
-        <td>{{mov.valor}}</td>
-        <td>{{mov.saldoFinal}}</td>
+        <td>{{mov.value}}</td>
+        <td>{{mov.balance}}</td>
+        <td>{{mov.avaiableBalance}}</td>
       </tr>
     </tbody>
   </table>

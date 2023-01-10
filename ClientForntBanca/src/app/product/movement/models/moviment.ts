@@ -2,15 +2,15 @@ export class Movement{
 id:number;
 typeTransaction:String;
 dateCreate: Date;
-cuentaId: number;
-Description: String;
+AccountId: number;
+description: String;
 typeDebito : String;
-Saldo : number;
-SaldoDisponible : number;
-saldoInicial: number;
-valor: number;
-saldoFinal: number;
-cuentaDestino: number ;
+balance : number;
+avaiableBalance : number;
+initialBalance: number;
+value: number;
+finalBalance: number;
+destinyAccount: number ;
 
 constructor(
     typeTransaction:String,
@@ -22,10 +22,10 @@ constructor(
             )
 {
     this.typeTransaction=typeTransaction;
-    this.cuentaId=cuentaId;
-    this.Description=Description;
-    this.valor=valor;
-    this.cuentaDestino=cuentaDestino;
+    this.AccountId=cuentaId;
+    this.description=Description;
+    this.value=valor;
+    this.destinyAccount=cuentaDestino;
 }
 
 }

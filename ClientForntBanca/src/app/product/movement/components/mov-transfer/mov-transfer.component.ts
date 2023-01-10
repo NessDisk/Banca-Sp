@@ -39,10 +39,10 @@ export class MovTransferComponent implements OnInit {
   AddDisposet():void{
 
     const movement = new Movement(this.typeTransaction,
-                                this.cuentaDestino,
-                                this.Descripcion,
-                                this.valor,
-                                this.cuentaDestino);
+                                  this.cuentaDestino,
+                                  this.Descripcion,
+                                  this.valor,
+                                  this.cuentaDestino);
 
     if(this.typeTransaction == "Deposit")
     {

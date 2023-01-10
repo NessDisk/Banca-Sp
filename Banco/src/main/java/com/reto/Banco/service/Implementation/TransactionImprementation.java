@@ -25,7 +25,7 @@ public class TransactionImprementation  implements TransactionService {
     @Override
     public List<TransactionEntity> findByclienteId(long ProductId) throws Exception {
         // TODO Auto-generated method stub
-        return  Transactionrepository.findBycuentaId(ProductId);
+        return  Transactionrepository.findByaccountId(ProductId);
     }
     
 }

@@ -25,103 +25,57 @@ public class TransactionEntity {
 	private String typeTransaction;
 	
 
-	@Column(name="date_create")
+	@Column(name="dateCreate")
 	private LocalDate dateCreate;
 
-	@Column(name = "cuenta_id")
-	private long cuentaId;
+	@Column(name = "accountId")
+	private long accountId;
 
 	@Column(name="description")
-	private String Description;
+	private String description;
 
-	//débito or  crédito
-	@Column(name="Type_Debito")
+	//débito or  credict
+	@Column(name="typeDebito")
 	private String typeDebito;
 
-	@Column(name="Saldo")
-	private double Saldo;
+	@Column(name="balance")
+	private double balance;
 
-	@Column(name="SaldoDisponible")
-	private double SaldoDisponible;
+	@Column(name="AvaiableBalance")
+	private double avaiableBalance;
 
-	@Column(name = "saldo_inicial")	
-	private double saldoInicial;
+	@Column(name = "initialBalance")	
+	private double initialBalance;
 	
-	@Column(name = "valor")
-	private double valor;
+	@Column(name = "value")
+	private double value;
 	
-	@Column(name = "saldo_final")	
-	private double saldoFinal;
+	@Column(name = "finalBalance")	
+	private double finalBalance;
 
-	@Column(name="cuenta_destino")
-	private long cuentaDestino;
+	@Column(name="destinyAccount")
+	private long destinyAccount;
 
-	public TransactionEntity(String typeTransaction, LocalDate dateCreate, long cuentaId, String descripcion,
-	String typeDébito, double saldo, double saldoDisponible, double saldoInicial, double valor,
-	double saldoFinal, long cuentaDestino) {
+	
+
+	public TransactionEntity(String typeTransaction, LocalDate dateCreate, long AccountId, String descripcion,
+	String typeDébito, double balance, double avaiableBalance, double initialBalance, double value,
+	double finalBalance, long cuentaDestino) {
 			this.typeTransaction = typeTransaction;
 			this.dateCreate = dateCreate;
-			this.cuentaId = cuentaId;
-			Description = descripcion;
-			typeDebito = typeDébito;
-			Saldo = saldo;
-			SaldoDisponible = saldoDisponible;
-			this.saldoInicial = saldoInicial;
-			this.valor = valor;
-			this.saldoFinal = saldoFinal;
-			this.cuentaDestino = cuentaDestino;
+			this.accountId = AccountId;
+			this.description = descripcion;
+			this.typeDebito = typeDébito;
+			this.balance = balance;
+			this.avaiableBalance = avaiableBalance;
+			this.initialBalance = initialBalance;
+			this.value = value;
+			this.finalBalance = finalBalance;
+			this.destinyAccount = cuentaDestino;
 												}
 
 	public TransactionEntity() {}
 
-	
-	public String getTypeDebito() {
-		return typeDebito;
-	}
-
-	public void setTypeDebito(String typeDébito) {
-		typeDebito = typeDébito;
-	}
-
-	public long getCuentaId() {
-		return cuentaId;
-	}
-
-	public void setCuentaId(long cuentaId) {
-		this.cuentaId = cuentaId;
-	}
-
-	public long getCuentaDestino() {
-		return cuentaDestino;
-	}
-
-	public void setCuentaDestino(long cuentaDestino) {
-		this.cuentaDestino = cuentaDestino;
-	}
-
-	public double getSaldoInicial() {
-		return saldoInicial;
-	}
-
-	public void setSaldoInicial(double saldoInicial) {
-		this.saldoInicial = saldoInicial;
-	}
-
-	public double getValor() {
-		return valor;
-	}
-
-	public void setValor(double valor) {
-		this.valor = valor;
-	}
-
-	public double getSaldoFinal() {
-		return saldoFinal;
-	}
-
-	public void setSaldoFinal(double saldoFinal) {
-		this.saldoFinal = saldoFinal;
-	}
 
 	public Long getId() {
 		return id;
@@ -147,27 +101,77 @@ public class TransactionEntity {
 		this.dateCreate = dateCreate;
 	}
 
+	public long getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(long accountId) {
+		this.accountId = accountId;
+	}
+
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 
-	public void setDescription(String descripcion) {
-		Description = descripcion;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
-	public double getSaldo() {
-		return Saldo;
+	public String getTypeDebito() {
+		return typeDebito;
 	}
 
-	public void setSaldo(Double saldo) {
-		Saldo = saldo;
+	public void setTypeDebito(String typeDebito) {
+		this.typeDebito = typeDebito;
 	}
 
-	public double getSaldoDisponible() {
-		return SaldoDisponible;
+	public double getBalance() {
+		return balance;
 	}
 
-	public void setSaldoDisponible(double saldoDisponible) {
-		SaldoDisponible = saldoDisponible;
+	public void setBalance(double balance) {
+		this.balance = balance;
 	}
+
+	public double getAvaiableBalance() {
+		return avaiableBalance;
+	}
+
+	public void setAvaiableBalance(double avaiableBalance) {
+		this.avaiableBalance = avaiableBalance;
+	}
+
+	public double getInitialBalance() {
+		return initialBalance;
+	}
+
+	public void setInitialBalance(double initialBalance) {
+		this.initialBalance = initialBalance;
+	}
+
+	public double getValue() {
+		return value;
+	}
+
+	public void setValue(double value) {
+		this.value = value;
+	}
+
+	public double getFinalBalance() {
+		return finalBalance;
+	}
+
+	public void setFinalBalance(double finalBalance) {
+		this.finalBalance = finalBalance;
+	}
+
+	public long getDestinyAccount() {
+		return destinyAccount;
+	}
+
+	public void setDestinyAccount(long destinyAccount) {
+		this.destinyAccount = destinyAccount;
+	}
+
+
 }
