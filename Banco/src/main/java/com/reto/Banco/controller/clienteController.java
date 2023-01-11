@@ -146,7 +146,6 @@ public class clienteController {
                                                       client.getLastName(), 
                                                       client.getEmail(), 
                                                       client.getBirthdate(),
-                                                      client.getBirthdate().toString(),
                                                       client.getUserCreation(),
                                                       LocalDate.now(),
                                                       LocalDate.now(),
@@ -201,9 +200,9 @@ public class clienteController {
 		HttpStatus estadoHttp = null;    
 
         try{
-
-            
             // client.setId(id);
+            
+
 
             ClientTable  finalClient = new ClientTable(client.getId_Type(),
                                                       client.getIdNum(),
@@ -211,12 +210,16 @@ public class clienteController {
                                                       client.getLastName(), 
                                                       client.getEmail(), 
                                                       client.getBirthdate(),
-                                                      client.getBirthdate().toString(),
-                                                      client.getUserCreation(),
-                                                      client.getDatecreation(),
+                                                    //   client.getUserCreation(),
+                                                    "test",
+                                                    //   client.getDatecreation(),
+                                                    LocalDate.now(), 
                                                       LocalDate.now(),
-                                                      client.getUserUpdate()); 
-                                                      
+                                                      //client.getUserUpdate()
+                                                      "Admin"
+                                                      ); 
+            
+                        System.out.println("Test");
             finalClient.setId(id);
 
             datos = clientService.UpdateClient(finalClient);

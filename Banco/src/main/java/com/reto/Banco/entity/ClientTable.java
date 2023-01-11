@@ -40,10 +40,7 @@ public class ClientTable {
     private  String email ;
 
     @Column(name="birthdate")
-    private  LocalDate birthdate;
-
-    @Column(name="auxBirthdate")
-    private  String auxBirthdate;    
+    private  LocalDate birthdate;   
 
     @Column(name="UserCreation")
      private  String userCreation;
@@ -58,14 +55,14 @@ public class ClientTable {
     private  String userUpdate;
 
     public ClientTable(String id_Type, int idNum, String fisrtName, String lastName, String email, LocalDate birthdate,
-            String auxBirthdate, String userCreation, LocalDate datecreation, LocalDate dateudpate, String userUpdate) {
+             String userCreation, LocalDate datecreation, LocalDate dateudpate, String userUpdate) {
         this.id_Type = id_Type;
         this.idNum = idNum;
         this.fisrtName = fisrtName;
         this.lastName = lastName;
         this.email = email;
         this.birthdate = birthdate;
-        this.auxBirthdate = auxBirthdate;
+       
         this.userCreation = userCreation;
         this.datecreation = datecreation;
         this.dateudpate = dateudpate;
@@ -109,12 +106,7 @@ public class ClientTable {
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
-    public String getAuxBirthdate() {
-        return auxBirthdate;
-    }
-    public void setAuxBirthdate(String auxBirthdate) {
-        this.auxBirthdate = auxBirthdate;
-    }
+
     public String getLastName() {
         return lastName;
     }

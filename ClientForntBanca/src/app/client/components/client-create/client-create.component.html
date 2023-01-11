@@ -4,22 +4,20 @@
 -->
 
 <div class="container">
-    <div class=" text-center mt-5 ">
-
-        <h1 >Create client</h1>
-            
-        
-    </div>
-
-
 <div class="row ">
+    
   <div class="col-lg-7 mx-auto">
+    <h5 class="card-header">
+        Create client
+    </h5>
     <div class="card mt-2 mx-auto p-4 bg-light">
+       
         <div class="card-body bg-light">
    
         <div class = "container">
-            <form (ngSubmit)="onCreate()" novalidate #f="ngForm">       
-
+           
+            <form (ngSubmit)="onCreate()" [formGroup]="createFormClient"  >       
+                
         <div class="controls">
 
             <div class="row">
@@ -29,7 +27,8 @@
                         <select id="form_type_client"
                                 name="form_id_Type"
                                 class="form-control"
-                                required="required"
+                                formControlName="idType"
+                                [class.is-invalid]="createFormClient.get('idType')?.invalid && createFormClient.get('idType')?.touched"                                
                                 [(ngModel)]="id_Type"
                                 data-error="Please specify your need.">
                             <option value="" selected disabled>--Select IdType--</option>
@@ -43,12 +42,15 @@
                     <div class="form-group">
                         <label  for="idNum">IdNum *</label>
                         <input  id="idNum"
-                                type="text"
+                                type="number"
                                 name="idNum"
                                 class="form-control"
+                                formControlName="idNum1"
+                                [class.is-invalid]="createFormClient.get('idNum1')?.invalid && createFormClient.get('idNum1')?.touched"
+                                
                                 [(ngModel)]="idNum"
                                 placeholder="Please enter IdNum *"
-                                required="required"
+                               
                                 data-error="idNum is required.">
                                                         </div>
                 </div>
@@ -63,9 +65,11 @@
                                 type="text"
                                 name="fisrtName"
                                 class="form-control"
+                                formControlName="name1"
+                                [class.is-invalid]="createFormClient.get('name1')?.invalid && createFormClient.get('name1')?.touched"
                                 [(ngModel)]="fisrtName"
                                 placeholder="Please enter the fisrtName *"
-                                required="required"
+                             
                                 data-error="fisrtName is required.">
                     </div>
                 </div>
@@ -77,9 +81,11 @@
                                type="text" 
                                name="lastName" 
                                class="form-control" 
+                               formControlName="name2"
+                               [class.is-invalid]="createFormClient.get('name2')?.invalid && createFormClient.get('name2')?.touched"
                                [(ngModel)]="lastName"
                                placeholder="Please enter the lastName*" 
-                               required="required" 
+                              
                                data-error="Valid lastName is required.">
                         
                     </div>
@@ -87,17 +93,19 @@
             </div>
 
 
-            <div class="row">
+            <div class="row" >
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="email">email *</label>
-                        <input  id="email"
-                                type="email"
-                                name="email" 
-                                class="form-control"
+                    <div class="emailBox">
+                        <label for="email" class="form-label">email *</label>
+                        <input  type="email"
+                                 class="form-control"
+                                id="email"
+                                formControlName="email1"
+                                 [class.is-invalid]="createFormClient.get('email1')?.invalid && createFormClient.get('email1')?.touched"
                                 [(ngModel)]="email"
                                 placeholder="Please enter your email *"   
-                                required="required"                              
+                                required="required"
+                                name="primaryEmail" 
                                 data-error="Valid email is required.">
                         
                     </div>
@@ -109,9 +117,10 @@
                                 type="date"
                                 name="birthdate" 
                                 class="form-control" 
+                                formControlName="date1"
+                                [class.is-invalid]="createFormClient.get('date1')?.invalid && createFormClient.get('date1')?.touched"
                                 [(ngModel)]="birthdate"
-                                placeholder="Please enter the birthdate *" 
-                                required="required" 
+                                placeholder="Please enter the birthdate *"                                
                                 data-error="birthdate is required.">
                         
                     </div>
@@ -129,12 +138,31 @@
                 <div class="col-md-7">
                     
                 
-                <button class="btn btn-success w-100" [disabled]="!f.valid">Creste client</button>
+                <button class="btn btn-success w-100" [disabled]="createFormClient.invalid">Create</button>
             </div>
         </div>
     </div>
     </form>
-    
+<!-- 
+    <form [formGroup]="createFormClient" (ngSubmit)="create()" >
+        <div>
+        <label for="email">email</label>
+        <input formControlName="email1" [class.is-invalid]="createFormClient.get('email1')?.invalid && createFormClient.get('email1')?.touched"
+        class="form-control"        
+        >
+    </div>
+    <div>
+        <label for="name">name</label>
+        <input formControlName="name1" [class.is-invalid]="createFormClient.get('name1')?.invalid && createFormClient.get('name1')?.touched"
+        class="form-control"     
+        >
+
+    </div>
+
+        <button type="submit" [disabled]="createFormClient.invalid" > Action </button>
+
+    </form>
+     -->
 </div>
 </div>
 </div>

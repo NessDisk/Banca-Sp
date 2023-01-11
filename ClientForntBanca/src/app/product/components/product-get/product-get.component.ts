@@ -1,5 +1,6 @@
 
 import { Component, Injectable, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { observable ,Subject, Subscription } from 'rxjs';
 import { Client } from 'src/app/client/models/client';
@@ -24,6 +25,8 @@ export class ProductGetComponent implements OnInit {
   
   client:Client ;
 
+  RandomNum:number;
+
 
   id_Type:string; //<-
   idNum:number;  // <-
@@ -44,7 +47,10 @@ export class ProductGetComponent implements OnInit {
 
 
   suscription:Subscription;
-  constructor(private productService: ProductServices, private route: ActivatedRoute, private router: Router){
+  constructor(  private productService: ProductServices,
+                private route: ActivatedRoute,
+                private router: Router, 
+                private formBuilder: FormBuilder){
 
     route.params.subscribe(val => {
       // put the code from `ngOnInit` here
@@ -52,6 +58,20 @@ export class ProductGetComponent implements OnInit {
     });
 
    }
+
+
+   createFormClient = this.formBuilder.group({
+    email1:[ undefined,[ Validators.required ,
+                          Validators.email ,
+                          Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$") ]],
+    name1:[undefined, [ Validators.required, Validators.minLength(2)]],
+    name2:[undefined, [ Validators.required, Validators.minLength(2)]],
+    idNum1:[undefined, [ Validators.required,]],
+    idType:[undefined, [ Validators.required,]],
+    date1:[undefined, [ Validators.required, ]],
+  });
+
+   
 
    ActiveChangeDataClient():void
    {
@@ -64,10 +84,13 @@ this.triggerUpdateClient = false;
   
   ngOnInit(): void {
     this.clienteId = this.route.snapshot.params['id'];    
-
+    var precision = 100; // 2 decimals
+    this.RandomNum = Math.round(Math.random() *20) ;
     this.loadClient();
     this.loadProduct();
     this.triggerUpdateClient = false;
+
+    //organize client
     
     this.suscription = this.productService.refresh$.subscribe(()=>{
       this.loadProduct();
@@ -76,13 +99,12 @@ this.triggerUpdateClient = false;
     });
     
   }
-  refreshComponent():void{
-    this.router.navigate([this.router.url])
- }
 
- reloadCurrentPage() {
-  window.location.reload();
- }
+  
+
+
+  
+
 
 
   loadProduct():void{
@@ -142,6 +164,7 @@ loadClient():void{
 
 updateCliente():void{
 
+  // const client = new Client(this.id_Type,this.idNum ,this.fisrtName, this.lastName, this.email, this.birthdate, this.client.userCreation,"Admin" );
   const newclient = new  Client(this.id_Type,
                             this.idNum,
                             this.fisrtName, 
@@ -160,14 +183,28 @@ updateCliente():void{
     (response) =>{
       if(response.peticionExitosa){
         this.client = response.datos;  
+        this.ActiveChangeDataClient();
       }
     },err =>{
       console.log(err)
     }
   );
+}
 
 
+loadExemptGMF(productId: number  ):void{
 
+  this.productService.putExemptGMF( productId).subscribe(
+    (response) =>{
+      if(response.peticionExitosa){
+        this.client = response.datos;  
+        this.load = true;
+        this.loadProduct();
+      }
+    },err =>{
+      console.log(err)
+    }
+  );
 }
 
 uploadDatauser():void{

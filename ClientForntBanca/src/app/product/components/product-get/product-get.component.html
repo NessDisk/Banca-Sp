@@ -7,9 +7,9 @@
               <div class=" prueba card">
                 <div class="card-body">
                   <div  *ngIf="load" class="d-flex flex-column align-items-start text-start">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                    <img src='https://bootdey.com/img/Content/avatar/avatar1.png' alt="Admin" class="rounded-circle" width="150">
                     <div class="mt-3"  *ngIf="triggerUpdateClient == false">
-                      <p id="tess" >{{client.fisrtName + "/ " + client.lastName}} </p>
+                      <h5 id="tess" >{{client.fisrtName + "   " + client.lastName  }} </h5>
                       <p class="text-dark mb-1">id_Type: {{client.id_Type}}</p>
                       <p class="text-dark mb-1">idNum:   {{client.idNum}}</p>
                       <p class="text-dark mb-1">fisrtName: {{client.fisrtName}}</p>
@@ -17,43 +17,52 @@
                       <p class="text-dark mb-1">email: {{client.email}}</p>
                       <p class="text-dark mb-1">birthdate: {{client.birthdate}}</p>
                       <button class="btn btn-primary" (click)="ActiveChangeDataClient()">Change</button>
-                      <!-- <button class="btn btn-outline-primary">cancel</button> -->
+            
                     </div>
-                    <!--  [(ngModel)]="id_Type"-->
+                   
                     <div class="mt-3" *ngIf="triggerUpdateClient == true">
-                      <!-- <h6>{{client.fisrtName + "/ " + client.lastName}} </h6> -->
+                                           
+                      <form [formGroup]="createFormClient">
+
+                      
                       <p class="text-dark mb-1">
                         <label for="email">Nuw IdType *</label>
                         <select id="form_type_client"
                         name="form_id_Type"
                         class="form-control"
-                        required="required"
+                        formControlName="idType"
+                        [class.is-invalid]="createFormClient.get('idType')?.invalid && createFormClient.get('idType')?.touched"     
                         [(ngModel)]="id_Type"
                         data-error="Please specify your need.">
                         <option value="" selected disabled>--Select IdType--</option>
                         <option >CC </option>
                         <option >Nit </option>
-                        <option >VIsa </option>
+                        <option >Visa </option>
                         </select>  
                       </p>
                       <p class="text-dark mb-1">
                         <label  for="idNum">IdNum *</label>
                         <input  id="idNum"
-                                type="text"
+                                type="number"
                                 name="idNum"
                                 class="form-control"
                                 [(ngModel)]="idNum"
                                 placeholder="Please enter IdNum *"
-                                required="required"
+                                formControlName="idNum1"
+                                [class.is-invalid]="createFormClient.get('idNum1')?.invalid && createFormClient.get('idNum1')?.touched"
                                 data-error="idNum is required."></p>
                       <p class="text-dark mb-1">        <label  for="fisrtName">fisrtName *</label>
                         <input  id="fisrtName"
                                 type="text"
                                 name="fisrtName"
                                 class="form-control"
+
+                                formControlName="name1"
+                                [class.is-invalid]="createFormClient.get('name1')?.invalid && createFormClient.get('name1')?.touched"
+
                                 [(ngModel)]="fisrtName"
                                 placeholder="Please enter the fisrtName *"
-                                required="required"
+                            
                                 data-error="fisrtName is required.">
                               </p>
                       <p class="text-dark mb-1">  <label for="lastName">lastName *</label>
@@ -61,6 +70,8 @@
                                type="text" 
                                name="lastName" 
                                class="form-control" 
+                               formControlName="name2"
+                               [class.is-invalid]="createFormClient.get('name2')?.invalid && createFormClient.get('name2')?.touched"
                                [(ngModel)]="lastName"
                                placeholder="Please enter the lastName*" 
                                required="required" 
@@ -70,6 +81,8 @@
                                 type="email"
                                 name="email" 
                                 class="form-control"
+                                formControlName="email1"
+                                [class.is-invalid]="createFormClient.get('email1')?.invalid && createFormClient.get('email1')?.touched"
                                 [(ngModel)]="email"
                                 placeholder="Please enter your email *"   
                                 required="required"                              
@@ -79,14 +92,17 @@
                                 type="date"
                                 name="birthdate" 
                                 class="form-control" 
+                                formControlName="date1"
+                                [class.is-invalid]="createFormClient.get('date1')?.invalid && createFormClient.get('date1')?.touched"
                                 [(ngModel)]="birthdate"
                                 placeholder="Please enter the birthdate *" 
                                 required="required" 
                                 data-error="birthdate is required."></p>
                                 <br>
-                      <button class="btn btn-primary" style="margin-right: 5px;" (click)="ActiveChangeDataClient()">update</button>
+                      <button class="btn btn-primary" style="margin-right: 5px;" (click)="updateCliente()" [disabled]="createFormClient.invalid">update</button>
                       <button class="btn btn-secondary" (click)="ActiveChangeDataClient()">cancel</button>
-
+                      
+                    </form>
                       <!-- <button class="btn btn-outline-primary">cancel</button> -->
                     </div>
 
@@ -189,23 +205,39 @@
                     <th scope="col">Movs</th>          
                     <th scope="col">Trans</th>     
                     <th scope="col">Ch-Status</th>
-                    <th scope="col">Cancelate</th>                         
+                    <th scope="col">Cancelate</th>   
+                    <th scope="col">exempt GMF</th>                         
                   </tr>
                 </thead>
-                <tbody>
+                <tbody  *ngFor="let prod of  product">
                     <!-- <tr *ngFor="let cli of client"> -->
-                        <!-- {{cli.id}} -->
-                  <tr *ngFor="let prod of  product">                   
+                        <!-- {{cli.id}} 
+                        *ngIf="let.excludeGMF == true" 
+                        -->
+                  <tr  *ngIf="prod.excludeGMF == true" class="table-info" >                   
                     <td> {{prod.typeAccount}}</td>
                     <td> {{prod.numAccont}}</td>
                     <td> {{prod.state}}</td>
                     <td> {{prod.dateCreate}}</td>
-                    <td> {{prod.balance}}</td> 
+                    <td> ${{prod.balance}}</td> 
                     <th scope="col"><button type="button" class="btn btn-dark"  routerLink="/movst/{{prod.id}}" routerLinkActive="active" >Mov</button></th>
                     <td><button type="button" class="btn btn-success"  routerLink="/mov/{{prod.id}}" routerLinkActive="active" >Trans</button> </td>  
                     <td><button type="button" class="btn btn-warning" (click)="ChangeStatus(prod.id,prod.state)"  >Ch-Status</button> </td>
-                    <td><button type="button"   class="btn btn-danger"  (click)="DeleteProduct(prod.id)"  >Cancelate</button> </td>                       
-                  </tr>                 
+                    <td><button type="button"   class="btn btn-danger"  (click)="DeleteProduct(prod.id)"  >Cancelate</button> </td>   
+                    <td><button type="button"   class="btn btn-info"  (click)="loadExemptGMF(prod.id)"  >exempt</button> </td>                  
+                  </tr>        
+                  <tr  *ngIf="prod.excludeGMF == false"  >                   
+                    <td> {{prod.typeAccount}}</td>
+                    <td> {{prod.numAccont}}</td>
+                    <td> {{prod.state}}</td>
+                    <td> {{prod.dateCreate}}</td>
+                    <td> ${{prod.balance}}</td> 
+                    <th scope="col"><button type="button" class="btn btn-dark"  routerLink="/movst/{{prod.id}}" routerLinkActive="active" >Mov</button></th>
+                    <td><button type="button" class="btn btn-success"  routerLink="/mov/{{prod.id}}" routerLinkActive="active" >Trans</button> </td>  
+                    <td><button type="button" class="btn btn-warning" (click)="ChangeStatus(prod.id,prod.state)"  >Ch-Status</button> </td>
+                    <td><button type="button"   class="btn btn-danger"  (click)="DeleteProduct(prod.id)"  >Cancelate</button> </td>   
+                    <td><button type="button"   class="btn btn-info"  (click)="loadExemptGMF(prod.id)"  >exempt</button> </td>                  
+                  </tr>               
                 </tbody>
               </table>
 

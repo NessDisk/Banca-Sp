@@ -17,7 +17,7 @@ import { MovWithdrawComponent } from './product/movement/components/mov-withdraw
 import { MovTransferComponent } from './product/movement/components/mov-transfer/mov-transfer.component';
 
 import{HttpClientModule} from '@angular/common/http';
-import{FormsModule} from '@angular/forms';
+import{FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { LoginComponentComponent } from './login/login-component/login-component.component';
 import { InitComponentComponent } from './Navegation/component/init-component/init-component.component';
 import { RouterModule } from '@angular/router';
@@ -49,7 +49,8 @@ import { MovStatusComponent } from './product/movement/components/mov-status/mov
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule
     // RouterModule
   ],
   exports: [

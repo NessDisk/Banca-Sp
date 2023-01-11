@@ -1,5 +1,10 @@
-<p>mov-status works!</p>
-<table class="table">
+
+
+<div class="container">
+  <h5 class="card-header">
+   Movs Product
+</h5>
+  <table class="table">
     <thead>
       <tr>
         <th scope="col">Date</th>
@@ -19,11 +24,11 @@
         <td> {{mov.description}}</td>
         <td>{{mov.typeDebito}}</td>
         <td>{{mov.typeTransaction}}</td>
-        <td>{{mov.value}}</td>
-        <td>{{mov.balance}}</td>
-        <td>{{mov.avaiableBalance}}</td>
+        <td>${{mov.value}}</td>
+        <td>${{mov.balance}}</td>
+        <td>${{mov.avaiableBalance}}</td>
       </tr>
     </tbody>
   </table>
-
+</div>
   <!-- {{movement|json}} -->

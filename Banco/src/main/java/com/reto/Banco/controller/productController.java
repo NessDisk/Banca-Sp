@@ -249,6 +249,52 @@ public class productController   {
 		return new ResponseEntity<>(respuesta, estadoHttp);
 	}
 
+    // ---------  exempt GMF ------------
+
+
+    @PutMapping("/exemptgmf/{idClient}")
+	public   ResponseEntity<GeneralResponse<Long>>  exemptGMF(@PathVariable("idClient") Long productId ) {
+
+        GeneralResponse<Long> respuesta = new GeneralResponse<>();
+		long datos = 0;
+		String mensaje = null;
+		HttpStatus estadoHttp = null;
+        Optional<ProductEntity> productEntityCheck = null;
+        List<ProductEntity> Products= null;
+
+        try{            
+
+            productEntityCheck = productSevice.findById(productId);
+            Products = productSevice.findByclienteId(productEntityCheck.get().getClienteId());
+
+
+            
+            for(int i = 0; i < Products.size()  ; i++  )
+            {
+                Products.get(i).setGMF(false);
+                productSevice.CreateProduct(Products.get(i));
+            }
+
+            productEntityCheck.get().setGMF(true);
+
+            productSevice.CreateProduct(productEntityCheck.get());
+
+            datos = 0;
+            mensaje = "0 - Exempt GMF was put succesful in Db";
+            respuesta.setDatos(datos);
+            respuesta.setMensaje(mensaje);
+            estadoHttp = HttpStatus.OK;
+
+        } catch(Exception e){
+            mensaje = "There was an error. Contact the administrator";
+            respuesta.setMensaje(mensaje);
+            respuesta.setPeticionExitosa(false);
+            estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+
+        return new ResponseEntity<>(respuesta, estadoHttp);
+    }
+    
 
 
 

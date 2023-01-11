@@ -63,4 +63,14 @@ export class ProductServices  {
           })
         )
       }
+
+
+      public putExemptGMF(productId:number): Observable<any> {
+        return this.httpClient.put<any>(this.productUrl+"/exemptgmf/"+ productId, null) .pipe(
+          tap(()=> {
+            this._refresh$.next();
+          })
+        )
+      }
+
 }

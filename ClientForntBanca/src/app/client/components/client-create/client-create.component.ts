@@ -1,5 +1,6 @@
 import { getLocaleDateTimeFormat } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Client } from '../../models/client';
 import { ClienteService } from '../../services/client.services';
 
@@ -9,6 +10,9 @@ import { ClienteService } from '../../services/client.services';
   styleUrls: ['./client-create.component.css']
 })
 export class ClientCreateComponent implements OnInit {
+
+
+
 
   client : Client[] = [];
 
@@ -29,7 +33,23 @@ export class ClientCreateComponent implements OnInit {
   userUpdate:string;
 
 
-  constructor(private clientservices: ClienteService){}
+  
+  constructor(private clientservices: ClienteService , private formBuilder: FormBuilder ){
+    
+    
+  }
+  
+  createFormClient = this.formBuilder.group({
+    email1:[ undefined, [ Validators.required ,
+                          Validators.email ,
+                          Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$") ]],
+    name1:[undefined, [ Validators.required, Validators.minLength(2)]],
+    name2:[undefined, [ Validators.required, Validators.minLength(2)]],
+    idNum1:[undefined, [ Validators.required,]],
+    idType:[undefined, [ Validators.required,]],
+    date1:[undefined, [ Validators.required, ]],
+  });
+
 
   onCreate(): void{
     
@@ -50,6 +70,13 @@ export class ClientCreateComponent implements OnInit {
         }
       );
     
+  }
+
+  create():void{
+    console.log("MENSAJE DE PRUEBA");
+
+    console.log(this.createFormClient.value.email1);
+    console.log(this.createFormClient.value.name1);
   }
 
 
