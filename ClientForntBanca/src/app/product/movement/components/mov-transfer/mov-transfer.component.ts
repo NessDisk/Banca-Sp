@@ -78,7 +78,8 @@ export class MovTransferComponent implements OnInit {
             console.log(response.mensaje)
             if( response.mensaje == "1 - Savings mov shouldn´t be less than $US 0.00 in the balance."
               || response.mensaje ==  "1 - Checking  mov shouldn´t be less than $US 3.000.000.00 in the balance."
-            )
+              || response.mensaje == "1 - Disenabled accounts mustn´t allow a debit mov type."
+              )
             {              
               this.toastr.info(response.mensaje);
             }

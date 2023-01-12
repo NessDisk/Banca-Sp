@@ -48,7 +48,7 @@ public class transactionController {
     //create transaction
 
     @PostMapping("/disposet/{cuentaid}")
-    public ResponseEntity<GeneralResponse<Integer>>  consiginar(  @RequestBody TransactionEntity transaction ,
+    public ResponseEntity<GeneralResponse<Integer>>  deposit(  @RequestBody TransactionEntity transaction ,
      @PathVariable("cuentaid") Long cuentaId) {
         GeneralResponse<Integer> respuesta = new GeneralResponse<>();
 		Integer datos = null;
@@ -193,7 +193,7 @@ public class transactionController {
     
 
     @PostMapping("/withdraw/{idProducto}")
-	public ResponseEntity<GeneralResponse<Integer>> retirarSaldo(@RequestBody TransactionEntity transaction,
+	public ResponseEntity<GeneralResponse<Integer>> withdraw(@RequestBody TransactionEntity transaction,
 			@PathVariable("idProducto") long idCuenta) {
 		
 		
@@ -228,7 +228,7 @@ public class transactionController {
 				return new ResponseEntity<>(respuesta, estadoHttp);
 			} 
 			
-			else if(Tipocuenta.Savings.toString().equals(producto.get().getTypeAccount()) &&
+			else if(TypeAccount.Savings.toString().equals(producto.get().getTypeAccount()) &&
 			(producto.get().getBalance() - GMFBalanceAvaiable) - transaction.getValue() < 0 
 			){
 				
@@ -249,11 +249,11 @@ public class transactionController {
 
 			}
 
-			else if (State.disenabled.toString().equalsIgnoreCase( producto.get().getState().toString())   ) {
+			else if (State.disenabled.toString().equalsIgnoreCase( producto.get().getState())   ) {
 				mensaje = "1 - Disenabled accounts mustn´t allow a debit mov type.";		
 				respuesta.setDatos(datos);
 				respuesta.setMensaje(mensaje);
-				respuesta.setPeticionExitosa(false);
+				respuesta.setPeticionExitosa(true);
 				estadoHttp = HttpStatus.ALREADY_REPORTED;				
 				return new ResponseEntity<>(respuesta, estadoHttp);
 			}
@@ -458,7 +458,7 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 					return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
 				}
 				
-				else if(Tipocuenta.Savings.toString().equals(productoOrigen.get().getTypeAccount()) &&
+				else if(TypeAccount.Savings.toString().equals(productoOrigen.get().getTypeAccount()) &&
 				(productoOrigen.get().getBalance() -GMFBalanceAvaiableOrigin) - movOrigin.getValue() < 0 
 				){
 					//System.out.println(">>>>>> here <<<<<<");
@@ -480,11 +480,11 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 			}
 
 
-			else if (State.disenabled.toString().equalsIgnoreCase( productoOrigen.get().getState().toString())   ) {
+			else if (State.disenabled.toString().equalsIgnoreCase( productoOrigen.get().getState())   ) {
 				mensaje = "1 - Disenabled accounts mustn´t allow a debit mov type.";		
 				mensajeRespuestaOrigen.setDatos(datos);
 				mensajeRespuestaOrigen.setMensaje(mensaje);
-				mensajeRespuestaOrigen.setPeticionExitosa(false);
+				mensajeRespuestaOrigen.setPeticionExitosa(true);
 				estadoHttp = HttpStatus.ALREADY_REPORTED;				
 				return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
 			}
@@ -497,11 +497,8 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 				
 				if (!productoOrigen.get().getState().equals("cancelled")){
 					
-					double saldoInicialOrigen = productoOrigen.get().getBalance() ;
-					double saldoInicialDestino = productoDestiny.get().getBalance() ;
-					//verificador de que el saldo disponible cumpla con el monton para hacer la transferencia
-					// saldo disponible -  valor
-					// saldo disponible +  valor
+					double saldoInicialOrigen = productoOrigen.get().getBalance();
+					double saldoInicialDestino = productoDestiny.get().getBalance();
 
 					BigDecimal bd = null;
 
@@ -668,7 +665,7 @@ public ResponseEntity<GeneralResponse<List<TransactionEntity>>> getAllMovByIdPro
 		public String DefineTypeMov(String TypeAccountName){
 
 			String value ="";
-			if( Tipocuenta.Savings.toString().equalsIgnoreCase(TypeAccountName))
+			if( TypeAccount.Savings.toString().equalsIgnoreCase(TypeAccountName))
 			 value = "Debit";			
 			else 
 			value = "Credit";
@@ -676,7 +673,7 @@ public ResponseEntity<GeneralResponse<List<TransactionEntity>>> getAllMovByIdPro
 			return value;
 		}
 
-	public enum Tipocuenta
+	public enum TypeAccount
 		{
 			Savings,
 			checking

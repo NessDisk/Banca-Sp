@@ -1,6 +1,8 @@
 package com.reto.Banco.controller;
 
+
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -158,21 +160,53 @@ public class productController   {
 		String mensaje = null;
 		HttpStatus estadoHttp = null;
 
+
+        //sort for balance
+        List<ProductEntity> productEnabled =  new ArrayList<ProductEntity>() ;
+        List<ProductEntity> productDisenabled =  new ArrayList<ProductEntity>() ;
+        List<ProductEntity> productCancelled =  new ArrayList<ProductEntity>() ;
+
         System.out.println(clienteId);
         try{
                     datos = productSevice.findByclienteId(clienteId);
+                    List<ProductEntity> aux =  productSevice.findByclienteId(clienteId);   
                 	mensaje = "0 - found " + datos.size() + " accounts";
 
                    	if (datos.isEmpty()) {
             				mensaje = "1 - No registered accounts found";
 			                            }
                     
-                    //sort for balance
-                // List<ProductEntity> productEnabled = null ;
-                // List<ProductEntity> productDisenabled = null ;
-                // List<ProductEntity> productCancelled = null ;
+               
 
+                    for(int i = 0; i < datos.size()  ; i++ )
+                    {
+                        if(datos.get(i).getState().toString().equals("enabled") )
+                        { 
+                            
+                            System.out.println(">>>>>>> test <<<<<<<<");
+                            productEnabled.add(datos.get(i));
+                        }
+                        
+                        else if  (datos.get(i).getState().toString().equals("disenabled") )
+                            productDisenabled.add(datos.get(i));
+                        
+                        else if  (datos.get(i).getState().toString().equals("cancelled") )
+                             productCancelled.add(datos.get(i));                
+                    }
+                  
 
+                    productEnabled = bubble(productEnabled);
+                    productDisenabled = bubble(productDisenabled);
+                    productCancelled = bubble(productCancelled);
+
+                  
+                    List<ProductEntity> auxList =  new ArrayList<ProductEntity>();
+
+                    auxList.addAll(productEnabled);
+                    auxList.addAll(productDisenabled);
+                    auxList.addAll(productCancelled);
+
+                    datos = auxList;
                     respuesta.setDatos(datos);
                     respuesta.setMensaje(mensaje);
                     respuesta.setPeticionExitosa(true);
@@ -209,6 +243,22 @@ public class productController   {
 		return value;
 	}
 
+
+    public List<ProductEntity> bubble(List<ProductEntity> listProducts){
+        int i, j;
+        ProductEntity aux;
+        if(listProducts.size() >= 2){
+        for(i=0;i<listProducts.size()-1;i++)
+             for( j=0;j<listProducts.size()-i-1;j++)
+                  if(listProducts.get(j+1).getBalance()>listProducts.get(j).getBalance()){
+                    aux= listProducts.get(j+1);
+                    listProducts.set(j+1,listProducts.get(j) );
+                    listProducts.set(j, aux);
+                  }
+        }
+    return listProducts;
+}
+
     // ----------------------------------------- Delete - cancelate ------------------------------------------
 
     @DeleteMapping("/delete/{productId}")
@@ -233,9 +283,9 @@ public class productController   {
                 respuesta.setPeticionExitosa(true);
 
             } else {
-                mensaje = "1 - product id: "+ productId +" Need less of 1$ for delete";
-                estadoHttp = HttpStatus.BAD_REQUEST;
-                respuesta.setPeticionExitosa(false);
+                mensaje = "1 - product id:"+ productId +" need less of 1$ for delete";
+                estadoHttp = HttpStatus.ALREADY_REPORTED;
+                respuesta.setPeticionExitosa(true);
             }
             
 
@@ -286,9 +336,10 @@ public class productController   {
             productSevice.CreateProduct(productEntityCheck.get());
 
             datos = 0;
-            mensaje = "0 - Exempt GMF was put succesful in Db";
+            mensaje = "0 -  Exempt GMF was marked as successful";
             respuesta.setDatos(datos);
             respuesta.setMensaje(mensaje);
+            respuesta.setPeticionExitosa(true);
             estadoHttp = HttpStatus.OK;
 
         } catch(Exception e){

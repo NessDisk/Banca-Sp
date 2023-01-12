@@ -136,7 +136,7 @@ else{
         if(response.peticionExitosa){
           // this.product = response.datos;    
           console.log("Porduct was canceled")  
-          this.toastr.success(response.mensaje);
+          this.toastr.info(response.mensaje);
         }
       },err =>{
         console.log(err)
@@ -206,13 +206,15 @@ updateCliente():void{
 
 
 loadExemptGMF(productId: number  ):void{
-
+  
   this.productService.putExemptGMF( productId).subscribe(
     (response) =>{
+      console.log("Test");
       if(response.peticionExitosa){
         this.client = response.datos;  
+        this.toastr.success(response.mensaje);
         this.load = true;
-        this.loadProduct();
+        // this.loadProduct();
       }
     },err =>{
       console.log(err)
