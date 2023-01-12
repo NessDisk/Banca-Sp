@@ -41,7 +41,10 @@ export class MovTransferComponent implements OnInit {
 
 
   goBack(){
-    this._location.back();
+    setTimeout(() => {
+      this._location.back();
+      
+    }, 1000);
   }
 //add 
   AddDisposet():void{

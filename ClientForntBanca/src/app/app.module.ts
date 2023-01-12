@@ -27,6 +27,7 @@ import { MovStatusComponent } from './product/movement/components/mov-status/mov
 //external
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { PIComponentComponent } from './Navegation/component/pi-component/pi-component.component';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { ToastrModule } from 'ngx-toastr';
     LoginComponentComponent,
     InitComponentComponent,
     MovStatusComponent,
+    PIComponentComponent,
     // routingcomponents
   
   ],

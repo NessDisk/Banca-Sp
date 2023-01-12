@@ -1,0 +1,160 @@
+
+  
+  
+  /* right size */
+  
+  .iten-right{
+    position: relative;
+    left: -10%;
+    text-align: right;
+  }
+  
+  .img-style-index-right{
+    
+    width: 50%;  
+    position: relative;
+    left: 1%;
+  
+  }
+  
+  /* colors */
+  .color1{
+    foco: #00ff04;
+  }
+  
+  
+  @import url(https://fonts.googleapis.com/css?family=Montserrat);
+  
+  html, body{
+    height: 100%;
+    font-weight: 800;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body{
+    /* background: #030321; */
+    /* font-family: Arial; */
+  }
+  
+  .container {
+    display: flex;
+  /*   border:1px solid red; */
+    height: 100%;
+    align-items: center;
+  }
+  
+  svg {
+      display: block;
+      font: 10.5em 'Montserrat';
+      width: 960px;
+      height: 300px;
+      margin: 0 auto;
+  }
+  
+  .text-copy {
+      fill: none;
+      stroke: white;
+      stroke-dasharray: 6% 29%;
+      stroke-width: 5px;
+      stroke-dashoffset: 0%;
+      animation: stroke-offset 5.5s infinite linear;
+  }
+  
+  .text-copy:nth-child(1){
+      stroke: #4D163D;
+      animation-delay: -1;
+  }
+  
+  .text-copy:nth-child(2){
+      stroke: #840037;
+      animation-delay: -2s;
+  }
+  
+  .text-copy:nth-child(3){
+      stroke: #BD0034;
+      animation-delay: -3s;
+  }
+  
+  .text-copy:nth-child(4){
+      stroke: #BD0034;
+      animation-delay: -4s;
+  }
+  
+  .text-copy:nth-child(5){
+      stroke: #FDB731;
+      animation-delay: -5s;
+  }
+  
+  @keyframes stroke-offset{
+      100% {stroke-dashoffset: -35%;}
+  }
+  
+  
+  /* nav var */
+  
+  
+  * {
+  
+      list-style-type: none;
+  }
+  body{
+      /* background: #1E1F25; */
+  }
+  ul{
+      display: flex;
+      width: 100%;
+      height: 20vh;
+      margin: auto;
+      max-width: 1000px;
+      justify-content: space-between;
+      text-align: center;
+  }
+  li {
+      padding: 1rem 2rem 1.15rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: #ebebeb;
+      min-width: 80px;
+      margin: auto;
+  }
+  
+  li:hover {
+    background-image: url('https://scottyzen.sirv.com/Images/v/button.png');
+    background-size: 100% 100%;
+    color: #27262c;
+    animation: spring 300ms ease-out;
+    text-shadow: 0 -1px 0 #ef816c;
+      font-weight: bold;
+  }
+  li:active {
+    transform: translateY(4px);
+  }
+  
+  @keyframes spring {
+    15% {
+      -webkit-transform-origin: center center;
+      -webkit-transform: scale(1.2, 1.1);
+    }
+    40% {
+      -webkit-transform-origin: center center;
+      -webkit-transform: scale(0.95, 0.95);
+    }
+    75% {
+      -webkit-transform-origin: center center;
+      -webkit-transform: scale(1.05, 1);
+    }
+    100% {
+      -webkit-transform-origin: center center;
+      -webkit-transform: scale(1, 1);
+    }
+  }
+  
+  .shameless-plug{
+    position: absolute;
+    bottom: 10px;
+    right: 0;
+    padding: 8px 20px;
+    color: #ccc;
+    text-decoration: none;
+  }

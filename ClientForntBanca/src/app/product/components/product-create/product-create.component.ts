@@ -28,7 +28,7 @@ export class ProductCreateComponent implements OnInit {
   goBack(){
     setTimeout(() => {
       this._location.back();
-    }, 20);
+    }, 1000);
   }
  
   ngOnInit(): void {
