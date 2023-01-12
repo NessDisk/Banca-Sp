@@ -9,5 +9,6 @@ import com.reto.Banco.entity.ClientTable;
 @Repository
 public interface ClientRepository extends JpaRepository<ClientTable, Long> {
     
+    // ClientTable findByclienteId(long clienteId);
 
 }

@@ -1,0 +1,34 @@
+
+
+<div class="container">
+  <h5 class="card-header">
+   Movs Product
+</h5>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Description</th>
+        <th scope="col">Type Mov</th>
+        <th scope="col">Financial Mov</th>
+        <th scope="col">value</th>
+        <th scope="col">Balance</th>
+        <th scope="col">Available Balance  </th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- <tr *ngFor="let cli of client"> -->
+               <!-- {{cli.id}} -->
+      <tr  *ngFor="let mov of movement">
+        <th >{{mov.dateCreate}}</th>
+        <td> {{mov.description}}</td>
+        <td>{{mov.typeDebito}}</td>
+        <td>{{mov.typeTransaction}}</td>
+        <td>${{mov.value}}</td>
+        <td>${{mov.balance}}</td>
+        <td>${{mov.avaiableBalance}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+  <!-- {{movement|json}} -->

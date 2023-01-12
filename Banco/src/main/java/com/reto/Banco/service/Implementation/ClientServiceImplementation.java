@@ -1,6 +1,7 @@
 package com.reto.Banco.service.Implementation;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,11 @@ public class ClientServiceImplementation implements ClientService {
         return clientRepository.findAll();
     }
 
-
+    @Override
+    public Optional<ClientTable> GetClienteById(long id) throws Exception {
+        // TODO Auto-generated method stub
+        return clientRepository.findById(id);
+    }
 
 
     @Override
@@ -44,5 +49,7 @@ public class ClientServiceImplementation implements ClientService {
         // TODO Auto-generated method stub
         clientRepository.deleteById(id);		
     }
+
+  
     
 }

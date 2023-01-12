@@ -1,7 +1,10 @@
 package com.reto.Banco.entity;
 
-import java.sql.Date;
+
 import java.time.LocalDate;
+import java.util.Date;
+
+import javax.print.DocFlavor.STRING;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,106 +24,132 @@ public class ClientTable {
     private  long id;
 
 
+    @Column(name="id_Type")
+    private String id_Type;    
 
-    @Column(name="tipo")
-    private String Tipo;    
+    @Column(name="IdNum")
+    private  int idNum;
 
-    @Column(name="CC")
-    private  int CC;
+    @Column(name="fisrtName")
+    private  String fisrtName;
 
-    @Column(name="nombre")
-   private  String nombres;
+    @Column(name="lastName")
+    private  String lastName;
 
-   @Column(name="apellido")
-   private  String apellido;
+    @Column(name="email")
+    private  String email ;
 
-   @Column(name="birDate")
-   private  Date birDate;
+    @Column(name="birthdate")
+    private  LocalDate birthdate;   
 
-   @Column(name="Age")
-   private  long age;
+    @Column(name="UserCreation")
+     private  String userCreation;
 
-   @Column(name="date")
-   private  Date date ;
+     @Column(name="dateCreation")
+     private  LocalDate datecreation;
+     
+    @Column(name="dateudpate")
+    private  LocalDate dateudpate;
 
-   @Column(name="dateCreation")
-   private  LocalDate dateCreation;
+    @Column(name="UserUpdate")
+    private  String userUpdate;
 
-   @Column(name="dateudpate")
-   private  Date dateudpate;
+    public ClientTable(String id_Type, int idNum, String fisrtName, String lastName, String email, LocalDate birthdate,
+             String userCreation, LocalDate datecreation, LocalDate dateudpate, String userUpdate) {
+        this.id_Type = id_Type;
+        this.idNum = idNum;
+        this.fisrtName = fisrtName;
+        this.lastName = lastName;
+        this.email = email;
+        this.birthdate = birthdate;
+       
+        this.userCreation = userCreation;
+        this.datecreation = datecreation;
+        this.dateudpate = dateudpate;
+        this.userUpdate = userUpdate;
+    }
 
-   @Column(name="UserUpdate")
-   private  String UserUpdate;
+    public ClientTable(){}
 
 
 
-   public long getAge() {
-    return age;
-}
-public void setAge(long age) {
-    this.age = age;
-}
-public Date getBirDate() {
-    return birDate;
-}
-public void setBirDate(Date birDate) {
-    this.birDate = birDate;
-}
+
+
+
+    public String getUserCreation() {
+        return userCreation;
+    }
+    public void setUserCreation(String userCreation) {
+        this.userCreation = userCreation;
+    }
+    public LocalDate getDatecreation() {
+        return datecreation;
+    }
+    public void setDatecreation(LocalDate datecreation) {
+        this.datecreation = datecreation;
+    }
+    public LocalDate getDateudpate() {
+        return dateudpate;
+    }
+    public void setDateudpate(LocalDate dateudpate) {
+        this.dateudpate = dateudpate;
+    }
+    public String getUserUpdate() {
+        return userUpdate;
+    }
+    public void setUserUpdate(String userUpdate) {
+        this.userUpdate = userUpdate;
+    }
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public String getFisrtName() {
+        return fisrtName;
+    }
+    public void setFisrtName(String fisrtName) {
+        this.fisrtName = fisrtName;
+    }
 
 public long getId() {
     return id;
 }
-public void setId(Long id) {
+
+
+public void setId(long id) {
     this.id = id;
 }
-public String getTipo() {
-    return Tipo;
+
+
+public String getId_Type() {
+    return id_Type;
 }
-public void setTipo(String tipo) {
-    Tipo = tipo;
+public void setId_Type(String id_Type) {
+    this.id_Type = id_Type;
 }
-public int getCC() {
-    return CC;
+public int getIdNum() {
+    return idNum;
 }
-public void setCC(int cC) {
-    CC = cC;
+public void setIdNum(int idNum) {
+    this.idNum = idNum;
 }
-public String getNombres() {
-    return nombres;
-}
-public void setNombres(String nombres) {
-    this.nombres = nombres;
-}
-public String getApellido() {
-    return apellido;
-}
-public void setApellido(String apellido) {
-    this.apellido = apellido;
-}
-public Date getDate() {
-    return date;
-}
-public void setDate(Date date) {
-    this.date = date;
-}
-public LocalDate getDateCreation() {
-    return dateCreation;
-}
-public void setDateCreation(LocalDate dateCreation) {
-    this.dateCreation = dateCreation;
-}
-public Date getDateudpate() {
-    return dateudpate;
-}
-public void setDateudpate(Date dateudpate) {
-    this.dateudpate = dateudpate;
-}
-public String getUserUpdate() {
-    return UserUpdate;
-}
-public void setUserUpdate(String userUpdate) {
-    UserUpdate = userUpdate;
-}
+
+
 
 
 
