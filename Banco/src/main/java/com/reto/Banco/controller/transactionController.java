@@ -87,20 +87,33 @@ public class transactionController {
 
 				transaction.setInitialBalance(producto.get().getBalance() );
 				
+				System.out.println( ">>>>>>>> here <<<<<<<<<");
+				System.out.println( " Gmf : "+GMFBalanceAvaiable );
+				System.out.println( ">>>>>>>> here <<<<<<<<<");
+				// (  " Gmf : "+GMFBalanceAvaiable);
 				//eliminate decimals output :  0.00
-				BigDecimal bd = new BigDecimal(producto.get().getBalance()-  GMFBalanceAvaiable +  RealMovValue).setScale(2, RoundingMode.HALF_UP);
 
+				BigDecimal bd = null;
+
+
+				//AvaiableBalance
+				if(producto.get().getBalance() != 0)				
+					bd = new BigDecimal( producto.get().getBalance() +  RealMovValue - CalCGMF(producto.get().getBalance() +  RealMovValue, producto.get()) ).setScale(2, RoundingMode.HALF_UP);	
+				else 						
+					bd = new BigDecimal( RealMovValue -  CalCGMF(RealMovValue, producto.get()) ).setScale(2, RoundingMode.HALF_UP);
+
+					
 				transaction.setAvaiableBalance( bd.doubleValue());
-				producto.get().setBalanceAvailable( bd.doubleValue());
+				producto.get().setBalanceAvailable( bd.doubleValue());					
 
-
-				bd = new BigDecimal(producto.get().getBalance() + RealMovValue).setScale(2, RoundingMode.HALF_UP);
+				//Balance
+				 bd = new BigDecimal(producto.get().getBalance() + RealMovValue).setScale(2, RoundingMode.HALF_UP);
 
 				transaction.setBalance(bd.doubleValue());
 				producto.get().setBalance(bd.doubleValue());//consignación 
 
 				transaction.setFinalBalance(producto.get().getBalance());
-				
+
 				transaction.setTypeTransaction("deposit");
 				
 				
@@ -115,8 +128,7 @@ public class transactionController {
 				transaction.setTypeDebito("Credit");
 
 
-				// if(producto.get().getExcludeGMF() == false)
-				// {
+				
 					movGMF = new TransactionEntity(TransactionTypeEnum.transfer.toString(),
 					LocalDate.now(),
 					producto.get().getId(),
@@ -130,12 +142,9 @@ public class transactionController {
 					0														  
 					);
 					transactionService.CreateTransaction(movGMF);
-				// }
-
-				transactionService.CreateTransaction(transaction);
-
-
 				
+
+				transactionService.CreateTransaction(transaction);				
 				
 				mensaje = "0 - Deposit created successfully";		
 				respuesta.setDatos(datos);
@@ -143,7 +152,7 @@ public class transactionController {
 				respuesta.setPeticionExitosa(true);
 				estadoHttp = HttpStatus.CREATED;
 			}else {				
-				mensaje = "1 - Deposit not made, account N°= " +producto.get().getNumAccont() +" is canceled";		
+				mensaje = "1 - Deposit wasn´t made, account is canceled";		
 				respuesta.setDatos(datos);
 				respuesta.setMensaje(mensaje);
 				respuesta.setPeticionExitosa(true);		
@@ -153,7 +162,7 @@ public class transactionController {
         }catch(Exception e)
         {
             estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
-			mensaje = "There was an error. Contact the administrator";
+			mensaje = "1- It was a problem with the server.";
 			respuesta.setMensaje(mensaje);
 			respuesta.setPeticionExitosa(false);
 
@@ -200,15 +209,18 @@ public class transactionController {
 		TransactionEntity movGMF  = null;
 
         try{
-
-            producto = productService.findById(idCuenta);
+			producto = productService.findById(idCuenta);
 			datos = 0;	
-
-
-			 
-
+			
+			//GMF Values
+			GMFBalanceAvaiable = 	CalCGMF(producto.get().getBalance(), producto.get())  ;
+			GMFValueMov = CalCGMF(transaction.getValue(), producto.get());
+			RealMovValue =  transaction.getValue()- GMFValueMov;
+			
+			
+			
             if (transaction.getValue()<=0) {
-				mensaje = "1 - Value should be greater than $US 0.00 ";		
+				mensaje = "1 - Value should be greater than $ 0.00 ";		
 				respuesta.setDatos(datos);
 				respuesta.setMensaje(mensaje);
 				respuesta.setPeticionExitosa(false);
@@ -216,50 +228,65 @@ public class transactionController {
 				return new ResponseEntity<>(respuesta, estadoHttp);
 			} 
 			
-			if(Tipocuenta.Savings.toString().equalsIgnoreCase(producto.get().getTypeAccount()) &&
-				producto.get().getBalanceAvailable() - transaction.getValue() < 0 
+			else if(Tipocuenta.Savings.toString().equals(producto.get().getTypeAccount()) &&
+			(producto.get().getBalance() - GMFBalanceAvaiable) - transaction.getValue() < 0 
 			){
+				
 				mensaje = "1 - Savings mov shouldn´t be less than $US 0.00 in the balance.";		
 				respuesta.setDatos(datos);
 				respuesta.setMensaje(mensaje);
-				respuesta.setPeticionExitosa(false);
-				estadoHttp = HttpStatus.CONFLICT;				
+				respuesta.setPeticionExitosa(true);
+				estadoHttp = HttpStatus.ALREADY_REPORTED;				
 				return new ResponseEntity<>(respuesta, estadoHttp);
 			
-			} else if(producto.get().getBalanceAvailable() - transaction.getValue() < -3000000 ){
+			} else if((producto.get().getBalance() - GMFBalanceAvaiable) - transaction.getValue() < -3000000 ){
 				mensaje = "1 - Checking  mov shouldn´t be less than $US 3.000.000.00 in the balance.";		
 				respuesta.setDatos(datos);
 				respuesta.setMensaje(mensaje);
-				respuesta.setPeticionExitosa(false);
-				estadoHttp = HttpStatus.CONFLICT;				
+				respuesta.setPeticionExitosa(true);
+				estadoHttp = HttpStatus.ALREADY_REPORTED;				
 				return new ResponseEntity<>(respuesta, estadoHttp);
 
 			}
 
-			if (State.disenabled.toString().equalsIgnoreCase( producto.get().getState().toString())   ) {
+			else if (State.disenabled.toString().equalsIgnoreCase( producto.get().getState().toString())   ) {
 				mensaje = "1 - Disenabled accounts mustn´t allow a debit mov type.";		
 				respuesta.setDatos(datos);
 				respuesta.setMensaje(mensaje);
 				respuesta.setPeticionExitosa(false);
-				estadoHttp = HttpStatus.CONFLICT;				
+				estadoHttp = HttpStatus.ALREADY_REPORTED;				
 				return new ResponseEntity<>(respuesta, estadoHttp);
 			}
 			
-			//GMF Values
-			GMFBalanceAvaiable = 	CalCGMF(producto.get().getBalance(), producto.get())  ;
-			GMFValueMov = CalCGMF(transaction.getValue(), producto.get());
-			RealMovValue =  transaction.getValue()- GMFValueMov;
+	
 
 
 			if (!producto.get().getState().equalsIgnoreCase("cancelled")) {
 				transaction.setInitialBalance(producto.get().getBalance() );
 
+				// BigDecimal bd = new BigDecimal((producto.get().getBalance() - GMFBalanceAvaiable) -  RealMovValue).setScale(2, RoundingMode.HALF_UP);
 
-				transaction.setAvaiableBalance( (producto.get().getBalance() - GMFBalanceAvaiable) -  RealMovValue);
-				producto.get().setBalanceAvailable((producto.get().getBalance()- GMFBalanceAvaiable) -   RealMovValue);
-				
-				transaction.setBalance(producto.get().getBalance()- RealMovValue);
-				producto.get().setBalance(producto.get().getBalance() - RealMovValue);//consignación
+				// transaction.setAvaiableBalance(bd.doubleValue() );
+				// producto.get().setBalanceAvailable(bd.doubleValue());
+		//AvaiableBalance
+		BigDecimal bd = null;
+
+		if(producto.get().getBalance() != 0)				
+		bd = new BigDecimal( producto.get().getBalance() -  RealMovValue - CalCGMF(producto.get().getBalance() -  	RealMovValue, producto.get()) ).setScale(2, RoundingMode.HALF_UP);	
+		
+		else 						
+		bd = new BigDecimal( -(RealMovValue -  CalCGMF(RealMovValue, producto.get())) ).setScale(2, RoundingMode.HALF_UP);
+
+		
+		transaction.setAvaiableBalance( bd.doubleValue());
+		producto.get().setBalanceAvailable( bd.doubleValue());	
+
+
+				//balance
+				bd = new BigDecimal(producto.get().getBalance()- RealMovValue).setScale(2, RoundingMode.HALF_UP);
+
+				transaction.setBalance(bd.doubleValue());
+				producto.get().setBalance(bd.doubleValue());//consignación
 				
 				transaction.setFinalBalance(producto.get().getBalance());
 				transaction.setTypeTransaction("whitdraw");
@@ -317,88 +344,19 @@ public class transactionController {
 			respuesta.setPeticionExitosa(false);
 
         }
-
+		
         return new ResponseEntity<>(respuesta, estadoHttp);
+		
     }
-	
 
 
 
-    private boolean validarSaldo(Optional<ProductEntity> productoOrigen, double valorTransaccion) {
-		boolean saldoValidado = false;
-		
-		double saldoGMF = productoOrigen.get().getBalance() - valorTransaccion
-				- valorTransaccion * 0.004;
-
-		if (productoOrigen.get().getTypeAccount().toLowerCase().equals("ahorro") && productoOrigen.get().getState()
-				.toLowerCase().equals("enabled")
-				&& saldoGMF >= 0) {
-			saldoValidado = true;
-		}
-		if (productoOrigen.get().getTypeAccount().toLowerCase().equals("corriente")
-				&& productoOrigen.get().getState().toLowerCase().equals("enabled") && saldoGMF >= -5000) {
-			saldoValidado = true;
-		}	
-		return saldoValidado;
-	}
-
-
-    private GeneralResponse<Integer> valEstadosProductoOri(Optional<ProductEntity> productoOrigen, boolean saldoValidado) {
-		
-		GeneralResponse<Integer> mensajeRespuesta = new GeneralResponse<>();
-		
-		if (productoOrigen.get().getState().toLowerCase().equals("desabled")) {
-			mensajeRespuesta.setMensaje("1 - The account is desabled");
-			mensajeRespuesta.setPeticionExitosa(false);
-			return mensajeRespuesta;			
-		} else if (productoOrigen.get().getState().toLowerCase().equals("canceled")) {
-			mensajeRespuesta.setMensaje("1- the account is canceled");
-			mensajeRespuesta.setPeticionExitosa(false);
-			return mensajeRespuesta;
-		} else if (productoOrigen.get().getTypeAccount().toLowerCase().equals("AHORRO") && !saldoValidado) {
-			mensajeRespuesta.setMensaje("2 - Not enought funds, the balance with the GMF must be greater than or equal to US$0.0");
-			mensajeRespuesta.setPeticionExitosa(false);
-			return mensajeRespuesta;
-		} else if (productoOrigen.get().getTypeAccount().toLowerCase().equals("CORRIENTE") && !saldoValidado) {
-			mensajeRespuesta.setMensaje("2 - Not enought funds - Current account cannot be overdrawn by more than US$5,000");
-			mensajeRespuesta.setPeticionExitosa(false);
-			return mensajeRespuesta;
-		} else {
-			mensajeRespuesta.setMensaje("0 - Operation successfully");
-			mensajeRespuesta.setPeticionExitosa(true);		
-			return mensajeRespuesta;
-			}		
-	}
-
-
-    private TransactionEntity realizarMovimientoDebito(Optional<ProductEntity> productoOrigen,
-    TransactionEntity movimientoOrigen) {		
-            movimientoOrigen.setInitialBalance(productoOrigen.get().getBalance());
-            double saldo = productoOrigen.get().getBalance() - movimientoOrigen.getValue();	
-            movimientoOrigen.setFinalBalance(saldo);
-            movimientoOrigen.setDateCreate(LocalDate.now());
-            movimientoOrigen.setTypeDebito("debit");
-            movimientoOrigen.setAccountId(productoOrigen.get().getId());
-            return movimientoOrigen;
-}
+ 
 
 
 
-private TransactionEntity realizarMovimientoGMF(Optional<ProductEntity> productoOrigen, double valorTransaccion) {
-    TransactionEntity movimientoGMF = new TransactionEntity();
-    movimientoGMF.setInitialBalance(productoOrigen.get().getBalance());
-    
-    double saldoGMF = productoOrigen.get().getBalance() - valorTransaccion * 0.004;		
-    movimientoGMF.setFinalBalance(saldoGMF);
-    movimientoGMF.setValue(valorTransaccion * 0.004);
-    movimientoGMF.setDateCreate(LocalDate.now());
-    // movimientoGMF.setTipoMovimiento("GMF");
-    movimientoGMF.setTypeDebito("debit");
-    movimientoGMF.setDescription("GMF");
-    movimientoGMF.setAccountId(productoOrigen.get().getId());
-    movimientoGMF.setDestinyAccount(0);
-    return movimientoGMF;
-}
+
+
 
 
 //----------------------------------------------------------------  transferencias entre cuentas    ------------------------------------------------------------
@@ -411,6 +369,51 @@ private TransactionEntity realizarMovimientoGMF(Optional<ProductEntity> producto
  * 
  */
 
+public BigDecimal CalCbalanceAvWithdraw(double balance, double movWithGMF,ProductEntity productEntity) {
+			
+	BigDecimal bd = null;
+
+				if(balance != 0)				
+					bd = new BigDecimal( balance -  movWithGMF - CalCGMF(balance - movWithGMF, productEntity) ).setScale(2, RoundingMode.HALF_UP);	
+					
+					else 						
+					bd = new BigDecimal( -(movWithGMF -  CalCGMF(movWithGMF, productEntity)) ).setScale(2, RoundingMode.HALF_UP);
+
+	return bd;
+
+} 
+
+public BigDecimal CalCbalanceAvDeposit(double balance, double movWithGMF,ProductEntity productEntity) {
+			
+	BigDecimal bd = null;
+
+				if(balance != 0)				
+					bd = new BigDecimal( balance +  movWithGMF - CalCGMF(balance + movWithGMF, productEntity) ).setScale(2, RoundingMode.HALF_UP);	
+					
+					else 						
+					bd = new BigDecimal( (movWithGMF -  CalCGMF(movWithGMF, productEntity)) ).setScale(2, RoundingMode.HALF_UP);
+
+	return bd;
+
+} 
+
+
+
+public BigDecimal CalCbalanceWithdraw(double balance, double movWithGMF){
+	BigDecimal bd = null;
+
+	bd = new BigDecimal(balance - movWithGMF).setScale(2, RoundingMode.HALF_UP);
+
+	return bd;
+}
+
+public BigDecimal CalCbalanceDeposit(double balance, double movWithGMF){
+	BigDecimal bd = null;
+
+	bd = new BigDecimal(balance + movWithGMF).setScale(2, RoundingMode.HALF_UP);
+
+	return bd;
+}
 
 
 @PostMapping("/trasnfer/{idProducto}")
@@ -432,59 +435,63 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 			double GMFBalanceAvaiableDestiny = 0;
 			double GMFValueMov = 0;
 			double RealMovValue = 0;
-
+			
 			try{
 				productoOrigen =  productService.findById(idCuenta);
 				productoDestiny = productService.findById(movOrigin.getDestinyAccount());
 				
-				movOrigin.setDateCreate(LocalDate.now());
-
-				if (movOrigin.getValue()<=0) {
-					mensaje = "1 - Value should be greater than $US 0.00 ";		
-					mensajeRespuestaOrigen.setDatos(datos);
-					mensajeRespuestaOrigen.setMensaje(mensaje);
-					mensajeRespuestaOrigen.setPeticionExitosa(false);
-					estadoHttp = HttpStatus.NOT_FOUND;				
-					return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
-				}
-
-			if(Tipocuenta.Savings.toString().equalsIgnoreCase(productoOrigen.get().getTypeAccount()) &&
-						productoOrigen.get().getBalanceAvailable() - movOrigin.getValue() < 0 
-			){
-				mensaje = "1 - Saving Mov shouldn´t be less than $US 0.00 in the balance.";		
-				mensajeRespuestaOrigen.setDatos(datos);
-				mensajeRespuestaOrigen.setMensaje(mensaje);
-				mensajeRespuestaOrigen.setPeticionExitosa(false);
-				estadoHttp = HttpStatus.CONFLICT;				
-				return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
-			} 
-			else if(productoOrigen.get().getBalanceAvailable() - movOrigin.getValue() < -3000000 ){
-				mensaje = "1 - Checking  mov shouldn´t be less than $US 3.000.000.00 in the balance.";		
-				mensajeRespuestaOrigen.setDatos(datos);
-				mensajeRespuestaOrigen.setMensaje(mensaje);
-				mensajeRespuestaOrigen.setPeticionExitosa(false);
-				estadoHttp = HttpStatus.CONFLICT;				
-				return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
-
-			}
-
-
-			if (State.disenabled.toString().equalsIgnoreCase( productoOrigen.get().getState().toString())   ) {
-				mensaje = "1 - Disenabled accounts mustn´t allow a debit mov type.";		
-				mensajeRespuestaOrigen.setDatos(datos);
-				mensajeRespuestaOrigen.setMensaje(mensaje);
-				mensajeRespuestaOrigen.setPeticionExitosa(false);
-				estadoHttp = HttpStatus.CONFLICT;				
-				return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
-			}
-
-
-
+				
 				//GMF Values
 				GMFBalanceAvaiableOrigin = 	CalCGMF(productoOrigen.get().getBalance(), productoOrigen.get()) ;
 				GMFBalanceAvaiableDestiny = 	CalCGMF(productoDestiny.get().getBalance(), productoDestiny.get() ) ;
 				GMFValueMov = CalCGMF(movOrigin.getValue() , productoOrigen.get() );
 				RealMovValue =  movOrigin.getValue()- GMFValueMov;
+				
+				movOrigin.setDateCreate(LocalDate.now());
+				
+				if (movOrigin.getValue()<=0) {
+					mensaje = "1 - Value should be greater than $US 0.00 ";		
+					mensajeRespuestaOrigen.setDatos(datos);
+					mensajeRespuestaOrigen.setMensaje(mensaje);
+					mensajeRespuestaOrigen.setPeticionExitosa(true);
+					estadoHttp = HttpStatus.ALREADY_REPORTED;				
+					return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
+				}
+				
+				else if(Tipocuenta.Savings.toString().equals(productoOrigen.get().getTypeAccount()) &&
+				(productoOrigen.get().getBalance() -GMFBalanceAvaiableOrigin) - movOrigin.getValue() < 0 
+				){
+					//System.out.println(">>>>>> here <<<<<<");
+					mensaje = "1 - Saving Mov shouldn´t be less than $US 0.00 in the balance.";		
+					mensajeRespuestaOrigen.setDatos(datos);
+					mensajeRespuestaOrigen.setMensaje(mensaje);
+					mensajeRespuestaOrigen.setPeticionExitosa(true);
+					estadoHttp = HttpStatus.ALREADY_REPORTED;				
+				return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
+			} 
+			else if((productoOrigen.get().getBalance() -GMFBalanceAvaiableOrigin) - movOrigin.getValue() < -3000000 ){
+				mensaje = "1 - Checking  mov shouldn´t be less than $US 3.000.000.00 in the balance.";		
+				mensajeRespuestaOrigen.setDatos(datos);
+				mensajeRespuestaOrigen.setMensaje(mensaje);
+				mensajeRespuestaOrigen.setPeticionExitosa(true);
+				estadoHttp = HttpStatus.ALREADY_REPORTED;				
+				return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
+
+			}
+
+
+			else if (State.disenabled.toString().equalsIgnoreCase( productoOrigen.get().getState().toString())   ) {
+				mensaje = "1 - Disenabled accounts mustn´t allow a debit mov type.";		
+				mensajeRespuestaOrigen.setDatos(datos);
+				mensajeRespuestaOrigen.setMensaje(mensaje);
+				mensajeRespuestaOrigen.setPeticionExitosa(false);
+				estadoHttp = HttpStatus.ALREADY_REPORTED;				
+				return new ResponseEntity<>(mensajeRespuestaOrigen, estadoHttp);
+			}
+
+
+
+
 
 				//verificador numero cuenta.  <<- mas adelante  validaddores
 				
@@ -495,12 +502,23 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 					//verificador de que el saldo disponible cumpla con el monton para hacer la transferencia
 					// saldo disponible -  valor
 					// saldo disponible +  valor
+
+					BigDecimal bd = null;
+
+
+					bd = CalCbalanceAvWithdraw(productoOrigen.get().getBalance(),RealMovValue, productoOrigen.get());
+					double movBalanceeAvailableOrigen = bd.doubleValue();
 				
-					double movBalanceeAvailableOrigen = (productoOrigen.get().getBalance() - GMFBalanceAvaiableOrigin ) - RealMovValue;
-					double movBalanceAvailableDestiny = (productoDestiny.get().getBalance() - GMFBalanceAvaiableDestiny) + RealMovValue;
-					
-					double movBalanceOrigen = productoOrigen.get().getBalance() - RealMovValue;
-					double movBalanceDestiny = productoDestiny.get().getBalance() + RealMovValue;
+
+					bd = CalCbalanceAvDeposit(productoDestiny.get().getBalance(),RealMovValue, productoDestiny.get());
+					double movBalanceAvailableDestiny = bd.doubleValue();
+
+
+					bd = CalCbalanceWithdraw(productoOrigen.get().getBalance() , RealMovValue);
+					double movBalanceOrigen = bd.doubleValue();
+
+					bd = CalCbalanceDeposit(productoDestiny.get().getBalance() , RealMovValue);
+					double movBalanceDestiny = bd.doubleValue();
 					
 
 
@@ -549,8 +567,7 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 														 );
 
 
-														//  if( productoOrigen.get().getExcludeGMF() == false)
-														//  {
+													
 
 															 movGMF = new TransactionEntity(TransactionTypeEnum.transfer.toString(),
 																						 LocalDate.now(),
@@ -566,7 +583,7 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 																						 );
 																						 transactionService.CreateTransaction(movGMF);
 
-														//  }
+													
 
 														 
 														 productService.CreateProduct(productoOrigen.get());	
@@ -598,7 +615,7 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 														}catch(Exception e){
 															
 															estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
-															mensaje = "Hubo un fallo. Contacte al administrador";
+															mensaje = "1- It was a problem with the server.";
 															mensajeRespuestaOrigen.setMensaje(mensaje);
 															mensajeRespuestaOrigen.setPeticionExitosa(false);
 			}
@@ -636,7 +653,7 @@ public ResponseEntity<GeneralResponse<List<TransactionEntity>>> getAllMovByIdPro
 			catch( Exception e)
 			{
 				estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
-				mensaje = "Hubo un fallo. Contacte al administrador";
+				mensaje = "1- It was a problem with the server.";
 				mensajeRespuestaOrigen.setMensaje(mensaje);
 				mensajeRespuestaOrigen.setPeticionExitosa(false);
 			}

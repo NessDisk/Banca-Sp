@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Client } from '../../models/client';
 import { ClienteService } from '../../services/client.services';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-client-create',
@@ -16,9 +18,7 @@ export class ClientCreateComponent implements OnInit {
 
   client : Client[] = [];
 
-  ngOnInit(): void {
-    // throw new Error('Method not implemented.');
-  }
+
 
   id?:number;
   id_Type:string; //<-
@@ -34,7 +34,7 @@ export class ClientCreateComponent implements OnInit {
 
 
   
-  constructor(private clientservices: ClienteService , private formBuilder: FormBuilder ){
+  constructor(private clientservices: ClienteService , private formBuilder: FormBuilder, private toastr: ToastrService, private _router: Router ){
     
     
   }
@@ -50,6 +50,15 @@ export class ClientCreateComponent implements OnInit {
     date1:[undefined, [ Validators.required, ]],
   });
 
+  ngOnInit(): void {
+
+    this.showSuccess();
+  }
+
+  showSuccess() {
+    
+  }
+
 
   onCreate(): void{
     
@@ -63,21 +72,35 @@ export class ClientCreateComponent implements OnInit {
           this.client = response.datos;
           console.log(this.client);
           console.log(response.mensaje);
+
+          if(response.mensaje == "0 - Customer successfully created")
+          {
+            this.toastr.success(response.mensaje);
+            const timeout= 2;
+            setTimeout(() => {
+              this._router.navigate(['/clients'])
+            }, timeout);
+          }else{
+            this.toastr.info(response.mensaje);
+          }
+
+
           // console.log("The user has been successfully done.");
           }
         },err =>{
           console.log(err)
+          this.toastr.error(err);
         }
       );
     
   }
 
-  create():void{
-    console.log("MENSAJE DE PRUEBA");
+  // create():void{
+  //   console.log("MENSAJE DE PRUEBA");
 
-    console.log(this.createFormClient.value.email1);
-    console.log(this.createFormClient.value.name1);
-  }
+  //   console.log(this.createFormClient.value.email1);
+  //   console.log(this.createFormClient.value.name1);
+  // }
 
 
 }

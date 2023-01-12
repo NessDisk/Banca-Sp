@@ -1,5 +1,5 @@
 
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, inject, Injectable, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { observable ,Subject, Subscription } from 'rxjs';
@@ -7,6 +7,8 @@ import { Client } from 'src/app/client/models/client';
 import { __values } from 'tslib';
 import { Product } from '../../models/product';
 import { ProductServices } from '../../services/product.services';
+
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -49,8 +51,11 @@ export class ProductGetComponent implements OnInit {
   suscription:Subscription;
   constructor(  private productService: ProductServices,
                 private route: ActivatedRoute,
-                private router: Router, 
-                private formBuilder: FormBuilder){
+                private _router: Router, 
+                private formBuilder: FormBuilder,
+                private toastr: ToastrService
+               
+                ){
 
     route.params.subscribe(val => {
       // put the code from `ngOnInit` here
@@ -77,8 +82,12 @@ export class ProductGetComponent implements OnInit {
    {
 if(this.triggerUpdateClient == false)
 this.triggerUpdateClient = true;
-else
-this.triggerUpdateClient = false;
+else{
+  this.createFormClient.reset();
+  this.triggerUpdateClient = false;
+}
+
+
 
    }
   
@@ -120,14 +129,14 @@ this.triggerUpdateClient = false;
     );
   }
 
-  DeleteProduct(productId: number):void{
-    
+  DeleteProduct(productId: number):void{    
    
     this.productService.deleteProduct( productId).subscribe(
       (response) =>{
         if(response.peticionExitosa){
           // this.product = response.datos;    
           console.log("Porduct was canceled")  
+          this.toastr.success(response.mensaje);
         }
       },err =>{
         console.log(err)
@@ -142,6 +151,8 @@ this.triggerUpdateClient = false;
         if(response.peticionExitosa){
           // this.product = response.datos;  
           console.log("Porduct status was changed")  
+
+          this.toastr.success(response.mensaje);
         }
       },err =>{
         console.log(err)
@@ -184,6 +195,8 @@ updateCliente():void{
       if(response.peticionExitosa){
         this.client = response.datos;  
         this.ActiveChangeDataClient();
+        this.toastr.success(response.mensaje);
+        // form.reset();
       }
     },err =>{
       console.log(err)

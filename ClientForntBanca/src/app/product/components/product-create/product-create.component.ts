@@ -4,6 +4,9 @@ import { Product } from '../../models/product';
 import { ProductServices } from '../../services/product.services';
 import { Location } from '@angular/common';
 
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-product-create',
   templateUrl: './product-create.component.html',
@@ -18,11 +21,14 @@ export class ProductCreateComponent implements OnInit {
   clienteId: number;
 
  
-  constructor(private productService: ProductServices, private route: ActivatedRoute, private _location: Location){ }
+  constructor(private productService: ProductServices, private route: ActivatedRoute, private _location: Location ,private toastr: ToastrService, private _router: Router){ }
 
   
+  
   goBack(){
-    this._location.back();
+    setTimeout(() => {
+      this._location.back();
+    }, 20);
   }
  
   ngOnInit(): void {
@@ -37,7 +43,8 @@ export class ProductCreateComponent implements OnInit {
                     this.productService.saveProduct(product ).subscribe(
                       (response) =>{
                         if(response.peticionExitosa){
-                          console.log(response.datos) ;                
+                          console.log(response.datos) ;    
+                          this.toastr.success(response.mensaje);            
                         }
                       },err =>{
                         console.log(err)

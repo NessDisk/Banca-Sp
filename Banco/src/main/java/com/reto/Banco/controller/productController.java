@@ -67,12 +67,12 @@ public class productController   {
 
                     //  productEnitty.setClienteId(clienteId);
                       
-                      mensaje = "0 - Customer successfully created";
+                      mensaje = "0 - Product successfully created";
                       productSevice.CreateProduct(productEnitty);
                       datos = 0;
                   }else {
-                      mensaje ="1 - Customer could not be create ";
-                      estadoHttp = HttpStatus.OK;
+                      mensaje ="1 - Product could not be create ";
+                      estadoHttp = HttpStatus.BAD_REQUEST;
                   }
 
 
@@ -166,6 +166,12 @@ public class productController   {
                    	if (datos.isEmpty()) {
             				mensaje = "1 - No registered accounts found";
 			                            }
+                    
+                    //sort for balance
+                // List<ProductEntity> productEnabled = null ;
+                // List<ProductEntity> productDisenabled = null ;
+                // List<ProductEntity> productCancelled = null ;
+
 
                     respuesta.setDatos(datos);
                     respuesta.setMensaje(mensaje);
@@ -222,7 +228,7 @@ public class productController   {
                 // productSevice.deleteById(productId);
                 productEntityCheck.get().setState("cancelled");
                 productSevice.CreateProduct(productEntityCheck.get());
-                mensaje = "0 - Delete product id: "+ productId;
+                mensaje = "0 - Cancelate product id: "+ productId;
                 estadoHttp = HttpStatus.OK;
                 respuesta.setPeticionExitosa(true);
 

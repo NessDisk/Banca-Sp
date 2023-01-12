@@ -5,6 +5,9 @@ import { Movement } from '../../models/moviment';
 import { MovementServices } from '../../services/movement.service';
 import { Location } from '@angular/common';
 
+//extension
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mov-transfer',
@@ -24,7 +27,12 @@ export class MovTransferComponent implements OnInit {
   movement:Movement[] =[];
 
 
-  constructor(private movService: MovementServices, private route: ActivatedRoute , private _location: Location){ }
+  constructor(private movService: MovementServices,
+              private route: ActivatedRoute,
+              private _location: Location,
+              private toastr: ToastrService,
+               private _router: Router
+              ){ }
 
 
   ngOnInit(): void {
@@ -50,7 +58,10 @@ export class MovTransferComponent implements OnInit {
         (response) =>{
           if(response.peticionExitosa){
             this.movement = response.datos;
-            
+            if(response.mensaje == "0 - Deposit created successfully")
+            {
+              this.toastr.success(response.mensaje);
+            }
           }
         },err =>{
           console.log(err)
@@ -62,9 +73,20 @@ export class MovTransferComponent implements OnInit {
     {
       this.movService.WithdByProductId( this.productId,movement ).subscribe(
         (response) =>{
-          if(response.peticionExitosa){
+          if(response.peticionExitosa){           
             this.movement = response.datos;
-            console.log(this.movement)
+            console.log(response.mensaje)
+            if( response.mensaje == "1 - Savings mov shouldn´t be less than $US 0.00 in the balance."
+              || response.mensaje ==  "1 - Checking  mov shouldn´t be less than $US 3.000.000.00 in the balance."
+            )
+            {              
+              this.toastr.info(response.mensaje);
+            }
+            else if(response.mensaje == "0 - Deposit created successfully"){
+              this.toastr.success(response.mensaje);
+            }
+
+
           }
         },err =>{
           console.log(err)
@@ -76,10 +98,21 @@ export class MovTransferComponent implements OnInit {
         (response) =>{
           if(response.peticionExitosa){
             this.movement = response.datos;
-            console.log(this.movement)
+            if( response.mensaje == "1 - Saving Mov shouldn´t be less than $US 0.00 in the balance."
+             || response.mensaje ==  "1 - Checking  mov shouldn´t be less than $US 3.000.000.00 in the balance."
+            )
+            {              
+              this.toastr.info(response.mensaje);
+            }
+            else if(response.mensaje == "0 - Transfer was succesful"){
+              this.toastr.success(response.mensaje);
+            }
           }
         },err =>{
+                     
+          
           console.log(err)
+          this.toastr.info(err.error.mensaje);
         }
       );
     }

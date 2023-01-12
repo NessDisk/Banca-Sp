@@ -24,6 +24,11 @@ import { RouterModule } from '@angular/router';
 import { MovStatusComponent } from './product/movement/components/mov-status/mov-status.component';
 
 
+//external
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +45,7 @@ import { MovStatusComponent } from './product/movement/components/mov-status/mov
     MovTransferComponent,
     LoginComponentComponent,
     InitComponentComponent,
-    MovStatusComponent
+    MovStatusComponent,
     // routingcomponents
   
   ],
@@ -50,7 +55,9 @@ import { MovStatusComponent } from './product/movement/components/mov-status/mov
     HttpClientModule,
     FormsModule,
     RouterModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
     // RouterModule
   ],
   exports: [

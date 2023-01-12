@@ -99,8 +99,8 @@
                                 required="required" 
                                 data-error="birthdate is required."></p>
                                 <br>
-                      <button class="btn btn-primary" style="margin-right: 5px;" (click)="updateCliente()" [disabled]="createFormClient.invalid">update</button>
-                      <button class="btn btn-secondary" (click)="ActiveChangeDataClient()">cancel</button>
+                      <button class="btn btn-primary" type="reset"  style="margin-right: 5px;" (click)="updateCliente()" [disabled]="createFormClient.invalid">update</button>
+                      <button class="btn btn-secondary"   (click)="ActiveChangeDataClient()">cancel</button>
                       
                     </form>
                       <!-- <button class="btn btn-outline-primary">cancel</button> -->
@@ -202,6 +202,7 @@
                     <th scope="col">state</th>
                     <th scope="col">dateCreate</th>
                     <th scope="col">balance</th> 
+                    <th scope="col">balanceAv</th> 
                     <th scope="col">Movs</th>          
                     <th scope="col">Trans</th>     
                     <th scope="col">Ch-Status</th>
@@ -220,6 +221,7 @@
                     <td> {{prod.state}}</td>
                     <td> {{prod.dateCreate}}</td>
                     <td> ${{prod.balance}}</td> 
+                    <td> ${{prod.balanceAvailable}}</td> 
                     <th scope="col"><button type="button" class="btn btn-dark"  routerLink="/movst/{{prod.id}}" routerLinkActive="active" >Mov</button></th>
                     <td><button type="button" class="btn btn-success"  routerLink="/mov/{{prod.id}}" routerLinkActive="active" >Trans</button> </td>  
                     <td><button type="button" class="btn btn-warning" (click)="ChangeStatus(prod.id,prod.state)"  >Ch-Status</button> </td>
@@ -232,6 +234,7 @@
                     <td> {{prod.state}}</td>
                     <td> {{prod.dateCreate}}</td>
                     <td> ${{prod.balance}}</td> 
+                    <td> ${{prod.balanceAvailable}}</td> 
                     <th scope="col"><button type="button" class="btn btn-dark"  routerLink="/movst/{{prod.id}}" routerLinkActive="active" >Mov</button></th>
                     <td><button type="button" class="btn btn-success"  routerLink="/mov/{{prod.id}}" routerLinkActive="active" >Trans</button> </td>  
                     <td><button type="button" class="btn btn-warning" (click)="ChangeStatus(prod.id,prod.state)"  >Ch-Status</button> </td>

@@ -165,11 +165,12 @@ public class clienteController {
             {
                 // client.setDatecreation(LocalDate.now());
                 datos = clientService.CreateCliente(finalClient);
-                respuesta.setDatos(finalClient);
                 mensaje = "0 - Customer successfully created";
+                respuesta.setDatos(finalClient);
+                respuesta.setMensaje(mensaje);
             }else {
-                mensaje ="1 - Customer could not be create, the age ";
-				estadoHttp = HttpStatus.BAD_REQUEST;
+                mensaje ="1 - Customer could not be create, the age";                
+				estadoHttp = HttpStatus.ALREADY_REPORTED;
             }
             
 
@@ -223,7 +224,7 @@ public class clienteController {
             finalClient.setId(id);
 
             datos = clientService.UpdateClient(finalClient);
-            mensaje = "0 - Customer successfully created";
+            mensaje = "0 - Customer successfully Update";
 
             respuesta.setDatos(datos);
             respuesta.setMensaje(mensaje);
@@ -258,33 +259,35 @@ public class clienteController {
 
             
             
-            for(int i = 0 ; i < Products.size()-1; i++ )
+            for(int i = 0 ; i < Products.size(); i++ )
             {
-                if(Products.get(i).getState().equalsIgnoreCase("cancelled") )
+                if(!Products.get(i).getState().toString().equals("cancelled") )
                 {
                     // System.out.println(!Products.get(i).getEstado().equalsIgnoreCase("cancelled"));
                     trigger = true;
                     break;
                 }
             }
-            System.out.println(trigger);
-
+            
+            System.out.println("Trigger Value: "+ trigger  );
             if( trigger == false)
             {
                 clientService.delete(id);
-                mensaje = "0 - Customer successfully delete";
+
+                for(int i = 0 ; i < Products.size(); i++ )
+                {
+                    productService.deleteById(Products.get(i).getId());
+                }
+                
+                mensaje = "0 - Client successfully delete";
                 respuesta.setPeticionExitosa(true);
                 estadoHttp = HttpStatus.ACCEPTED;
             }else 
             {
-                mensaje = "1 - Customer don't be  delete, exist "+ Products.size() + " active product.";
-                respuesta.setPeticionExitosa(false);
-                estadoHttp = HttpStatus.BAD_REQUEST;
+                mensaje = "1 - Customer don't be  delete, exist active product.";
+                respuesta.setPeticionExitosa(true);
+                estadoHttp = HttpStatus.ALREADY_REPORTED;
             }
-
-
-
-            // client.setId(id);
            
 
             respuesta.setDatos(id);
