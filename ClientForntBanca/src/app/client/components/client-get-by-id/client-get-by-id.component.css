@@ -1,9 +1,9 @@
-.test{
+.cont{
    display: flex;
    flex-direction: row;
 }
 .b1{
-margin-left: 50px;
+margin-left: 20px;
 }
 .b2{
 

@@ -76,20 +76,24 @@ export class MovTransferComponent implements OnInit {
     {
       this.movService.WithdByProductId( this.productId,movement ).subscribe(
         (response) =>{
-          if(response.peticionExitosa){           
+          if(response.peticionExitosa){      
+            
             this.movement = response.datos;
+           
             console.log(response.mensaje)
-            if( response.mensaje == "1 - Savings mov shouldn´t be less than $US 0.00 in the balance."
-              || response.mensaje ==  "1 - Checking  mov shouldn´t be less than $US 3.000.000.00 in the balance."
-              || response.mensaje == "1 - Disenabled accounts mustn´t allow a debit mov type."
-              )
-            {              
+            // if( response.mensaje == "1 - Savings mov shouldn´t be less than $US 0.00 in the balance."
+            //   || response.mensaje ==  "1 - Checking  mov shouldn´t be less than $US 3.000.000.00 in the balance."
+            //   || response.mensaje == "1 - Disenabled accounts mustn´t allow a debit mov type."
+            //   )
+            // {              
+            //   this.toastr.info(response.mensaje);
+            // }
+             if(response.mensaje == "0 - Deposit created successfully"){
+              this.toastr.success(response.mensaje);
+            }else {
+
               this.toastr.info(response.mensaje);
             }
-            else if(response.mensaje == "0 - Deposit created successfully"){
-              this.toastr.success(response.mensaje);
-            }
-
 
           }
         },err =>{

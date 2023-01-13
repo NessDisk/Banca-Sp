@@ -72,8 +72,8 @@ public class transactionController {
 				mensaje = "1 - Value should be greater than $US 0.00 ";		
 				respuesta.setDatos(datos);
 				respuesta.setMensaje(mensaje);
-				respuesta.setPeticionExitosa(false);
-				estadoHttp = HttpStatus.NOT_FOUND;				
+				respuesta.setPeticionExitosa(true);
+				estadoHttp = HttpStatus.ALREADY_REPORTED;				
 				return new ResponseEntity<>(respuesta, estadoHttp);
 			}
 
@@ -156,7 +156,7 @@ public class transactionController {
 				respuesta.setDatos(datos);
 				respuesta.setMensaje(mensaje);
 				respuesta.setPeticionExitosa(true);		
-				estadoHttp = HttpStatus.OK;
+				estadoHttp = HttpStatus.ALREADY_REPORTED;
 			}
 
         }catch(Exception e)
@@ -164,7 +164,7 @@ public class transactionController {
             estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
 			mensaje = "1- It was a problem with the server.";
 			respuesta.setMensaje(mensaje);
-			respuesta.setPeticionExitosa(false);
+			respuesta.setPeticionExitosa(true);
 
         }
 
@@ -223,8 +223,8 @@ public class transactionController {
 				mensaje = "1 - Value should be greater than $ 0.00 ";		
 				respuesta.setDatos(datos);
 				respuesta.setMensaje(mensaje);
-				respuesta.setPeticionExitosa(false);
-				estadoHttp = HttpStatus.CONFLICT;				
+				respuesta.setPeticionExitosa(true);
+				estadoHttp = HttpStatus.ALREADY_REPORTED;				
 				return new ResponseEntity<>(respuesta, estadoHttp);
 			} 
 			
@@ -262,6 +262,7 @@ public class transactionController {
 
 
 			if (!producto.get().getState().equalsIgnoreCase("cancelled")) {
+				
 				transaction.setInitialBalance(producto.get().getBalance() );
 
 				// BigDecimal bd = new BigDecimal((producto.get().getBalance() - GMFBalanceAvaiable) -  RealMovValue).setScale(2, RoundingMode.HALF_UP);
@@ -329,11 +330,11 @@ public class transactionController {
 				respuesta.setPeticionExitosa(true);
 				estadoHttp = HttpStatus.CREATED;
 			}else {				
-				mensaje = "1 - Deposit not made, account N°= " +producto.get().getNumAccont() +" is canceled";		
+				mensaje = "1 - Deposit not made, account is canceled";		
 				respuesta.setDatos(datos);
 				respuesta.setMensaje(mensaje);
 				respuesta.setPeticionExitosa(true);		
-				estadoHttp = HttpStatus.OK;
+				estadoHttp = HttpStatus.ALREADY_REPORTED;
 			}
 
         }catch(Exception e)
@@ -341,7 +342,8 @@ public class transactionController {
             estadoHttp = HttpStatus.INTERNAL_SERVER_ERROR;
 			mensaje = "There was an error. Contact the administrator";
 			respuesta.setMensaje(mensaje);
-			respuesta.setPeticionExitosa(false);
+			respuesta.setPeticionExitosa(true);
+			return new ResponseEntity<>(respuesta, estadoHttp);
 
         }
 		
@@ -601,11 +603,11 @@ public ResponseEntity<GeneralResponse<Integer>>    TransferMov(@RequestBody Tran
 														}else
 														{
 															mensaje ="1 - Transfer wasn´t State Canceled";
-															estadoHttp = HttpStatus.CONFLICT;		
 															datos = 0;
 															mensajeRespuestaOrigen.setDatos(datos);
 															mensajeRespuestaOrigen.setMensaje(mensaje);
-															mensajeRespuestaOrigen.setPeticionExitosa(false);	
+															estadoHttp = HttpStatus.ALREADY_REPORTED;		
+															mensajeRespuestaOrigen.setPeticionExitosa(true);	
 														}
 														 
 														 

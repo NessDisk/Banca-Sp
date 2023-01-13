@@ -169,7 +169,7 @@ public class clienteController {
                 respuesta.setDatos(finalClient);
                 respuesta.setMensaje(mensaje);
             }else {
-                mensaje ="1 - Customer could not be create, the age";                
+                mensaje ="1 - Customer mustn´t be underage.";                
 				estadoHttp = HttpStatus.ALREADY_REPORTED;
             }
             
