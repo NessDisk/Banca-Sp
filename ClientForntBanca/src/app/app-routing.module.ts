@@ -10,8 +10,8 @@ import { ProductGetComponent } from './product/components/product-get/product-ge
 import { MovStatusComponent } from './product/movement/components/mov-status/mov-status.component';
 import { MovTransferComponent } from './product/movement/components/mov-transfer/mov-transfer.component';
 
-const routes: Routes = [{path:'' , component: LoginComponentComponent  },
-                        {path:'init' , component: InitComponentComponent },
+const routes: Routes = [{path:'init' , component: InitComponentComponent },
+                        {path:'' , component: LoginComponentComponent  },
                         {path:'CreateClient' , component: ClientCreateComponent },
                         {path:'clients' , component: ClientGetByIDComponent },
                         {path:'product/:id' , component: ProductGetComponent },
